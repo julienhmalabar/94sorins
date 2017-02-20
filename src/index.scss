@@ -1,0 +1,10 @@
+// ---o Import utils, mixins...
+@import 'styles/mixins/**/*.scss';
+@import 'styles/**/*.scss';
+@import 'styles/main.scss';
+
+// ---o Import views
+@import 'views/**/*.scss';
+
+// ---o Import components
+@import 'components/**/*.scss';

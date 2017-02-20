@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<!--[if IE 9 ]><html class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--><html><!--<![endif]-->
+<head>
+	{{ include('partials/head.html.twig') }}
+</head>
+<body>
+
+
+<div class="icons-container">
+	{{ include('partials/icons.html.twig') }}
+</div>
+
+{{ include('partials/header.html.twig') }}
+
+<div class="page-container">
+	<div class="page-{{ view }}">
+		{% block content %}{% endblock %}
+	</div>
+</div>
+
+{{ include('partials/foot.html.twig') }}
+</body>
+</html>

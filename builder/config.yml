@@ -1,0 +1,50 @@
+src: ./src/
+site: ./dev/site/
+
+browserSync:
+    css: true
+    js: false
+    proxy: dev.malabar
+
+# ---o Compile YML files into a single JSON file
+data: 
+    src: data/
+    dest: 
+        - ./dev/site/config.json
+        - ./src/data/data.json
+
+# ---o Compile scripts to one single file
+scripts: 
+    -
+        src: index.js
+        folder: /
+        dest: assets/js/
+        filename: scripts.js
+
+# ---o Compile styles to one single file
+styles:
+    -
+        src: index.scss
+        folder: /
+        dest: assets/css/
+        filename: style.css
+
+# ---o Compile SVGs and PNGs into sprites
+sprites:
+    -
+        type: png
+        src:
+            - sprites/**/*.png
+        dest: assets/img/sprite
+        imgPath: ../img/sprite
+        cssDest: styles/
+        filename: sprite.png
+        stylename: _sprite.scss
+    -
+        type: svg
+        src:
+            - svgs/transform/**/*.svg
+        dest: /views/partials/
+        filename: icons.html.twig
+        #transform: false --- If you want to keep all attributes (fill, ...)
+

@@ -1,0 +1,9 @@
+# Routes
+_routes: 
+    '/': 
+        class: Homepage
+        slug: homepage
+    '/agence':
+        class: Agency
+        slug: agency
+

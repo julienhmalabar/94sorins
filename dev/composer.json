@@ -1,0 +1,14 @@
+{
+	"require": {
+        "slim/slim": "2.*",
+        "slim/middleware": "*",
+        "slim/views": "0.1.*",
+        "twig/twig": "1.*",
+        "mobiledetect/mobiledetectlib": "dev-master",
+        "twig/blank": "dev-master"
+	},
+	
+    "repositories": [
+    	{ "type": "vcs", "url": "git@github.com:futureisblank/Twig_Utils.git" }
+    ]
+}

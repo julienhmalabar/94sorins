@@ -1,0 +1,47 @@
+// -------------------------o Fonts
+
+$font-family: 'NoeDisplay', 'Helvetica', sans-serif;
+$font-text: 'Regular', 'Times', serif;
+
+
+/**
+* 	@section main colors
+*/ 
+
+$white-color 				: #FFFFFF;
+$black-color 				: #000000;
+$black-light-color			: #323232;
+
+
+/**
+* 	@section template colors
+*/ 
+
+$background-color 			: $white-color;
+$text-color 				: $black-color;
+
+
+
+// -------------------------o Breakpoints
+
+$large-screen-size:							1400px;
+$tablet-landscape-size:						1000px;
+$tablet-portrait-size:						800px;
+$mobile-size:								600px;
+
+body::before {
+	content: 'desktop';
+	display: none;
+}
+
+@media all and (max-width: $tablet-landscape-size) {
+	body::before { content: 'tablet-landscape'; }
+}
+
+@media all and (max-width: $tablet-portrait-size) {
+	body::before { content: 'tablet-portrait'; }
+}
+
+@media all and (max-width: $mobile-size) {
+	body::before { content: 'mobile'; }
+}
