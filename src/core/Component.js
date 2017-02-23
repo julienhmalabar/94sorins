@@ -6,9 +6,11 @@ import { Event } from 'core/Events';
 
 class Component extends EventEmitter {
 	
-	constructor(data) {
+	constructor(container) {
 
 		super({ wildcard: true });
+
+		this.$container = container;
 
 		this._initContent();
 		this._initEvents();

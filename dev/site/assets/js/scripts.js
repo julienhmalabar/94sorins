@@ -50,11 +50,16 @@ var HeroPicture = function (_Component) {
 
 			_get(HeroPicture.prototype.__proto__ || Object.getPrototypeOf(HeroPicture.prototype), '_initContent', this).call(this);
 
-			this.scrollTop = {
+			this._scrollTop = {
 				current: 0,
 				destination: 0,
 				prev: 0
 			};
+
+			this._ease = 0.7;
+
+			this.$backgroundPicture = this.$container.find('img');
+			this.$content = this.$container.find('figcaption');
 		}
 	}, {
 		key: '_initEvents',
@@ -66,8 +71,23 @@ var HeroPicture = function (_Component) {
 		key: '_updatePosition',
 		value: function _updatePosition() {
 
-			console.log('ok');
-			//raf(::this._updatePosition);
+			this._scrollTop.current += (this._scrollTop.destination - this._scrollTop.current) * this._ease;
+
+			if (this._scrollTop.current === this._scrollTop.destination) {
+				return;
+			}
+
+			if (Math.abs(this._scrollTop.destination - this._scrollTop.current) < 0.1) {
+				this._scrollTop.current = this._scrollTop.destination;
+			}
+
+			this.$backgroundPicture.css({ 'transform': 'translate3d(0, ' + -this._scrollTop.current * 0.3 + 'px, 0)' });
+			this.$content.css({
+				'transform': 'translate3d(0, ' + -this._scrollTop.current * 0.5 + 'px, 0)',
+				'opacity': '1'
+			});
+
+			(0, _raf2.default)(this._updatePosition.bind(this));
 		}
 
 		// --------------------------------------------------------------o Listeners
@@ -76,7 +96,7 @@ var HeroPicture = function (_Component) {
 		key: '_onScroll',
 		value: function _onScroll(scrollTop) {
 
-			this.scrollTop.destination = scrollTop.current;
+			this._scrollTop.destination = scrollTop.current;
 
 			this._updatePosition();
 		}
@@ -241,10 +261,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Component = function (_EventEmitter) {
 	_inherits(Component, _EventEmitter);
 
-	function Component(data) {
+	function Component(container) {
 		_classCallCheck(this, Component);
 
 		var _this = _possibleConstructorReturn(this, (Component.__proto__ || Object.getPrototypeOf(Component)).call(this, { wildcard: true }));
+
+		_this.$container = container;
 
 		_this._initContent();
 		_this._initEvents();

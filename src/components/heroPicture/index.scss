@@ -1,0 +1,46 @@
+$hero-picture-height : 500px;
+
+.hero-picture {
+
+	$subhead-line-height: 20px;
+
+	height: $hero-picture-height;
+	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	overflow: hidden;
+	background: #F6F6F6;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: $hero-picture-z-index;
+
+	img {
+		display: block;
+		height: 100%;
+		width: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+
+	figcaption {
+		position: relative;
+		z-index: 10;
+		text-align: center;
+		margin-top: $subhead-line-height;
+		width: 50%;
+	}
+
+	h2 {
+		position: absolute;
+		bottom: 100%;
+		left: 0;
+		width:100%;
+	}
+}
+
+.hero-picture-placeholder {
+	height: $hero-picture-height;
+}
