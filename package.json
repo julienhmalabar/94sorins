@@ -50,7 +50,7 @@
     "eventemitter2": "^3.0.0",
     "jquery": "^2.1.4",
     "page": "^1.6.4",
-    "request-animation-frame-shim": "^0.1.0",
+    "raf": "^3.3.0",
     "superagent": "^1.7.2",
     "tiny-emitter": "^1.0.1"
   },

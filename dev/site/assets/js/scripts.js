@@ -4,6 +4,292 @@
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _raf = require('raf');
+
+var _raf2 = _interopRequireDefault(_raf);
+
+var _Component2 = require('./../../core/Component');
+
+var _Component3 = _interopRequireDefault(_Component2);
+
+var _Events = require('./../../core/Events');
+
+var _Viewport = require('./../../core/Viewport');
+
+var _Viewport2 = _interopRequireDefault(_Viewport);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var HeroPicture = function (_Component) {
+	_inherits(HeroPicture, _Component);
+
+	function HeroPicture() {
+		_classCallCheck(this, HeroPicture);
+
+		return _possibleConstructorReturn(this, (HeroPicture.__proto__ || Object.getPrototypeOf(HeroPicture)).apply(this, arguments));
+	}
+
+	_createClass(HeroPicture, [{
+		key: '_initContent',
+
+
+		// --------------------------------------------------------------o Private
+
+		value: function _initContent() {
+
+			_get(HeroPicture.prototype.__proto__ || Object.getPrototypeOf(HeroPicture.prototype), '_initContent', this).call(this);
+
+			this.scrollTop = {
+				current: 0,
+				destination: 0,
+				prev: 0
+			};
+		}
+	}, {
+		key: '_initEvents',
+		value: function _initEvents() {
+
+			_Viewport2.default.on(_Events.Event.SCROLL + '.heroPicture', this._onScroll.bind(this));
+		}
+	}, {
+		key: '_updatePosition',
+		value: function _updatePosition() {
+
+			console.log('ok');
+			//raf(::this._updatePosition);
+		}
+
+		// --------------------------------------------------------------o Listeners
+
+	}, {
+		key: '_onScroll',
+		value: function _onScroll(scrollTop) {
+
+			this.scrollTop.destination = scrollTop.current;
+
+			this._updatePosition();
+		}
+
+		// --------------------------------------------------------------o Public
+
+	}]);
+
+	return HeroPicture;
+}(_Component3.default);
+
+exports.default = HeroPicture;
+
+},{"./../../core/Component":3,"./../../core/Events":4,"./../../core/Viewport":9,"raf":"raf"}],2:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _jquery = require('jquery');
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _Component2 = require('./../../core/Component');
+
+var _Component3 = _interopRequireDefault(_Component2);
+
+var _Viewport = require('./../../core/Viewport');
+
+var _Viewport2 = _interopRequireDefault(_Viewport);
+
+var _Events = require('./../../core/Events');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MainHeader = function (_Component) {
+	_inherits(MainHeader, _Component);
+
+	function MainHeader() {
+		_classCallCheck(this, MainHeader);
+
+		return _possibleConstructorReturn(this, (MainHeader.__proto__ || Object.getPrototypeOf(MainHeader)).apply(this, arguments));
+	}
+
+	_createClass(MainHeader, [{
+		key: '_initContent',
+
+
+		// --------------------------------------------------------------o Private
+
+		value: function _initContent() {
+
+			_get(MainHeader.prototype.__proto__ || Object.getPrototypeOf(MainHeader.prototype), '_initContent', this).call(this);
+
+			this.$container = (0, _jquery2.default)('.main-header');
+			this.$mainMenu = this.$container.find('.main-menu');
+			this.$openButton = this.$container.find('.open-button');
+			this.$closeButton = this.$container.find('.close-button');
+
+			this._isMenuOpened = false;
+		}
+	}, {
+		key: '_initEvents',
+		value: function _initEvents() {
+
+			_get(MainHeader.prototype.__proto__ || Object.getPrototypeOf(MainHeader.prototype), '_initEvents', this).call(this);
+
+			this.$openButton.on(_Events.MouseEvent.CLICK, this._onOpenButtonClick.bind(this));
+
+			this.$closeButton.on(_Events.MouseEvent.CLICK, this._onCloseButtonClick.bind(this));
+		}
+
+		// --------------------------------------------------------------o Listeners
+
+	}, {
+		key: '_onOpenButtonClick',
+		value: function _onOpenButtonClick() {
+
+			this.openMenu();
+		}
+	}, {
+		key: '_onCloseButtonClick',
+		value: function _onCloseButtonClick() {
+
+			this.closeMenu();
+		}
+
+		// --------------------------------------------------------------o Public
+
+	}, {
+		key: 'openMenu',
+		value: function openMenu() {
+
+			if (this._isMenuOpened === true) {
+				return;
+			}
+
+			this.$container.addClass(MainHeader._Class.MENU_OPENED);
+		}
+	}, {
+		key: 'closeMenu',
+		value: function closeMenu() {
+
+			if (this._isMenuOpened === true) {
+				return;
+			}
+
+			this.$container.removeClass(MainHeader._Class.MENU_OPENED);
+		}
+	}]);
+
+	return MainHeader;
+}(_Component3.default);
+
+MainHeader._Class = {
+	MENU_OPENED: 'menu-opened'
+};
+exports.default = new MainHeader();
+
+},{"./../../core/Component":3,"./../../core/Events":4,"./../../core/Viewport":9,"jquery":"jquery"}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _eventemitter = require('eventemitter2');
+
+var _eventemitter2 = _interopRequireDefault(_eventemitter);
+
+var _jquery = require('jquery');
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _Viewport = require('./Viewport');
+
+var _Viewport2 = _interopRequireDefault(_Viewport);
+
+var _Events = require('./Events');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Component = function (_EventEmitter) {
+	_inherits(Component, _EventEmitter);
+
+	function Component(data) {
+		_classCallCheck(this, Component);
+
+		var _this = _possibleConstructorReturn(this, (Component.__proto__ || Object.getPrototypeOf(Component)).call(this, { wildcard: true }));
+
+		_this._initContent();
+		_this._initEvents();
+
+		return _this;
+	}
+
+	// --------------------------------------------------------------o Private
+
+	_createClass(Component, [{
+		key: '_initContent',
+		value: function _initContent() {}
+	}, {
+		key: '_initEvents',
+		value: function _initEvents() {
+
+			if (this._onResize) {
+				_Viewport2.default.on(_Events.Event.RESIZE + '.' + this.constructor.name, this._onResize.bind(this));
+			}
+
+			// ---o Only launch the ticker when the page needs it
+			if (this._onUpdate) {
+				TweenMax.ticker.addEventListener("tick", this._onUpdate.bind(this));
+			}
+		}
+
+		// --------------------------------------------------------------o Listeners
+
+
+		// --------------------------------------------------------------o Public
+
+
+	}]);
+
+	return Component;
+}(_eventemitter2.default);
+
+exports.default = Component;
+
+},{"./Events":4,"./Viewport":9,"eventemitter2":"eventemitter2","jquery":"jquery"}],4:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 var touch = false;
 var mousedown = '';
 var mouseup = '';
@@ -67,7 +353,7 @@ var Tab = exports.Tab = {
 
 };
 
-},{}],2:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -185,7 +471,7 @@ var Keyboard = function (_EventEmitter) {
 
 exports.default = new Keyboard();
 
-},{"./Events":1,"./Viewport":6,"eventemitter2":"eventemitter2"}],3:[function(require,module,exports){
+},{"./Events":4,"./Viewport":9,"eventemitter2":"eventemitter2"}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -204,6 +490,10 @@ var _Viewport2 = _interopRequireDefault(_Viewport);
 
 var _Events = require('./Events');
 
+var _TextUtils = require('./TextUtils');
+
+var _TextUtils2 = _interopRequireDefault(_TextUtils);
+
 var _ViewsManager = require('./ViewsManager');
 
 var _ViewsManager2 = _interopRequireDefault(_ViewsManager);
@@ -211,6 +501,10 @@ var _ViewsManager2 = _interopRequireDefault(_ViewsManager);
 var _jquery = require('jquery');
 
 var _jquery2 = _interopRequireDefault(_jquery);
+
+var _HeroPicture = require('./../components/HeroPicture');
+
+var _HeroPicture2 = _interopRequireDefault(_HeroPicture);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -221,6 +515,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 // Init Views Manager
+
+
+// Import components
 
 
 var Page = function (_EventEmitter) {
@@ -249,7 +546,9 @@ var Page = function (_EventEmitter) {
 		_this._isPreEntered = false;
 		_this._isEntered = false;
 
-		_this._preEnter();
+		//this._preEnter();
+		_this._initContent();
+		_this._initEvents();
 
 		return _this;
 	}
@@ -298,7 +597,14 @@ var Page = function (_EventEmitter) {
 		}
 	}, {
 		key: '_initContent',
-		value: function _initContent() {}
+		value: function _initContent() {
+
+			var pageSlug = _TextUtils2.default.lowercaseFirstLetter(this.constructor.name);
+
+			this.$container = (0, _jquery2.default)('.page-' + pageSlug);
+
+			this._initHeroPicture();
+		}
 	}, {
 		key: '_initEvents',
 		value: function _initEvents() {
@@ -314,6 +620,22 @@ var Page = function (_EventEmitter) {
 
 			if (this._onResponsiveChange) {
 				_Viewport2.default.on(_Viewport2.default.RESPONSIVE_CHANGE + '.' + this.constructor.name, this._onResponsiveChange.bind(this));
+			}
+		}
+
+		// --------------------------------------------------------------o Components
+
+	}, {
+		key: '_initHeroPicture',
+		value: function _initHeroPicture() {
+			var _this2 = this;
+
+			var heroPictures = this.$container.find('.hero-picture');
+			if (heroPictures.length) {
+				this.heroPictures = [];
+				heroPictures.each(function (key) {
+					_this2.heroPictures.push(new _HeroPicture2.default(heroPictures.eq(key)));
+				});
 			}
 		}
 
@@ -389,7 +711,7 @@ var Page = function (_EventEmitter) {
 
 exports.default = Page;
 
-},{"./Events":1,"./Viewport":6,"./ViewsManager":7,"eventemitter2":"eventemitter2","jquery":"jquery"}],4:[function(require,module,exports){
+},{"./../components/HeroPicture":1,"./Events":4,"./TextUtils":8,"./Viewport":9,"./ViewsManager":10,"eventemitter2":"eventemitter2","jquery":"jquery"}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -534,7 +856,7 @@ var Router = function (_EventEmitter) {
 
 exports.default = new Router();
 
-},{"./../data/data.json":8,"eventemitter2":"eventemitter2","jquery":"jquery","page":"page","superagent":"superagent"}],5:[function(require,module,exports){
+},{"./../data/data.json":11,"eventemitter2":"eventemitter2","jquery":"jquery","page":"page","superagent":"superagent"}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -603,7 +925,7 @@ var TextUtils = function () {
 
 exports.default = new TextUtils();
 
-},{}],6:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -655,7 +977,7 @@ var Viewport = function (_EventEmitter) {
 		_this.savedScroll = 0;
 
 		_this.scrollTop = {};
-		_this.scrollTop.curr = 0;
+		_this.scrollTop.current = 0;
 		_this.scrollTop.perc = 0;
 		_this.scrollTop.max = 1;
 
@@ -732,12 +1054,14 @@ var Viewport = function (_EventEmitter) {
 		key: '_onScroll',
 		value: function _onScroll() {
 
-			this.scrollTop.curr = this.$window.scrollTop();
-			this.scrollTop.perc = this.scrollTop.curr / this.scrollTop.max;
+			this.scrollTop.current = this.$window.scrollTop();
+			this.scrollTop.perc = this.scrollTop.current / this.scrollTop.max;
 
 			if (Math.abs(this.scrollTop.perc - ~~this.scrollTop.perc) < 0.001) {
 				this.scrollTop.perc = ~~this.scrollTop.perc;
 			}
+
+			this.emit(_Events.Event.SCROLL + '.*', this.scrollTop);
 		}
 	}, {
 		key: '_onUpdate',
@@ -790,7 +1114,7 @@ var Viewport = function (_EventEmitter) {
 		key: 'scrollTo',
 		value: function scrollTo(val, fast) {
 
-			if (val === this.scrollTop.curr) {
+			if (val === this.scrollTop.current) {
 				return;
 			}
 
@@ -800,7 +1124,7 @@ var Viewport = function (_EventEmitter) {
 			}
 
 			var scroll = {
-				val: this.scrollTop.curr
+				val: this.scrollTop.current
 			};
 
 			var pxDiff = scroll.val - val;
@@ -827,7 +1151,7 @@ var Viewport = function (_EventEmitter) {
 
 exports.default = new Viewport();
 
-},{"./Events":1,"eventemitter2":"eventemitter2","jquery":"jquery"}],7:[function(require,module,exports){
+},{"./Events":4,"eventemitter2":"eventemitter2","jquery":"jquery"}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -996,9 +1320,9 @@ var ViewsManager = function (_EventEmitter) {
 
 exports.default = new ViewsManager();
 
-},{"./../data/data.json":8,"./Page":3,"./Router":4,"./TextUtils":5,"./Viewport":6,"eventemitter2":"eventemitter2","jquery":"jquery"}],8:[function(require,module,exports){
+},{"./../data/data.json":11,"./Page":6,"./Router":7,"./TextUtils":8,"./Viewport":9,"eventemitter2":"eventemitter2","jquery":"jquery"}],11:[function(require,module,exports){
 module.exports={"_routes":{"/":{"class":"Homepage","slug":"homepage"},"/agence":{"class":"Agency","slug":"agency"}}}
-},{}],9:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 var _jquery = require('jquery');
@@ -1025,16 +1349,23 @@ var _data = require('./data/data.json');
 
 var _data2 = _interopRequireDefault(_data);
 
+var _MainHeader = require('./components/MainHeader');
+
+var _MainHeader2 = _interopRequireDefault(_MainHeader);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Import views
 
 
-// ---o Init the rest of the core
-// ---o Core
+// ---o Init keyboard events
 var requiredPages = {'agency/index': require('./pages/agency/index.js'),'homepage/index': require('./pages/homepage/index.js')};
 
-// ---o Init keyboard events
+// ---o Import main elements 
+
+
+// ---o Init the rest of the core
+// ---o Core
 
 
 var pages = {};
@@ -1057,7 +1388,7 @@ for (var key in requiredPages) {
 _ViewsManager2.default.init(pages);
 _Router2.default.init();
 
-},{"./core/Keyboard":2,"./core/Router":4,"./core/Viewport":6,"./core/ViewsManager":7,"./data/data.json":8,"./pages/agency/index.js":10,"./pages/homepage/index.js":11,"jquery":"jquery"}],10:[function(require,module,exports){
+},{"./components/MainHeader":2,"./core/Keyboard":5,"./core/Router":7,"./core/Viewport":9,"./core/ViewsManager":10,"./data/data.json":11,"./pages/agency/index.js":13,"./pages/homepage/index.js":14,"jquery":"jquery"}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1090,7 +1421,7 @@ var Agency = function (_Page) {
 
 exports.default = Agency;
 
-},{"./../../core/Page":3}],11:[function(require,module,exports){
+},{"./../../core/Page":6}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1157,6 +1488,6 @@ var Homepage = function (_Page) {
 
 exports.default = Homepage;
 
-},{"./../../core/Page":3}]},{},[9])
+},{"./../../core/Page":6}]},{},[12])
 
 //# sourceMappingURL=maps/scripts.js.map

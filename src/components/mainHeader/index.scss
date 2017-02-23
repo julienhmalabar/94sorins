@@ -1,3 +1,90 @@
 .main-header {
-	
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 200px;
+	z-index: $main-header-z-index;
+}
+
+// -----o Main Menu Button
+.main-menu-button {
+	position: absolute;
+	top: 50px;
+	left: 50px;
+	z-index: $main-header-z-index + 1;
+	cursor: pointer;
+
+
+	div {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 50px;
+		width: 50px;
+		padding: 15px;
+		box-sizing: border-box;
+	}
+
+	span {
+		display: block;
+		height: 1px;
+		width: 100%;
+		background: $black-color;
+		margin: 5px 0;
+	}
+
+	// ---o Close button
+	.close-button {
+		span {
+			transform: rotate(45deg);
+		}
+	}
+}
+
+// -----o Main Menu
+.main-menu {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	background: #F3F3F3;
+	padding: 100px 50px 0px;
+}
+
+
+// --------------------------------------o States + Animation
+
+.main-header {
+
+	.main-menu {
+		transform: translate3d(-100%, 0, 0);
+		transition: transform 700ms $ease-out-expo 0ms;
+	}
+
+	.close-button {
+		pointer-events: none;
+		opacity: 0;
+	}
+
+	.close-button,
+	.open-button {
+		transition: transform 700ms $ease-out-expo 0ms;
+	}
+
+	&.menu-opened {
+		.main-menu {
+			transform: translate3d(0, 0, 0);
+		}
+
+		.close-button {
+			pointer-events: auto;
+			opacity: 1;
+		}
+
+		.open-button {
+			pointer-events: none;
+			opacity: 0;
+		}
+	}
 }

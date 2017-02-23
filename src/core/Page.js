@@ -2,10 +2,14 @@ import EventEmitter from 'eventemitter2';
 
 import Viewport from 'core/Viewport';
 import { Event } from 'core/Events';
+import TextUtils from 'core/TextUtils';
 
 // Init Views Manager
 import ViewsManager from 'core/ViewsManager';
 import $ from 'jquery';
+
+// Import components
+import HeroPicture from 'components/HeroPicture';
 
 
 class Page extends EventEmitter {
@@ -31,7 +35,9 @@ class Page extends EventEmitter {
 		this._isPreEntered = false;
 		this._isEntered = false;
 
-		this._preEnter();
+		//this._preEnter();
+		this._initContent();
+		this._initEvents();
 		
 	}
 
@@ -80,7 +86,11 @@ class Page extends EventEmitter {
 
 	_initContent() {
 
+		const pageSlug = TextUtils.lowercaseFirstLetter(this.constructor.name);
 
+		this.$container = $('.page-' + pageSlug);
+
+		this._initHeroPicture();
 
 	}
 
@@ -100,6 +110,20 @@ class Page extends EventEmitter {
 		if (this._onResponsiveChange) {
 			Viewport
 				.on(Viewport.RESPONSIVE_CHANGE + '.' + this.constructor.name, this._onResponsiveChange.bind(this));
+		}
+
+	}
+
+	// --------------------------------------------------------------o Components
+
+	_initHeroPicture() {
+
+		let heroPictures = this.$container.find('.hero-picture');
+		if (heroPictures.length) {
+			this.heroPictures = [];
+			heroPictures.each( (key) => {
+				this.heroPictures.push(new HeroPicture(heroPictures.eq(key)));
+			})
 		}
 
 	}

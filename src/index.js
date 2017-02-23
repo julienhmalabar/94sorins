@@ -10,6 +10,9 @@ import ViewsManager from 'core/ViewsManager';
 import Router from 'core/Router';
 import data from './data/data.json';
 
+// ---o Import main elements 
+import MainHeader from 'components/MainHeader';
+
 // Import views
 let requiredPages = require('./pages/**/*.js', {mode: 'hash'});
 

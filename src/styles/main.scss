@@ -63,3 +63,20 @@ a {
 	}
 }
 
+.center {
+	width: 1080px;
+	margin: 0 auto;
+}
+
+.page-container {
+	position: relative;
+	z-index: $page-container-z-index;
+}
+
+.page-content {
+	position: relative;
+	z-index: ($hero-picture-z-index + 1);
+	height: 1000px;
+	background: #F0F0F0;
+}
+

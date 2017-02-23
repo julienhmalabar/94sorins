@@ -46,6 +46,7 @@ $app->get('(/)(/:params+)', function($params = array()) use ($app, $config) {
 			'meta' => array(),
 			'ROOT_WEB' => ROOT_WEB,
 			'ROOT_PATH' => ROOT_PATH,
+			'ASSETS' => ASSETS,
 			'SERVICES' => SERVICES
 		));
 
@@ -85,6 +86,7 @@ $app->get('(/)(/:params+)', function($params = array()) use ($app, $config) {
 		'view' => $pageName,
 		'ROOT_WEB' => ROOT_WEB,
 		'ROOT_PATH' => ROOT_PATH,
+		'ASSETS' => ASSETS,
 		'SERVICES' => SERVICES
 	));
 

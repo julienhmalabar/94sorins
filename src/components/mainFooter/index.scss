@@ -1,0 +1,39 @@
+.main-footer {
+
+	.center {
+		display: flex;
+		flex-direction: row;
+
+		& > * {
+			align-self: flex-start;
+		}
+	}
+
+	.logo {
+		width: 20%;
+	}
+
+	.links {
+		width: 60%;
+		display: flex;
+		flex-direction: row;
+
+		& > * {
+			align-self: flex-start;
+		}
+
+		.address {
+			display: block;
+			width: (100% / 3);
+		}
+
+		ul {
+			width: (100% / 3 * 2);
+			column-count: 2;
+		}
+	}
+
+	.cta-contact {
+		width: 15%;
+	}
+}

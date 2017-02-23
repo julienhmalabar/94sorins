@@ -17,6 +17,7 @@ $domain = $site ? $site : 'malabar';
 define('DOMAIN', $domain);
 define('ROOT_PATH', '');
 define('ROOT_WEB', 'http://dev.' . DOMAIN . ROOT_PATH);
+define('ASSETS', ROOT_WEB . '/assets/');
 define('SERVICES', 'http://services.' . DOMAIN . '/');
 define('MEDIAS', 'http://medias.' . DOMAIN . '/');
 define('ADMIN', 'http://admin.' . DOMAIN . '/');

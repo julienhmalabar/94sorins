@@ -26,7 +26,7 @@ class Viewport extends EventEmitter {
 		this.savedScroll = 0;
 
 		this.scrollTop = {};
-		this.scrollTop.curr = 0;
+		this.scrollTop.current = 0;
 		this.scrollTop.perc = 0;
 		this.scrollTop.max = 1;
 
@@ -106,12 +106,14 @@ class Viewport extends EventEmitter {
 
 	_onScroll() {
 
-		this.scrollTop.curr = this.$window.scrollTop();
-		this.scrollTop.perc = this.scrollTop.curr / this.scrollTop.max;
+		this.scrollTop.current = this.$window.scrollTop();
+		this.scrollTop.perc = this.scrollTop.current / this.scrollTop.max;
 
 		if (Math.abs(this.scrollTop.perc - ~~ this.scrollTop.perc) < 0.001) {
 			this.scrollTop.perc = ~~ this.scrollTop.perc;
 		}
+
+		this.emit(Event.SCROLL + '.*', this.scrollTop);
 
 	}
 
@@ -164,7 +166,7 @@ class Viewport extends EventEmitter {
 
 	scrollTo(val, fast) {
 
-		if (val === this.scrollTop.curr) {
+		if (val === this.scrollTop.current) {
 			return;
 		}
 
@@ -174,7 +176,7 @@ class Viewport extends EventEmitter {
 		}
 
 		let scroll = {
-			val: this.scrollTop.curr
+			val: this.scrollTop.current
 		}
 
 		let pxDiff = scroll.val - val;

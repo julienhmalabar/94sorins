@@ -11,13 +11,15 @@
 	{{ include('partials/icons.html.twig') }}
 </div>
 
-{{ include('partials/header.html.twig') }}
+{{ include('components/main-header.html.twig') }}
 
 <div class="page-container">
 	<div class="page-{{ view }}">
 		{% block content %}{% endblock %}
 	</div>
 </div>
+
+{{ include('components/main-footer.html.twig') }}
 
 {{ include('partials/foot.html.twig') }}
 </body>
