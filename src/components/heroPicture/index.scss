@@ -15,6 +15,7 @@ $hero-picture-height : 500px;
 	justify-content: center;
 	align-items: center;
 	z-index: $hero-picture-z-index;
+	color: $white-color;
 
 	img {
 		display: block;
@@ -30,10 +31,16 @@ $hero-picture-height : 500px;
 		z-index: 10;
 		text-align: center;
 		margin-top: $subhead-line-height;
-		width: 50%;
+		max-width: 1200px;
+	}
+
+	h1 {
+		font: 700 130px/130px $font-family;
 	}
 
 	h2 {
+		font: 500 16px/24px $font-family;
+		letter-spacing: 0.2em;
 		position: absolute;
 		bottom: 100%;
 		left: 0;

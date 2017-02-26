@@ -1,1 +1,1 @@
-{"_routes":{"/":{"class":"Homepage","slug":"homepage"},"/agence":{"class":"Agency","slug":"agency"}}}
+{"_routes":{"/":{"class":"Homepage","slug":"homepage"},"/agence":{"class":"Agency","slug":"agency"},"/etudes-de-cas/*":{"class":"CaseStudy","slug":"case-study"}}}

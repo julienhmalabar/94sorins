@@ -653,6 +653,7 @@ var Page = function (_EventEmitter) {
 			var _this2 = this;
 
 			var heroPictures = this.$container.find('.hero-picture');
+			console.log(heroPictures);
 			if (heroPictures.length) {
 				this.heroPictures = [];
 				heroPictures.each(function (key) {
@@ -1343,7 +1344,7 @@ var ViewsManager = function (_EventEmitter) {
 exports.default = new ViewsManager();
 
 },{"./../data/data.json":11,"./Page":6,"./Router":7,"./TextUtils":8,"./Viewport":9,"eventemitter2":"eventemitter2","jquery":"jquery"}],11:[function(require,module,exports){
-module.exports={"_routes":{"/":{"class":"Homepage","slug":"homepage"},"/agence":{"class":"Agency","slug":"agency"}}}
+module.exports={"_routes":{"/":{"class":"Homepage","slug":"homepage"},"/agence":{"class":"Agency","slug":"agency"},"/etudes-de-cas/*":{"class":"CaseStudy","slug":"case-study"}}}
 },{}],12:[function(require,module,exports){
 'use strict';
 
@@ -1381,7 +1382,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 
 // ---o Init keyboard events
-var requiredPages = {'agency/index': require('./pages/agency/index.js'),'homepage/index': require('./pages/homepage/index.js')};
+var requiredPages = {'agency/index': require('./pages/agency/index.js'),'case-study/index': require('./pages/case-study/index.js'),'homepage/index': require('./pages/homepage/index.js')};
 
 // ---o Import main elements 
 
@@ -1410,7 +1411,7 @@ for (var key in requiredPages) {
 _ViewsManager2.default.init(pages);
 _Router2.default.init();
 
-},{"./components/MainHeader":2,"./core/Keyboard":5,"./core/Router":7,"./core/Viewport":9,"./core/ViewsManager":10,"./data/data.json":11,"./pages/agency/index.js":13,"./pages/homepage/index.js":14,"jquery":"jquery"}],13:[function(require,module,exports){
+},{"./components/MainHeader":2,"./core/Keyboard":5,"./core/Router":7,"./core/Viewport":9,"./core/ViewsManager":10,"./data/data.json":11,"./pages/agency/index.js":13,"./pages/case-study/index.js":14,"./pages/homepage/index.js":15,"jquery":"jquery"}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1444,6 +1445,69 @@ var Agency = function (_Page) {
 exports.default = Agency;
 
 },{"./../../core/Page":6}],14:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _Page2 = require('./../../core/Page');
+
+var _Page3 = _interopRequireDefault(_Page2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var CaseStudy = function (_Page) {
+	_inherits(CaseStudy, _Page);
+
+	function CaseStudy() {
+		_classCallCheck(this, CaseStudy);
+
+		return _possibleConstructorReturn(this, (CaseStudy.__proto__ || Object.getPrototypeOf(CaseStudy)).apply(this, arguments));
+	}
+
+	_createClass(CaseStudy, [{
+		key: '_initContent',
+
+
+		// --------------------------------------------------------------o Private
+
+		value: function _initContent() {
+
+			_get(CaseStudy.prototype.__proto__ || Object.getPrototypeOf(CaseStudy.prototype), '_initContent', this).call(this);
+
+			console.log('ok');
+		}
+	}, {
+		key: '_initEvents',
+		value: function _initEvents() {
+
+			_get(CaseStudy.prototype.__proto__ || Object.getPrototypeOf(CaseStudy.prototype), '_initEvents', this).call(this);
+		}
+
+		// --------------------------------------------------------------o Listeners
+
+
+		// --------------------------------------------------------------o Public
+
+	}]);
+
+	return CaseStudy;
+}(_Page3.default);
+
+exports.default = CaseStudy;
+
+},{"./../../core/Page":6}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

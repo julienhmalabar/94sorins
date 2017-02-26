@@ -119,6 +119,7 @@ class Page extends EventEmitter {
 	_initHeroPicture() {
 
 		let heroPictures = this.$container.find('.hero-picture');
+		console.log(heroPictures);
 		if (heroPictures.length) {
 			this.heroPictures = [];
 			heroPictures.each( (key) => {

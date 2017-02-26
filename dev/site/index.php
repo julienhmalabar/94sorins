@@ -6,6 +6,7 @@ ini_set('display_errors', 'On');
 require '../vendor/autoload.php';
 require '../config.php';
 require './utils/TwigExtensions.php';
+require './utils/TextUtils.php';
 
 $configContent = file_get_contents('./config.json');
 $config = json_decode($configContent, true);
@@ -33,10 +34,14 @@ $app->get('(/)(/:params+)', function($params = array()) use ($app, $config) {
 
 	// ---o Get Controller
 	$slug = count($params) > 0 ? $params[0] : '';
-	$pageName = $config['_routes']['/' . $slug]['slug']; 
+	$pageName = isset($config['_routes']['/' . $slug])
+				? $config['_routes']['/' . $slug]['slug']
+					: isset($config['_routes']['/' . $slug . '/*'])
+					? $config['_routes']['/' . $slug . '/*']['slug']
+					: NULL; 
 	$params[0] = $pageName;
 
-	$controllerName = ucfirst(strtolower($pageName)) . 'Controller';
+	$controllerName = ucfirst(call_user_func_array(array('TextUtils', 'camelCase'), array($pageName))) . 'Controller';
 	$controllerPath = './controllers/' . $controllerName .'.php';
 
 	if (!file_exists($controllerPath)) {
@@ -84,6 +89,7 @@ $app->get('(/)(/:params+)', function($params = array()) use ($app, $config) {
 		'data' => $data,
 		'meta' => $meta,
 		'view' => $pageName,
+		'viewName' => call_user_func_array(array('TextUtils', 'camelCase'), array($pageName)),
 		'ROOT_WEB' => ROOT_WEB,
 		'ROOT_PATH' => ROOT_PATH,
 		'ASSETS' => ASSETS,

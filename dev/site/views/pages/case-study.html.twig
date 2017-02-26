@@ -1,0 +1,14 @@
+{% extends ajax ? "default/empty.html.twig" : "default/layout.html.twig" %}
+
+{% block content %}
+
+	{% include 'components/hero-picture.html.twig' with {
+		subhead: data.header_subhead,
+		title: data.header_title
+	} %}
+
+	<div class="page-content">
+
+	</div>
+
+{% endblock %}

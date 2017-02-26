@@ -6,4 +6,7 @@ _routes:
     '/agence':
         class: Agency
         slug: agency
+    '/etudes-de-cas/*':
+        class: CaseStudy
+        slug: case-study
 

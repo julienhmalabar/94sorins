@@ -8,7 +8,7 @@ class WordpressUtils {
 
     }
 
-    public function getData($postType) {
+    public function getData($postType, $postTitle) {
 
         $data = array();
         $options = [
@@ -16,16 +16,21 @@ class WordpressUtils {
             'posts_per_page' => '-1'
         ];
 
+        if (isset($postTitle)) {
+            $options['name'] = $postTitle;
+        }
+
         query_posts( $options );
 
         while (have_posts()){
             the_post();
-            
+
             $fields = get_fields($post->ID);
             $postType = get_post_type($post->ID);
             $fields['posttype'] = $postType;
             $fields['permalink'] = get_the_permalink();
-            
+            $fields['slug'] = $post->post_name;
+                
             array_push($data, $fields);
         }
 

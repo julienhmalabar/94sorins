@@ -2,16 +2,17 @@
 
 $fontPath : '../fonts/';
 
-//@include font-face('NoeDisplay', 'NoeDisplay-Medium', 500, normal, $fontPath);
-
+@include font-face('Gilroy', 'gilroy-light', 300, normal, $fontPath);
+@include font-face('Gilroy', 'gilroy-regular', 400, normal, $fontPath);
+@include font-face('Gilroy', 'gilroy-medium', 500, normal, $fontPath);
+@include font-face('Gilroy', 'gilroy-bold', 700, normal, $fontPath);
 
 // ------------------------------o Main styles
 
 body {
 	background : $background-color;
-	font: 400 13px/23px $font-family;
+	font: 400 16px/24px $font-family;
 	color: $text-color;
-	letter-spacing: 0.025em;
 }
 
 .ajaxContainer {

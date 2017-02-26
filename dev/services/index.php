@@ -18,6 +18,7 @@ $app->get('(/)(/:params+)', function($params = array()) use ($app) {
 
 	$path = '/' . join('/', $params);
 	$postType = $params[0];
+	$postTitle = isset($params[1]) ? $params[1] : NULL;
 
 	// ---o Set JSON output
 	$app->contentType('application/json');
@@ -34,10 +35,10 @@ $app->get('(/)(/:params+)', function($params = array()) use ($app) {
 	// ---o Get data
 	require './utils/WordpressUtils.php';
 	$wordpressUtils = new WordpressUtils();
-	$data = $wordpressUtils->getData($postType);
+	$data = $wordpressUtils->getData($postType, $postTitle);
 
 	// ---o Set cache
-	$cacheManager->setCache($path, $data);
+	//$cacheManager->setCache($path, $data);
 
 	// ---o Display data
 	echo json_encode($data);
