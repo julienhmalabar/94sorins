@@ -34,11 +34,15 @@ $app->get('(/)(/:params+)', function($params = array()) use ($app, $config) {
 
 	// ---o Get Controller
 	$slug = count($params) > 0 ? $params[0] : '';
+
 	$pageName = isset($config['_routes']['/' . $slug])
-				? $config['_routes']['/' . $slug]['slug']
-					: isset($config['_routes']['/' . $slug . '/*'])
-					? $config['_routes']['/' . $slug . '/*']['slug']
-					: NULL; 
+				? $config['_routes']['/' . $slug]['slug'] : NULL;
+
+	if (!isset($pageName)) {
+		$pageName = isset($config['_routes']['/' . $slug . '/*'])
+				? $config['_routes']['/' . $slug . '/*']['slug'] : NULL;
+	}
+	
 	$params[0] = $pageName;
 
 	$controllerName = ucfirst(call_user_func_array(array('TextUtils', 'camelCase'), array($pageName))) . 'Controller';

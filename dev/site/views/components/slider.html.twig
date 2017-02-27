@@ -1,0 +1,18 @@
+<div class="slider">
+	<ul>
+		{% for slide in slides %}
+		<li>
+			<div class="slide-content">
+				<p class="title">{{ slide.title }}</p>
+				{% if slide.description %}
+				<div class="description">{{ slide.description|raw }}</div>
+				{% endif %}
+				{% if slide.link %}
+				<a href="{{ slide.link }}">Découvrir</a>
+				{% endif %}
+			</div>
+			<img src="{{ slide.picture }}" />
+		</li>
+		{% endfor %}
+	</ul>
+</div>

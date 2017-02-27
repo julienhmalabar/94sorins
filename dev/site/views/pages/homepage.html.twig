@@ -9,6 +9,10 @@
 
 	<div class="page-content">
 
+	{% include 'components/slider.html.twig' with {
+		slides: data.case_studies
+	} %}
+
 	</div>
 
 {% endblock %}
