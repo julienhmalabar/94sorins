@@ -1,0 +1,99 @@
+.arrow {
+	height: 1px;
+	width: 14px;
+	background: $black-color;
+	position: relative;
+	padding-right: 6px;
+
+	svg {
+		display: block;
+		width: 6px; 
+		height: 5px; 
+		position: absolute;
+		top: -2px;
+		right: 0;
+		fill: $black-color;
+	}
+
+	&.arrow-long {
+		width: 50px;
+	}
+
+	&.arrow-left {
+		padding-right: 0;
+		padding-left: 6px;
+		svg {
+			right: auto;
+			left: 0;
+			transform: scale(-1, 1);
+		}
+	}
+}
+
+@keyframes arrow-move-right {
+
+	0% {
+		transform: translateX(0px);
+		animation-timing-function: $ease-in-circ;
+	}
+
+	49% {
+		transform: translateX(32px);
+		opacity: 1;
+	}
+	
+	50% {
+		transform: translateX(32px);
+		opacity: 0;
+	}
+	
+	51% {
+		transform: translateX(-32px);
+		opacity: 0;
+	}
+	
+	52% {
+		transform: translateX(-32px);
+		opacity: 1;
+		animation-timing-function: $ease-out-expo;
+	}
+	
+	100% {
+		transform: translateX(0px);
+	}
+
+}
+
+@keyframes arrow-move-left {
+
+	0% {
+		transform: translateX(0px);
+		animation-timing-function: $ease-in-circ;
+	}
+
+	49% {
+		transform: translateX(-32px);
+		opacity: 1;
+	}
+	
+	50% {
+		transform: translateX(-32px);
+		opacity: 0;
+	}
+	
+	51% {
+		transform: translateX(--32px);
+		opacity: 0;
+	}
+	
+	52% {
+		transform: translateX(32px);
+		opacity: 1;
+		animation-timing-function: $ease-out-expo;
+	}
+	
+	100% {
+		transform: translateX(0px);
+	}
+
+}

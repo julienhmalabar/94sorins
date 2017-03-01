@@ -1,4 +1,4 @@
-$hero-picture-height : 500px;
+$hero-picture-height : 90vh;
 
 .hero-picture {
 
@@ -19,8 +19,6 @@ $hero-picture-height : 500px;
 
 	img {
 		display: block;
-		height: 100%;
-		width: 100%;
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -45,6 +43,31 @@ $hero-picture-height : 500px;
 		bottom: 100%;
 		left: 0;
 		width:100%;
+	}
+
+	.scroll-button {
+		font: 300 10px/20px $font-family;
+		letter-spacing: 0.2em;
+		position: absolute;
+		bottom: 20px;
+		left: 50%;
+		margin-left: -50px;
+		width: 100px;
+		text-align: center;
+		text-transform: uppercase;
+		cursor: pointer;
+		padding-top: 140px;
+
+		&:before {
+			content: '';
+			display: block;
+			height: 120px;
+			width: 1px;
+			background: $white-color;
+			position: absolute;
+			top: 0;
+			left: 50%;
+		}
 	}
 }
 

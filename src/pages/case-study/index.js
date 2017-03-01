@@ -1,6 +1,6 @@
-import Page from 'core/Page';
+import MalabarPage from 'lib/MalabarPage';
 
-class CaseStudy extends Page {
+class CaseStudy extends MalabarPage {
 
 	// --------------------------------------------------------------o Private
 

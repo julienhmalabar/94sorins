@@ -23,6 +23,10 @@ var _Viewport = require('./../../core/Viewport');
 
 var _Viewport2 = _interopRequireDefault(_Viewport);
 
+var _ImageUtils = require('./../../core/ImageUtils');
+
+var _ImageUtils2 = _interopRequireDefault(_ImageUtils);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -60,12 +64,25 @@ var HeroPicture = function (_Component) {
 
 			this.$backgroundPicture = this.$container.find('img');
 			this.$content = this.$container.find('figcaption');
+			this.$scrollButton = this.$container.find('.scroll-button');
+
+			this._isBackgroundPictureLoaded = false;
 		}
 	}, {
 		key: '_initEvents',
 		value: function _initEvents() {
 
+			_get(HeroPicture.prototype.__proto__ || Object.getPrototypeOf(HeroPicture.prototype), '_initEvents', this).call(this);
+
 			_Viewport2.default.on(_Events.Event.SCROLL + '.heroPicture', this._onScroll.bind(this));
+
+			if (this.$backgroundPicture[0].complete) {
+				this._onBackgroundPictureLoaded();
+			} else {
+				this.$backgroundPicture.on('loaded', this._onBackgroundPictureLoaded.bind(this));
+			}
+
+			this.$scrollButton.on(_Events.MouseEvent.CLICK, this._onScrollButtonClick.bind(this));
 		}
 	}, {
 		key: '_updatePosition',
@@ -86,6 +103,10 @@ var HeroPicture = function (_Component) {
 				'transform': 'translate3d(0, ' + -this._scrollTop.current * 0.5 + 'px, 0)',
 				'opacity': '1'
 			});
+			this.$scrollButton.css({
+				'transform': 'translate3d(0, ' + -this._scrollTop.current + 'px, 0)',
+				'opacity': '1'
+			});
 
 			(0, _raf2.default)(this._updatePosition.bind(this));
 		}
@@ -100,6 +121,38 @@ var HeroPicture = function (_Component) {
 
 			this._updatePosition();
 		}
+	}, {
+		key: '_onBackgroundPictureLoaded',
+		value: function _onBackgroundPictureLoaded() {
+
+			this._isBackgroundPictureLoaded = true;
+			this._resizeBackgroundPicture();
+		}
+	}, {
+		key: '_onScrollButtonClick',
+		value: function _onScrollButtonClick() {
+
+			_Viewport2.default.scrollTo(this.$container.height());
+		}
+	}, {
+		key: '_onResize',
+		value: function _onResize() {
+
+			if (this._isBackgroundPictureLoaded) {
+				this._resizeBackgroundPicture();
+			}
+		}
+
+		// --------------------------------------------------------------o Resize
+
+	}, {
+		key: '_resizeBackgroundPicture',
+		value: function _resizeBackgroundPicture() {
+
+			var dims = _ImageUtils2.default.getCoverSizeImage(this.$backgroundPicture.width(), this.$backgroundPicture.height(), this.$container.width(), this.$container.height());
+
+			this.$backgroundPicture.css(dims);
+		}
 
 		// --------------------------------------------------------------o Public
 
@@ -110,7 +163,7 @@ var HeroPicture = function (_Component) {
 
 exports.default = HeroPicture;
 
-},{"./../../core/Component":3,"./../../core/Events":4,"./../../core/Viewport":9,"raf":"raf"}],2:[function(require,module,exports){
+},{"./../../core/Component":4,"./../../core/Events":6,"./../../core/ImageUtils":7,"./../../core/Viewport":13,"raf":"raf"}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -227,7 +280,202 @@ MainHeader._Class = {
 };
 exports.default = new MainHeader();
 
-},{"./../../core/Component":3,"./../../core/Events":4,"./../../core/Viewport":9,"jquery":"jquery"}],3:[function(require,module,exports){
+},{"./../../core/Component":4,"./../../core/Events":6,"./../../core/Viewport":13,"jquery":"jquery"}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _jquery = require('jquery');
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _Component2 = require('./../../core/Component');
+
+var _Component3 = _interopRequireDefault(_Component2);
+
+var _Events = require('./../../core/Events');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Slider = function (_Component) {
+	_inherits(Slider, _Component);
+
+	function Slider() {
+		_classCallCheck(this, Slider);
+
+		return _possibleConstructorReturn(this, (Slider.__proto__ || Object.getPrototypeOf(Slider)).apply(this, arguments));
+	}
+
+	_createClass(Slider, [{
+		key: '_initContent',
+
+
+		// --------------------------------------------------------------o Private
+
+		value: function _initContent() {
+
+			_get(Slider.prototype.__proto__ || Object.getPrototypeOf(Slider.prototype), '_initContent', this).call(this);
+
+			this.$slides = this.$container.find('li');
+			this.$nav = this.$container.find('.slider-nav');
+
+			if (this.$nav) {
+				this.$navItems = this.$nav.find('.slider-nav-item');
+			}
+
+			this.prevIndex = undefined;
+			this.currIndex = undefined;
+			this.slidesLength = this.$slides.length;
+
+			this.hide();
+
+			this._goToSlide(0);
+		}
+	}, {
+		key: '_initEvents',
+		value: function _initEvents() {
+
+			_get(Slider.prototype.__proto__ || Object.getPrototypeOf(Slider.prototype), '_initEvents', this).call(this);
+
+			if (this.$nav) {
+				this.$navItems.on(_Events.MouseEvent.CLICK, this._onNavItemClick.bind(this));
+			}
+		}
+	}, {
+		key: '_prevSlide',
+		value: function _prevSlide() {
+
+			var index = this.currIndex - 1;
+			var noStateChange = false;
+
+			if (index < 0) {
+				index = this.$slides.length - 1;
+				noStateChange = true;
+			}
+
+			this._goToSlide(index, noStateChange);
+		}
+	}, {
+		key: '_nextSlide',
+		value: function _nextSlide() {
+
+			var index = this.currIndex + 1;
+			var noStateChange = false;
+
+			if (index > this.slidesLength - 1) {
+				index = 0;
+				noStateChange = true;
+			}
+
+			this._goToSlide(index, noStateChange);
+		}
+	}, {
+		key: '_goToSlide',
+		value: function _goToSlide(index, noStateChange) {
+
+			if (index === this.currIndex) {
+				return;
+			}
+
+			this.states = ['prev', 'next'];
+
+			this.prevIndex = this.currIndex;
+			this.currIndex = index;
+
+			if (this.prevIndex > this.currIndex) {
+				this.states.reverse();
+			}
+
+			if (noStateChange == true) {
+				this.states.reverse();
+			}
+
+			this.$slides.eq(this.prevIndex).removeClass(this.states[1]).addClass(this.states[0]);
+
+			var currentSlide = this.$slides.eq(this.currIndex);
+
+			currentSlide.addClass(this.states[1] + ' no-transition').removeClass(this.states[0]);
+			currentSlide[0].offsetHeight;
+			currentSlide.removeClass(this.states[1] + ' no-transition');
+
+			this.emit(Slider.CHANGE + '.*', noStateChange);
+		}
+
+		// --------------------------------------------------------------o Listeners
+
+	}, {
+		key: '_onNavItemClick',
+		value: function _onNavItemClick(e) {
+
+			var $this = (0, _jquery2.default)(e.currentTarget);
+			var klass = $this.attr('class') || '';
+
+			if (klass.match('slider-prev')) {
+				this._prevSlide();
+			} else if (klass.match('slider-next')) {
+				this._nextSlide();
+			} else {
+				this.goTo($this.index());
+			}
+		}
+
+		// --------------------------------------------------------------o Public
+
+	}, {
+		key: 'goTo',
+		value: function goTo(index, noStateChange) {
+
+			this._goToSlide(index, noStateChange);
+		}
+	}, {
+		key: 'next',
+		value: function next() {
+
+			this._nextSlide();
+		}
+	}, {
+		key: 'prev',
+		value: function prev() {
+
+			this._prevSlide();
+		}
+	}, {
+		key: 'hide',
+		value: function hide() {
+
+			this.currIndex = -1;
+			this.$slides.addClass('no-transition next');
+		}
+
+		// --------------------------------------------------------------o Public
+
+	}, {
+		key: 'currentIndex',
+		get: function get() {
+
+			return this.currIndex;
+		}
+	}]);
+
+	return Slider;
+}(_Component3.default);
+
+Slider.CHANGE = 'slider:change';
+exports.default = Slider;
+
+},{"./../../core/Component":4,"./../../core/Events":6,"jquery":"jquery"}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -284,6 +532,7 @@ var Component = function (_EventEmitter) {
 		value: function _initEvents() {
 
 			if (this._onResize) {
+				console.log(_Events.Event.RESIZE);
 				_Viewport2.default.on(_Events.Event.RESIZE + '.' + this.constructor.name, this._onResize.bind(this));
 			}
 
@@ -306,7 +555,310 @@ var Component = function (_EventEmitter) {
 
 exports.default = Component;
 
-},{"./Events":4,"./Viewport":9,"eventemitter2":"eventemitter2","jquery":"jquery"}],4:[function(require,module,exports){
+},{"./Events":6,"./Viewport":13,"eventemitter2":"eventemitter2","jquery":"jquery"}],5:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Ease = function () {
+	function Ease() {
+		_classCallCheck(this, Ease);
+	}
+
+	_createClass(Ease, [{
+		key: "linear",
+
+
+		/**
+   *	t = currentTime
+   *	b = startValue
+   *	c = change
+   *	d = duration
+   */
+
+		value: function linear(k) {
+
+			return k;
+		}
+	}, {
+		key: "quadIn",
+		value: function quadIn(k) {
+
+			return k * k;
+		}
+	}, {
+		key: "quadOut",
+		value: function quadOut(k) {
+
+			return k * (2 - k);
+		}
+	}, {
+		key: "quadInOut",
+		value: function quadInOut(k) {
+
+			if ((k *= 2) < 1) {
+				return 0.5 * k * k;
+			}
+
+			return -0.5 * (--k * (k - 2) - 1);
+		}
+	}, {
+		key: "cubicIn",
+		value: function cubicIn(k) {
+
+			return k * k * k;
+		}
+	}, {
+		key: "cubicOut",
+		value: function cubicOut(k) {
+
+			return --k * k * k + 1;
+		}
+	}, {
+		key: "cubicInOut",
+		value: function cubicInOut(k) {
+
+			if ((k *= 2) < 1) {
+				return 0.5 * k * k;
+			}
+
+			return -0.5 * (--k * (k - 2) - 1);
+		}
+	}, {
+		key: "quartIn",
+		value: function quartIn(k) {
+
+			return k * k * k * k;
+		}
+	}, {
+		key: "quartOut",
+		value: function quartOut(k) {
+
+			return 1 - --k * k * k * k;
+		}
+	}, {
+		key: "quartInOut",
+		value: function quartInOut(k) {
+
+			if ((k *= 2) < 1) {
+				return 0.5 * k * k * k * k;
+			}
+
+			return -0.5 * ((k -= 2) * k * k * k - 2);
+		}
+	}, {
+		key: "quintIn",
+		value: function quintIn(k) {
+
+			return k * k * k * k * k;
+		}
+	}, {
+		key: "quintOut",
+		value: function quintOut(k) {
+
+			return --k * k * k * k * k + 1;
+		}
+	}, {
+		key: "quintInOut",
+		value: function quintInOut(k) {
+
+			if ((k *= 2) < 1) {
+				return 0.5 * k * k * k * k * k;
+			}
+
+			return 0.5 * ((k -= 2) * k * k * k * k + 2);
+		}
+	}, {
+		key: "sineIn",
+		value: function sineIn(k) {
+
+			return 1 - Math.cos(k * Math.PI / 2);
+		}
+	}, {
+		key: "sineOut",
+		value: function sineOut(k) {
+
+			return Math.sin(k * Math.PI / 2);
+		}
+	}, {
+		key: "sineInOut",
+		value: function sineInOut(k) {
+
+			return 0.5 * (1 - Math.cos(Math.PI * k));
+		}
+	}, {
+		key: "expoIn",
+		value: function expoIn(k) {
+
+			return k === 0 ? 0 : Math.pow(1024, k - 1);
+		}
+	}, {
+		key: "expoOut",
+		value: function expoOut(k) {
+
+			return k === 1 ? 1 : 1 - Math.pow(2, -10 * k);
+		}
+	}, {
+		key: "expoInOut",
+		value: function expoInOut(k) {
+
+			if (k === 0) {
+				return 0;
+			}
+
+			if (k === 1) {
+				return 1;
+			}
+
+			if ((k *= 2) < 1) {
+				return 0.5 * Math.pow(1024, k - 1);
+			}
+
+			return 0.5 * (-Math.pow(2, -10 * (k - 1)) + 2);
+		}
+	}, {
+		key: "circIn",
+		value: function circIn(k) {
+
+			return 1 - Math.sqrt(1 - k * k);
+		}
+	}, {
+		key: "circOut",
+		value: function circOut(k) {
+
+			return Math.sqrt(1 - --k * k);
+		}
+	}, {
+		key: "circInOut",
+		value: function circInOut(k) {
+
+			if ((k *= 2) < 1) {
+				return -0.5 * (Math.sqrt(1 - k * k) - 1);
+			}
+
+			return 0.5 * (Math.sqrt(1 - (k -= 2) * k) + 1);
+		}
+	}, {
+		key: "ElasticIn",
+		value: function ElasticIn(k) {
+
+			var s;
+			var a = 0.1;
+			var p = 0.4;
+
+			if (k === 0) {
+				return 0;
+			}
+
+			if (k === 1) {
+				return 1;
+			}
+
+			if (!a || a < 1) {
+				a = 1;
+				s = p / 4;
+			} else {
+				s = p * Math.asin(1 / a) / (2 * Math.PI);
+			}
+
+			return -(a * Math.pow(2, 10 * (k -= 1)) * Math.sin((k - s) * (2 * Math.PI) / p));
+		}
+	}, {
+		key: "elasticOut",
+		value: function elasticOut(k) {
+
+			var s;
+			var a = 0.1;
+			var p = 0.4;
+
+			if (k === 0) {
+				return 0;
+			}
+
+			if (k === 1) {
+				return 1;
+			}
+
+			if (!a || a < 1) {
+				a = 1;
+				s = p / 4;
+			} else {
+				s = p * Math.asin(1 / a) / (2 * Math.PI);
+			}
+
+			return a * Math.pow(2, -10 * k) * Math.sin((k - s) * (2 * Math.PI) / p) + 1;
+		}
+	}, {
+		key: "elasticInOut",
+		value: function elasticInOut(k) {
+
+			var s;
+			var a = 0.1;
+			var p = 0.4;
+
+			if (k === 0) {
+				return 0;
+			}
+
+			if (k === 1) {
+				return 1;
+			}
+
+			if (!a || a < 1) {
+				a = 1;
+				s = p / 4;
+			} else {
+				s = p * Math.asin(1 / a) / (2 * Math.PI);
+			}
+
+			if ((k *= 2) < 1) {
+				return -0.5 * (a * Math.pow(2, 10 * (k -= 1)) * Math.sin((k - s) * (2 * Math.PI) / p));
+			}
+
+			return a * Math.pow(2, -10 * (k -= 1)) * Math.sin((k - s) * (2 * Math.PI) / p) * 0.5 + 1;
+		}
+	}, {
+		key: "backIn",
+		value: function backIn(k) {
+
+			var s = 1.70158;
+
+			return k * k * ((s + 1) * k - s);
+		}
+	}, {
+		key: "backOut",
+		value: function backOut(k) {
+
+			var s = 1.70158;
+
+			return --k * k * ((s + 1) * k + s) + 1;
+		}
+	}, {
+		key: "backInOut",
+		value: function backInOut(k) {
+
+			var s = 1.70158 * 1.525;
+
+			if ((k *= 2) < 1) {
+				return 0.5 * (k * k * ((s + 1) * k - s));
+			}
+
+			return 0.5 * ((k -= 2) * k * ((s + 1) * k + s) + 2);
+		}
+	}]);
+
+	return Ease;
+}();
+
+exports.default = new Ease();
+
+},{}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -375,7 +927,57 @@ var Tab = exports.Tab = {
 
 };
 
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ImageUtils = function () {
+	function ImageUtils() {
+		_classCallCheck(this, ImageUtils);
+	}
+
+	_createClass(ImageUtils, [{
+		key: 'getCoverSizeImage',
+		value: function getCoverSizeImage(picWidth, picHeight, containerWidth, containerHeight) {
+
+			var pw = picWidth,
+			    ph = picHeight,
+			    cw = containerWidth || window.screenWidth,
+			    ch = containerHeight || window.screenHeight,
+			    pr = pw / ph,
+			    cr = cw / ch;
+
+			if (cr < pr) {
+				return {
+					'width': ch * pr,
+					'height': ch,
+					'top': 0,
+					'left': -(ch * pr - cw) * 0.5
+				};
+			} else {
+				return {
+					'width': cw,
+					'height': cw / pr,
+					'top': -(cw / pr - ch) * 0.5,
+					'left': 0
+				};
+			}
+		}
+	}]);
+
+	return ImageUtils;
+}();
+
+exports.default = new ImageUtils();
+
+},{}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -493,7 +1095,7 @@ var Keyboard = function (_EventEmitter) {
 
 exports.default = new Keyboard();
 
-},{"./Events":4,"./Viewport":9,"eventemitter2":"eventemitter2"}],6:[function(require,module,exports){
+},{"./Events":6,"./Viewport":13,"eventemitter2":"eventemitter2"}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -624,8 +1226,6 @@ var Page = function (_EventEmitter) {
 			var pageSlug = _TextUtils2.default.lowercaseFirstLetter(this.constructor.name);
 
 			this.$container = (0, _jquery2.default)('.page-' + pageSlug);
-
-			this._initHeroPicture();
 		}
 	}, {
 		key: '_initEvents',
@@ -642,23 +1242,6 @@ var Page = function (_EventEmitter) {
 
 			if (this._onResponsiveChange) {
 				_Viewport2.default.on(_Viewport2.default.RESPONSIVE_CHANGE + '.' + this.constructor.name, this._onResponsiveChange.bind(this));
-			}
-		}
-
-		// --------------------------------------------------------------o Components
-
-	}, {
-		key: '_initHeroPicture',
-		value: function _initHeroPicture() {
-			var _this2 = this;
-
-			var heroPictures = this.$container.find('.hero-picture');
-			console.log(heroPictures);
-			if (heroPictures.length) {
-				this.heroPictures = [];
-				heroPictures.each(function (key) {
-					_this2.heroPictures.push(new _HeroPicture2.default(heroPictures.eq(key)));
-				});
 			}
 		}
 
@@ -734,7 +1317,7 @@ var Page = function (_EventEmitter) {
 
 exports.default = Page;
 
-},{"./../components/HeroPicture":1,"./Events":4,"./TextUtils":8,"./Viewport":9,"./ViewsManager":10,"eventemitter2":"eventemitter2","jquery":"jquery"}],7:[function(require,module,exports){
+},{"./../components/HeroPicture":1,"./Events":6,"./TextUtils":11,"./Viewport":13,"./ViewsManager":14,"eventemitter2":"eventemitter2","jquery":"jquery"}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -879,7 +1462,7 @@ var Router = function (_EventEmitter) {
 
 exports.default = new Router();
 
-},{"./../data/data.json":11,"eventemitter2":"eventemitter2","jquery":"jquery","page":"page","superagent":"superagent"}],8:[function(require,module,exports){
+},{"./../data/data.json":15,"eventemitter2":"eventemitter2","jquery":"jquery","page":"page","superagent":"superagent"}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -948,7 +1531,175 @@ var TextUtils = function () {
 
 exports.default = new TextUtils();
 
-},{}],9:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _eventemitter = require('eventemitter2');
+
+var _eventemitter2 = _interopRequireDefault(_eventemitter);
+
+var _raf = require('raf');
+
+var _raf2 = _interopRequireDefault(_raf);
+
+var _Ease = require('./Ease');
+
+var _Ease2 = _interopRequireDefault(_Ease);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Tween = function (_EventEmitter) {
+	_inherits(Tween, _EventEmitter);
+
+	function Tween() {
+		_classCallCheck(this, Tween);
+
+		var _this = _possibleConstructorReturn(this, (Tween.__proto__ || Object.getPrototypeOf(Tween)).call(this, { wildcard: true }));
+
+		_this.tweens = [];
+
+		return _this;
+	}
+
+	// ------------------------------------------------------------o Private
+
+	_createClass(Tween, [{
+		key: '_onUpdate',
+		value: function _onUpdate() {
+
+			var currentTime = +new Date();
+			var inc = 0;
+
+			var _iteratorNormalCompletion = true;
+			var _didIteratorError = false;
+			var _iteratorError = undefined;
+
+			try {
+				for (var _iterator = this.tweens[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+					var tween = _step.value;
+
+
+					tween.currentTime = currentTime - tween.startTime - tween.delay;
+
+					if (tween.currentTime > 0) {
+
+						for (var key in tween.data) {
+
+							var data = tween.data[key];
+							var elapsed = tween.currentTime / tween.duration;
+
+							tween.output[key] = data.startValue - (data.startValue - data.endValue) * (_Ease2.default[tween.ease] || _Ease2.default.linear)(elapsed);
+						}
+
+						if (tween.currentTime < tween.duration && typeof tween.onProgress == 'function') {
+							tween.onProgress.call(this, tween.output);
+						} else if (tween.currentTime >= tween.duration && typeof tween.onComplete == 'function') {
+
+							for (var _key in tween.data) {
+
+								var _data = tween.data[_key];
+								tween.output[_key] = _data.endValue;
+							}
+							tween.onComplete.call(this, tween.output);
+						}
+
+						if (tween.currentTime >= tween.duration) {
+							this.tweens.splice(inc, 1);
+						}
+					}
+
+					inc++;
+				}
+			} catch (err) {
+				_didIteratorError = true;
+				_iteratorError = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion && _iterator.return) {
+						_iterator.return();
+					}
+				} finally {
+					if (_didIteratorError) {
+						throw _iteratorError;
+					}
+				}
+			}
+
+			if (this.tweens.length > 0) {
+				this.rAF = requestAnimationFrame(this._onUpdate.bind(this));
+			}
+		}
+
+		// ------------------------------------------------------------o Public
+
+	}, {
+		key: 'to',
+		value: function to(data, options) {
+
+			var ntween = {};
+			ntween.startTime = +new Date();
+			ntween.currentTime = 0;
+			ntween.delay = options.delay || 0;
+			ntween.duration = options.duration;
+			ntween.ease = options.ease;
+			ntween.easedProgress = 0;
+			ntween.onProgress = options.onProgress;
+			ntween.onComplete = options.onComplete;
+
+			ntween.data = [];
+			ntween.output = [];
+
+			for (var value in data) {
+
+				if (['duration', 'ease', 'delay'].indexOf(value) > -1) {
+					console.log('%c Tweeeeeeen: Cannot animate the \'' + value + '\' property ', 'background: #ffbbbb; color: #ff1414;');
+					break;
+				}
+
+				if (data[value] !== undefined && options[value] !== undefined) {
+					ntween.data[value] = {
+						startValue: data[value],
+						endValue: options[value]
+					};
+
+					ntween.output[value] = data[value];
+				}
+			}
+
+			// ---o Start rAF if not
+
+			if (this.tweens.length === 0) {
+				this.rAF = requestAnimationFrame(this._onUpdate.bind(this));
+			}
+
+			this.tweens.push(ntween);
+		}
+
+		// ---o To do
+
+	}, {
+		key: 'from',
+		value: function from() {}
+	}]);
+
+	return Tween;
+}(_eventemitter2.default);
+
+exports.default = new Tween();
+
+},{"./Ease":5,"eventemitter2":"eventemitter2","raf":"raf"}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -966,6 +1717,10 @@ var _jquery = require('jquery');
 var _jquery2 = _interopRequireDefault(_jquery);
 
 var _Events = require('./Events');
+
+var _Tween = require('./Tween');
+
+var _Tween2 = _interopRequireDefault(_Tween);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1136,6 +1891,7 @@ var Viewport = function (_EventEmitter) {
 	}, {
 		key: 'scrollTo',
 		value: function scrollTo(val, fast) {
+			var _this2 = this;
 
 			if (val === this.scrollTop.current) {
 				return;
@@ -1163,6 +1919,21 @@ var Viewport = function (_EventEmitter) {
 
 			var time = Math.abs(scroll.val - val) / 750;
 
+			var scrollTop = { value: this.scrollTop.current };
+
+			_Tween2.default.to(scrollTop, {
+				value: val,
+				duration: 1000,
+				ease: 'quintOut',
+				onProgress: function onProgress(data) {
+					console.log(data.value);
+					_this2.$window.scrollTop(data.value);
+				},
+				onComplete: function onComplete(data) {
+					_this2.$window.scrollTop(data.value);
+				}
+			});
+
 			/*TweenLite.to(scroll, time, {val: val, ease: Power4.easeOut, onUpdate: () => {
    	this.$document.scrollTop(scroll.val);
    }});*/
@@ -1174,7 +1945,7 @@ var Viewport = function (_EventEmitter) {
 
 exports.default = new Viewport();
 
-},{"./Events":4,"eventemitter2":"eventemitter2","jquery":"jquery"}],10:[function(require,module,exports){
+},{"./Events":6,"./Tween":12,"eventemitter2":"eventemitter2","jquery":"jquery"}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1343,9 +2114,9 @@ var ViewsManager = function (_EventEmitter) {
 
 exports.default = new ViewsManager();
 
-},{"./../data/data.json":11,"./Page":6,"./Router":7,"./TextUtils":8,"./Viewport":9,"eventemitter2":"eventemitter2","jquery":"jquery"}],11:[function(require,module,exports){
+},{"./../data/data.json":15,"./Page":9,"./Router":10,"./TextUtils":11,"./Viewport":13,"eventemitter2":"eventemitter2","jquery":"jquery"}],15:[function(require,module,exports){
 module.exports={"_routes":{"/":{"class":"Homepage","slug":"homepage"},"/agence":{"class":"Agency","slug":"agency"},"/etudes-de-cas/*":{"class":"CaseStudy","slug":"case-study"}}}
-},{}],12:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 var _jquery = require('jquery');
@@ -1411,40 +2182,7 @@ for (var key in requiredPages) {
 _ViewsManager2.default.init(pages);
 _Router2.default.init();
 
-},{"./components/MainHeader":2,"./core/Keyboard":5,"./core/Router":7,"./core/Viewport":9,"./core/ViewsManager":10,"./data/data.json":11,"./pages/agency/index.js":13,"./pages/case-study/index.js":14,"./pages/homepage/index.js":15,"jquery":"jquery"}],13:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _Page2 = require('./../../core/Page');
-
-var _Page3 = _interopRequireDefault(_Page2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Agency = function (_Page) {
-	_inherits(Agency, _Page);
-
-	function Agency() {
-		_classCallCheck(this, Agency);
-
-		return _possibleConstructorReturn(this, (Agency.__proto__ || Object.getPrototypeOf(Agency)).apply(this, arguments));
-	}
-
-	return Agency;
-}(_Page3.default);
-
-exports.default = Agency;
-
-},{"./../../core/Page":6}],14:[function(require,module,exports){
+},{"./components/MainHeader":2,"./core/Keyboard":8,"./core/Router":10,"./core/Viewport":13,"./core/ViewsManager":14,"./data/data.json":15,"./pages/agency/index.js":18,"./pages/case-study/index.js":19,"./pages/homepage/index.js":20,"jquery":"jquery"}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1455,9 +2193,21 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _Page2 = require('./../../core/Page');
+var _Page2 = require('./../core/Page');
 
 var _Page3 = _interopRequireDefault(_Page2);
+
+var _jquery = require('jquery');
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _HeroPicture = require('./../components/HeroPicture');
+
+var _HeroPicture2 = _interopRequireDefault(_HeroPicture);
+
+var _Slider = require('./../components/Slider');
+
+var _Slider2 = _interopRequireDefault(_Slider);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1467,8 +2217,140 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var CaseStudy = function (_Page) {
-	_inherits(CaseStudy, _Page);
+// Import components
+
+
+var MalabarPage = function (_Page) {
+	_inherits(MalabarPage, _Page);
+
+	function MalabarPage() {
+		_classCallCheck(this, MalabarPage);
+
+		return _possibleConstructorReturn(this, (MalabarPage.__proto__ || Object.getPrototypeOf(MalabarPage)).apply(this, arguments));
+	}
+
+	_createClass(MalabarPage, [{
+		key: '_initContent',
+
+
+		// --------------------------------------------------------------o Private
+
+		value: function _initContent() {
+
+			_get(MalabarPage.prototype.__proto__ || Object.getPrototypeOf(MalabarPage.prototype), '_initContent', this).call(this);
+
+			this._initHeroPictures();
+			this._initSliders();
+
+			this._loadPictures();
+		}
+	}, {
+		key: '_loadPictures',
+		value: function _loadPictures() {
+
+			(0, _jquery2.default)('img[data-src]').each(function (key, img) {
+				img.src = img.getAttribute('data-src');
+				img.removeAttribute('data-src');
+			});
+		}
+
+		// --------------------------------------------------------------o Components
+
+	}, {
+		key: '_initHeroPictures',
+		value: function _initHeroPictures() {
+			var _this2 = this;
+
+			var heroPictures = this.$container.find('.hero-picture');
+			if (heroPictures.length) {
+				this.heroPictures = [];
+				heroPictures.each(function (key) {
+					_this2.heroPictures.push(new _HeroPicture2.default(heroPictures.eq(key)));
+				});
+			}
+		}
+	}, {
+		key: '_initSliders',
+		value: function _initSliders() {
+			var _this3 = this;
+
+			var sliders = this.$container.find('.slider');
+			if (sliders.length) {
+				this.sliders = [];
+				sliders.each(function (key) {
+					_this3.sliders.push(new _Slider2.default(sliders.eq(key)));
+				});
+			}
+		}
+
+		// --------------------------------------------------------------o Listeners
+
+
+	}]);
+
+	return MalabarPage;
+}(_Page3.default);
+
+exports.default = MalabarPage;
+
+},{"./../components/HeroPicture":1,"./../components/Slider":3,"./../core/Page":9,"jquery":"jquery"}],18:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _MalabarPage2 = require('./../../lib/MalabarPage');
+
+var _MalabarPage3 = _interopRequireDefault(_MalabarPage2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Agency = function (_MalabarPage) {
+	_inherits(Agency, _MalabarPage);
+
+	function Agency() {
+		_classCallCheck(this, Agency);
+
+		return _possibleConstructorReturn(this, (Agency.__proto__ || Object.getPrototypeOf(Agency)).apply(this, arguments));
+	}
+
+	return Agency;
+}(_MalabarPage3.default);
+
+exports.default = Agency;
+
+},{"./../../lib/MalabarPage":17}],19:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _MalabarPage2 = require('./../../lib/MalabarPage');
+
+var _MalabarPage3 = _interopRequireDefault(_MalabarPage2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var CaseStudy = function (_MalabarPage) {
+	_inherits(CaseStudy, _MalabarPage);
 
 	function CaseStudy() {
 		_classCallCheck(this, CaseStudy);
@@ -1503,11 +2385,11 @@ var CaseStudy = function (_Page) {
 	}]);
 
 	return CaseStudy;
-}(_Page3.default);
+}(_MalabarPage3.default);
 
 exports.default = CaseStudy;
 
-},{"./../../core/Page":6}],15:[function(require,module,exports){
+},{"./../../lib/MalabarPage":17}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1518,9 +2400,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _Page2 = require('./../../core/Page');
+var _MalabarPage2 = require('./../../lib/MalabarPage');
 
-var _Page3 = _interopRequireDefault(_Page2);
+var _MalabarPage3 = _interopRequireDefault(_MalabarPage2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1530,8 +2412,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Homepage = function (_Page) {
-	_inherits(Homepage, _Page);
+var Homepage = function (_MalabarPage) {
+	_inherits(Homepage, _MalabarPage);
 
 	function Homepage() {
 		_classCallCheck(this, Homepage);
@@ -1570,10 +2452,10 @@ var Homepage = function (_Page) {
 	}]);
 
 	return Homepage;
-}(_Page3.default);
+}(_MalabarPage3.default);
 
 exports.default = Homepage;
 
-},{"./../../core/Page":6}]},{},[12])
+},{"./../../lib/MalabarPage":17}]},{},[16])
 
 //# sourceMappingURL=maps/scripts.js.map

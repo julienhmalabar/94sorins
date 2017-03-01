@@ -1,9 +1,12 @@
+{% set src = picture ? picture : ASSETS ~ 'temp/pic.jpg' %}
+
 <figure class="hero-picture">
-	<img src="{{ ASSETS ~ 'temp/pic.jpg' }}" />
+	<img data-src="{{ src }}"/>
 	<figcaption>
 		<h1>{{ title }}</h1>
 		<h2>{{ subhead }}</h2>
 	</figcaption>
+	<div class="scroll-button">Scroll</div>
 </figure>
 
 <div class="hero-picture-placeholder"></div>

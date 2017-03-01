@@ -7,27 +7,14 @@ class Slider extends Component {
 
 	static CHANGE = 'slider:change';
 
-	constructor(data) {
-
-		super();
-
-		this.data = data;
-
-		this._initContent();
-		this._initEvents();
-
-	}
-
 	// --------------------------------------------------------------o Private
 
 	_initContent() {
 
 		super._initContent();
 
-		this.$container = this.data.container;
-
 		this.$slides = this.$container.find('li');	
-		this.$nav = this.data.nav;
+		this.$nav = this.$container.find('.slider-nav');
 
 		if (this.$nav) {
 			this.$navItems = this.$nav.find('.slider-nav-item');

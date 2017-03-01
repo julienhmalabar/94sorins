@@ -1,0 +1,11 @@
+{% set class = 'arrow' %}
+
+{% if type %}
+	{% set class = class ~ ' arrow-' ~ type %}
+{% endif %}
+
+{% if direction %}
+	{% set class = class ~ ' arrow-' ~ direction %}
+{% endif %}
+
+<div class="{{ class }}">{{ icon('arrow-spike') }}</div>

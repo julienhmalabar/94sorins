@@ -29,6 +29,7 @@ class Component extends EventEmitter {
 	_initEvents() {
 
 		if (this._onResize) {
+			console.log(Event.RESIZE);
 			Viewport
 				.on(Event.RESIZE + '.' + this.constructor.name, this._onResize.bind(this));
 		}

@@ -1,6 +1,6 @@
-/*STARTimport Page from 'core/Page';
+/*STARTimport MalabarPage from 'core/Page';
 
-class {{ camelSlug }} extends Page {
+class {{ camelSlug }} extends MalabarPage {
 
 	// --------------------------------------------------------------o Private
 

@@ -90,8 +90,6 @@ class Page extends EventEmitter {
 
 		this.$container = $('.page-' + pageSlug);
 
-		this._initHeroPicture();
-
 	}
 
 	_initEvents() {
@@ -113,22 +111,7 @@ class Page extends EventEmitter {
 		}
 
 	}
-
-	// --------------------------------------------------------------o Components
-
-	_initHeroPicture() {
-
-		let heroPictures = this.$container.find('.hero-picture');
-		console.log(heroPictures);
-		if (heroPictures.length) {
-			this.heroPictures = [];
-			heroPictures.each( (key) => {
-				this.heroPictures.push(new HeroPicture(heroPictures.eq(key)));
-			})
-		}
-
-	}
-
+	
 	// --------------------------------------------------------------o Listeners
 
 

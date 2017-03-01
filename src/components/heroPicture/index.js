@@ -1,8 +1,9 @@
 import raf from 'raf';
 
 import Component from 'core/Component';
-import { Event } from 'core/Events';
+import { Event, MouseEvent } from 'core/Events';
 import Viewport from 'core/Viewport';
+import ImageUtils from 'core/ImageUtils';
 
 
 class HeroPicture extends Component {
@@ -23,13 +24,29 @@ class HeroPicture extends Component {
 
 		this.$backgroundPicture = this.$container.find('img');
 		this.$content = this.$container.find('figcaption');
+		this.$scrollButton = this.$container.find('.scroll-button');
+
+		this._isBackgroundPictureLoaded = false;
 
 	}
 
 	_initEvents() {
 
+		super._initEvents();
+
 		Viewport
 			.on(Event.SCROLL + '.heroPicture', ::this._onScroll);
+
+		if (this.$backgroundPicture[0].complete) {
+			this._onBackgroundPictureLoaded();
+		}
+		else {
+			this.$backgroundPicture
+				.on('loaded', ::this._onBackgroundPictureLoaded);
+		}
+
+		this.$scrollButton
+			.on(MouseEvent.CLICK, ::this._onScrollButtonClick);
 
 	}
 
@@ -50,6 +67,10 @@ class HeroPicture extends Component {
 			'transform': 'translate3d(0, ' + (- this._scrollTop.current * 0.5) + 'px, 0)',
 			'opacity': '1'
 		});
+		this.$scrollButton.css({
+			'transform': 'translate3d(0, ' + (- this._scrollTop.current) + 'px, 0)',
+			'opacity': '1'
+		});
 
 		raf(::this._updatePosition);
 
@@ -62,6 +83,42 @@ class HeroPicture extends Component {
 		this._scrollTop.destination = scrollTop.current;
 
 		this._updatePosition();
+
+	}
+
+	_onBackgroundPictureLoaded() {
+
+		this._isBackgroundPictureLoaded = true;
+		this._resizeBackgroundPicture();
+
+	}
+
+	_onScrollButtonClick() {
+
+		Viewport.scrollTo(this.$container.height());
+
+	}
+
+	_onResize() {
+
+		if (this._isBackgroundPictureLoaded) {
+			this._resizeBackgroundPicture();
+		}
+
+	}
+
+	// --------------------------------------------------------------o Resize
+
+	_resizeBackgroundPicture() {
+
+		let dims = ImageUtils.getCoverSizeImage(
+			this.$backgroundPicture.width(),
+			this.$backgroundPicture.height(),
+			this.$container.width(),
+			this.$container.height()
+		);
+
+		this.$backgroundPicture.css(dims);
 
 	}
 

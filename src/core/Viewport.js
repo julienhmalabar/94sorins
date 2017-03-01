@@ -2,6 +2,7 @@ import EventEmitter from 'eventemitter2';
 import $ from 'jquery';
 
 import {Event, KeyboardEvent, Tab} from 'core/Events';
+import Tween from 'core/Tween';
 
 class Viewport extends EventEmitter {
 
@@ -192,6 +193,21 @@ class Viewport extends EventEmitter {
 		}
 
 		let time = Math.abs(scroll.val - val) / 750;
+
+		let scrollTop = {value: this.scrollTop.current};
+
+		Tween.to(scrollTop, {
+			value: val,
+			duration: 1000,
+			ease: 'quintOut',
+			onProgress: (data) => {
+				console.log(data.value);
+				this.$window.scrollTop(data.value);
+			},
+			onComplete: (data) => {
+				this.$window.scrollTop(data.value);
+			}
+		});
 
 		/*TweenLite.to(scroll, time, {val: val, ease: Power4.easeOut, onUpdate: () => {
 			this.$document.scrollTop(scroll.val);

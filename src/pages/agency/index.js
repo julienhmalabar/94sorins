@@ -1,6 +1,6 @@
-import Page from 'core/Page';
+import MalabarPage from 'lib/MalabarPage';
 
-class Agency extends Page {
+class Agency extends MalabarPage {
 
 	// --------------------------------------------------------------o Private
 

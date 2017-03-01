@@ -8,11 +8,18 @@
 				<div class="description">{{ slide.description|raw }}</div>
 				{% endif %}
 				{% if slide.link %}
-				<a href="{{ slide.link }}">Découvrir</a>
+				<a href="{{ slide.link }}">
+					Découvrir
+					{% include 'components/arrow.html.twig' with {type: 'long'} %}
+				</a>
 				{% endif %}
 			</div>
-			<img src="{{ slide.picture }}" />
+			<img src="{% if slide.picture %}{{ slide.picture }}{% else %}{{ ASSETS ~ 'temp/pic.jpg' }}{% endif %}" />
 		</li>
 		{% endfor %}
 	</ul>
+	<nav class="slider-nav">
+		<div class="slider-nav-item slider-prev">{% include 'components/arrow.html.twig' with {direction: 'left'} %}</div>
+		<div class="slider-nav-item slider-next">{% include 'components/arrow.html.twig' %}</div>
+	</nav>
 </div>
