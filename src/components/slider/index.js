@@ -92,9 +92,10 @@ class Slider extends Component {
 
 		let currentSlide = this.$slides.eq(this.currIndex)
 
-		currentSlide.addClass(this.states[1] + ' no-transition').removeClass(this.states[0])
+		currentSlide.addClass(this.states[1] + ' no-transition-all').removeClass(this.states[0])
 		currentSlide[0].offsetHeight
-		currentSlide.removeClass(this.states[1] + ' no-transition')
+
+		currentSlide.removeClass(this.states[1] + ' no-transition-all')
 			
 		this.emit(Slider.CHANGE +'.*', noStateChange)
 

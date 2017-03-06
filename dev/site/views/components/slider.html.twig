@@ -3,18 +3,22 @@
 		{% for slide in slides %}
 		<li>
 			<div class="slide-content">
-				<p class="title">{{ slide.title }}</p>
+				<p class="title"><span class="inner">{{ slide.title }}</span></p>
 				{% if slide.description %}
-				<div class="description">{{ slide.description|raw }}</div>
+				<div class="description"><div class="inner">{{ slide.description|raw }}</div></div>
 				{% endif %}
 				{% if slide.link %}
 				<a href="{{ slide.link }}">
-					Découvrir
-					{% include 'components/arrow.html.twig' with {type: 'long'} %}
+					<span class="inner">
+						Découvrir
+						{% include 'components/arrow.html.twig' with {type: 'long'} %}
+					</span>
 				</a>
 				{% endif %}
 			</div>
-			<img src="{% if slide.picture %}{{ slide.picture }}{% else %}{{ ASSETS ~ 'temp/pic.jpg' }}{% endif %}" />
+			<div class="picture-container">
+				<img src="{% if slide.picture %}{{ slide.picture }}{% else %}{{ ASSETS ~ 'temp/pic.jpg' }}{% endif %}" />
+			</div>
 		</li>
 		{% endfor %}
 	</ul>
