@@ -1,4 +1,31 @@
 .page-homepage {
+	background: red;
 
+	.block-about {
+		max-width: 800px;
+		margin: 0 auto;
+		text-align: center;
+		color: $grey-dark;
+
+		.text {
+			font: 300 36px/42px $font-family;
+		}
+
+		.sub-text {
+			font: 300 18px/24px $font-family;
+			color: $grey-light;
+
+			&:before {
+				display: inline-block;
+				content: '';
+				height: 1px;
+				width: 100px;
+				margin-right: 20px;
+				background: $grey-light;
+				position: relative;
+				top: -5px;
+			}
+		}
+	}
 }
 	

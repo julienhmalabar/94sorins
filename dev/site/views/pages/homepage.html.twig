@@ -9,10 +9,30 @@
 	} %}
 
 	<div class="page-content">
+	
+		<div class="block block-about">
+			<header>
+				<p class="block-title">{{ data.description_title }}</p>
+			</header>
+			<div class="text">{{ data.description_text }}</div>
+			<p class="sub-text">{{ data.description_sub_text }}</p>
+		</div>
 
-	{% include 'components/slider.html.twig' with {
-		slides: data.case_studies
-	} %}
+		<div class="block block-slider">
+			<header>
+				<p class="block-title">Nos dernières études de cas</p>
+			</header>
+			{% include 'components/slider.html.twig' with {
+				slides: data.case_studies
+			} %}
+		</div>
+
+		<div class="block block-social">
+			<header>
+				<p class="block-title">Perspectives</p>
+				<a href="">Voir tout</a>
+			</header>
+		</div>
 
 	</div>
 
