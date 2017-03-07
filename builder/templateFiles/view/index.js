@@ -1,4 +1,4 @@
-/*STARTimport MalabarPage from 'core/Page';
+/*STARTimport MalabarPage from 'lib/MalabarPage';
 
 class {{ camelSlug }} extends MalabarPage {
 
