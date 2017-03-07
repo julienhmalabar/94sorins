@@ -65,7 +65,10 @@ gulp.task('default', () => {
 
 	// Launch browser sync
 	browserSync.init(['*.css'], {
-		proxy: config.browserSync.proxy
+		open: 'external',
+		host: config.browserSync.proxy,
+		proxy: config.browserSync.proxy,
+		port: 3000,
 	});
 
 	// Launch all tasks
