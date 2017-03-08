@@ -5,6 +5,9 @@ import $ from 'jquery';
 // Import components
 import HeroPicture from 'components/HeroPicture';
 import Slider from 'components/Slider';
+import GridGallery from 'components/GridGallery';
+import Gallery from 'components/Gallery';
+import Popin from 'components/Popin';
 
 
 class MalabarPage extends Page {
@@ -17,6 +20,9 @@ class MalabarPage extends Page {
 
 		this._initHeroPictures();
 		this._initSliders();
+		this._initGridGalleries();
+		this._initGalleries();
+		this._initPopins();
 		this._loadPictures();
 
 	}
@@ -50,6 +56,39 @@ class MalabarPage extends Page {
 			this.sliders = [];
 			sliders.each( (key) => {
 				this.sliders.push(new Slider(sliders.eq(key)));
+			})
+		}
+	}
+
+	_initGridGalleries() {
+
+		let gridGalleries = this.$container.find('.grid-gallery');
+		if (gridGalleries.length) {
+			this.gridGalleries = [];
+			gridGalleries.each( (key) => {
+				this.gridGalleries.push(new GridGallery(gridGalleries.eq(key)));
+			})
+		}
+	}
+
+	_initGalleries() {
+
+		let galleries = this.$container.find('.gallery');
+		if (galleries.length) {
+			this.galleries = [];
+			galleries.each( (key) => {
+				this.galleries.push(new Gallery(galleries.eq(key)));
+			})
+		}
+	}
+
+	_initPopins() {
+
+		let popins = this.$container.find('.popin');
+		if (popins.length) {
+			this.popins = [];
+			popins.each( (key) => {
+				this.popins.push(new Popin(popins.eq(key)));
 			})
 		}
 	}

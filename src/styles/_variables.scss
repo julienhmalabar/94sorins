@@ -34,6 +34,8 @@ $main-header-z-index		: 100;
 $page-container-z-index		: 50;
 
 $hero-picture-z-index		: 50;
+$footer-z-index				: ($hero-picture-z-index - 1);
+$page-content-z-index		: ($hero-picture-z-index + 1);
 
 
 // -------------------------o Breakpoints

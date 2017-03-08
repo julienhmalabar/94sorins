@@ -2,9 +2,16 @@
 
 {% block content %}
 
-	<header>
-		<h1>{{ data.header_subhead }}</h1>
-		<h2>{{ data.header_title }}</h2>
-	</header>
+	{% include 'components/hero-picture.html.twig' with {
+		subhead: "Le temps d'y voir plus clair",
+		title: 'Perspectives',
+		picture: ASSETS ~ 'img/perspectives-hero-picture.jpg'
+	} %}
+
+	<div class="page-content">
+		<div class="center">
+			Content
+		</div>
+	</div>
 
 {% endblock %}

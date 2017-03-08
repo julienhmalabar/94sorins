@@ -1,0 +1,15 @@
+<div class="slider gallery">
+	<ul class="">
+		{% for picture in pictures %}
+		<li>
+			<div class="picture-container">
+				<img data-src="{{ picture.picture.url }}" />
+			</div>
+		</li>
+		{% endfor %}
+	</ul>
+	<nav class="slider-nav">
+		<div class="slider-nav-item slider-prev">{% include 'components/arrow.html.twig' with {direction: 'left'} %}</div>
+		<div class="slider-nav-item slider-next">{% include 'components/arrow.html.twig' %}</div>
+	</nav>
+</div>

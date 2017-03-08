@@ -77,7 +77,9 @@ a {
 
 .page-content {
 	position: relative;
-	z-index: ($hero-picture-z-index + 1);
+	z-index: $page-content-z-index;
 	background: #F0F0F0;
+	min-height: 100vh;
+	padding-bottom: 150px;
 }
 
