@@ -1,0 +1,43 @@
+{% extends ajax ? "default/empty.html.twig" : "default/layout.html.twig" %}
+
+{% block content %}
+
+	{% include 'components/hero-picture.html.twig' with {
+		subhead: 'Toute ouïe',
+		title: 'Contact',
+		picture: ASSETS ~ 'img/contact-hero-picture.jpg'
+	} %}
+
+	<div class="page-content">
+		<div class="center">
+			<header>
+				<p>Un brief à nous soumettre ?</p>
+				<p>Envie de nous rejoindre ?</p>
+			</header>
+
+			<div class="contact-links-container">
+				<img src="{{ ASSETS ~ 'img/contact-display-picture.jpg' }}">
+				<div class="contact-links">
+					<div class="specific-contact">
+						<p>
+							<strong>New business</strong>
+							<a href="mailto:project@malabardesign.fr">project@malabardesign.fr</a>
+						</p>
+						<p>
+							<strong>New job</strong>
+							<a href="mailto:recrutement@malabardesign.fr">recrutement@malabardesign.fr</a>
+						</p>
+					</div>
+					<p class="general-contact">
+						<strong>Nous contacter</strong>
+						<a href="">94 rue des Sorins<br/>93100 Montreuil</a>
+						<a href="tel:">+33(0)1-48-51-00-56</a>
+						<a href="mailto:contact@malabardesign.fr">contact@malabardesign.fr</a>
+						<a href="">Google Maps</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

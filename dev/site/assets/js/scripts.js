@@ -62,6 +62,9 @@ var HeroPicture = function (_Component) {
 
 			this._ease = 0.7;
 
+			this._containerHeight = 0;
+			this._isHidden = false;
+
 			this.$backgroundPicture = this.$container.find('img');
 			this.$content = this.$container.find('figcaption');
 			this.$scrollButton = this.$container.find('.scroll-button');
@@ -96,6 +99,19 @@ var HeroPicture = function (_Component) {
 
 			if (Math.abs(this._scrollTop.destination - this._scrollTop.current) < 0.1) {
 				this._scrollTop.current = this._scrollTop.destination;
+			}
+
+			if (this._scrollTop.current > this._containerHeight) {
+				if (this._isHidden === false) {
+					this._isHidden = true;
+					this.$container.addClass('hidden');
+				}
+				return;
+			} else {
+				if (this._isHidden === true) {
+					this._isHidden = false;
+					this.$container.removeClass('hidden');
+				}
 			}
 
 			this.$backgroundPicture.css({ 'transform': 'translate3d(0, ' + -this._scrollTop.current * 0.3 + 'px, 0)' });
@@ -137,6 +153,8 @@ var HeroPicture = function (_Component) {
 	}, {
 		key: '_onResize',
 		value: function _onResize() {
+
+			this._containerHeight = this.$container.height();
 
 			if (this._isBackgroundPictureLoaded) {
 				this._resizeBackgroundPicture();
@@ -2116,7 +2134,7 @@ var ViewsManager = function (_EventEmitter) {
 exports.default = new ViewsManager();
 
 },{"./../data/data.json":15,"./Page":9,"./Router":10,"./TextUtils":11,"./Viewport":13,"eventemitter2":"eventemitter2","jquery":"jquery"}],15:[function(require,module,exports){
-module.exports={"_routes":{"/":{"class":"Homepage","slug":"homepage"},"/agence":{"class":"Agency","slug":"agency"},"/etudes-de-cas/*":{"class":"CaseStudy","slug":"case-study"}}}
+module.exports={"_routes":{"/":{"class":"Homepage","slug":"homepage"},"/agence":{"class":"Agency","slug":"agency"},"/talents":{"class":"Talents","slug":"talents"},"/perspectives":{"class":"Perspectives","slug":"perspectives"},"/contact":{"class":"Contact","slug":"contact"},"/etudes-de-cas/*":{"class":"CaseStudy","slug":"case-study"},"/articles/*":{"class":"Article","slug":"article"},"/jobs/*":{"class":"Job","slug":"job"}}}
 },{}],16:[function(require,module,exports){
 'use strict';
 
@@ -2154,7 +2172,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 
 // ---o Init keyboard events
-var requiredPages = {'agency/index': require('./pages/agency/index.js'),'case-study/index': require('./pages/case-study/index.js'),'homepage/index': require('./pages/homepage/index.js')};
+var requiredPages = {'agency/index': require('./pages/agency/index.js'),'article/index': require('./pages/article/index.js'),'case-study/index': require('./pages/case-study/index.js'),'contact/index': require('./pages/contact/index.js'),'homepage/index': require('./pages/homepage/index.js'),'job/index': require('./pages/job/index.js'),'perspectives/index': require('./pages/perspectives/index.js'),'talents/index': require('./pages/talents/index.js')};
 
 // ---o Import main elements 
 
@@ -2183,7 +2201,7 @@ for (var key in requiredPages) {
 _ViewsManager2.default.init(pages);
 _Router2.default.init();
 
-},{"./components/MainHeader":2,"./core/Keyboard":8,"./core/Router":10,"./core/Viewport":13,"./core/ViewsManager":14,"./data/data.json":15,"./pages/agency/index.js":18,"./pages/case-study/index.js":19,"./pages/homepage/index.js":20,"jquery":"jquery"}],17:[function(require,module,exports){
+},{"./components/MainHeader":2,"./core/Keyboard":8,"./core/Router":10,"./core/Viewport":13,"./core/ViewsManager":14,"./data/data.json":15,"./pages/agency/index.js":18,"./pages/article/index.js":19,"./pages/case-study/index.js":20,"./pages/contact/index.js":21,"./pages/homepage/index.js":22,"./pages/job/index.js":23,"./pages/perspectives/index.js":24,"./pages/talents/index.js":25,"jquery":"jquery"}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2242,7 +2260,6 @@ var MalabarPage = function (_Page) {
 
 			this._initHeroPictures();
 			this._initSliders();
-
 			this._loadPictures();
 		}
 	}, {
@@ -2334,6 +2351,39 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _MalabarPage2 = require('./../../lib/MalabarPage');
+
+var _MalabarPage3 = _interopRequireDefault(_MalabarPage2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Article = function (_MalabarPage) {
+	_inherits(Article, _MalabarPage);
+
+	function Article() {
+		_classCallCheck(this, Article);
+
+		return _possibleConstructorReturn(this, (Article.__proto__ || Object.getPrototypeOf(Article)).apply(this, arguments));
+	}
+
+	return Article;
+}(_MalabarPage3.default);
+
+exports.default = Article;
+
+},{"./../../lib/MalabarPage":17}],20:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
@@ -2390,7 +2440,40 @@ var CaseStudy = function (_MalabarPage) {
 
 exports.default = CaseStudy;
 
-},{"./../../lib/MalabarPage":17}],20:[function(require,module,exports){
+},{"./../../lib/MalabarPage":17}],21:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _MalabarPage2 = require('./../../lib/MalabarPage');
+
+var _MalabarPage3 = _interopRequireDefault(_MalabarPage2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Contact = function (_MalabarPage) {
+	_inherits(Contact, _MalabarPage);
+
+	function Contact() {
+		_classCallCheck(this, Contact);
+
+		return _possibleConstructorReturn(this, (Contact.__proto__ || Object.getPrototypeOf(Contact)).apply(this, arguments));
+	}
+
+	return Contact;
+}(_MalabarPage3.default);
+
+exports.default = Contact;
+
+},{"./../../lib/MalabarPage":17}],22:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2456,6 +2539,105 @@ var Homepage = function (_MalabarPage) {
 }(_MalabarPage3.default);
 
 exports.default = Homepage;
+
+},{"./../../lib/MalabarPage":17}],23:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _MalabarPage2 = require('./../../lib/MalabarPage');
+
+var _MalabarPage3 = _interopRequireDefault(_MalabarPage2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Job = function (_MalabarPage) {
+	_inherits(Job, _MalabarPage);
+
+	function Job() {
+		_classCallCheck(this, Job);
+
+		return _possibleConstructorReturn(this, (Job.__proto__ || Object.getPrototypeOf(Job)).apply(this, arguments));
+	}
+
+	return Job;
+}(_MalabarPage3.default);
+
+exports.default = Job;
+
+},{"./../../lib/MalabarPage":17}],24:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _MalabarPage2 = require('./../../lib/MalabarPage');
+
+var _MalabarPage3 = _interopRequireDefault(_MalabarPage2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Perspectives = function (_MalabarPage) {
+	_inherits(Perspectives, _MalabarPage);
+
+	function Perspectives() {
+		_classCallCheck(this, Perspectives);
+
+		return _possibleConstructorReturn(this, (Perspectives.__proto__ || Object.getPrototypeOf(Perspectives)).apply(this, arguments));
+	}
+
+	return Perspectives;
+}(_MalabarPage3.default);
+
+exports.default = Perspectives;
+
+},{"./../../lib/MalabarPage":17}],25:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _MalabarPage2 = require('./../../lib/MalabarPage');
+
+var _MalabarPage3 = _interopRequireDefault(_MalabarPage2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Talents = function (_MalabarPage) {
+	_inherits(Talents, _MalabarPage);
+
+	function Talents() {
+		_classCallCheck(this, Talents);
+
+		return _possibleConstructorReturn(this, (Talents.__proto__ || Object.getPrototypeOf(Talents)).apply(this, arguments));
+	}
+
+	return Talents;
+}(_MalabarPage3.default);
+
+exports.default = Talents;
 
 },{"./../../lib/MalabarPage":17}]},{},[16])
 

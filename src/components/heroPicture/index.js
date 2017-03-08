@@ -22,6 +22,9 @@ class HeroPicture extends Component {
 
 		this._ease = 0.7;
 
+		this._containerHeight = 0;
+		this._isHidden = false;
+
 		this.$backgroundPicture = this.$container.find('img');
 		this.$content = this.$container.find('figcaption');
 		this.$scrollButton = this.$container.find('.scroll-button');
@@ -62,6 +65,20 @@ class HeroPicture extends Component {
 			this._scrollTop.current = this._scrollTop.destination;
 		}
 
+		if (this._scrollTop.current > this._containerHeight) {
+			if (this._isHidden === false) {
+				this._isHidden = true;
+				this.$container.addClass('hidden');
+			}
+			return;
+		}
+		else {
+			if (this._isHidden === true) {
+				this._isHidden = false;
+				this.$container.removeClass('hidden');
+			}
+		}
+
 		this.$backgroundPicture.css({'transform': 'translate3d(0, ' + (- this._scrollTop.current * 0.3) + 'px, 0)'});
 		this.$content.css({
 			'transform': 'translate3d(0, ' + (- this._scrollTop.current * 0.5) + 'px, 0)',
@@ -100,6 +117,8 @@ class HeroPicture extends Component {
 	}
 
 	_onResize() {
+
+		this._containerHeight = this.$container.height();
 
 		if (this._isBackgroundPictureLoaded) {
 			this._resizeBackgroundPicture();

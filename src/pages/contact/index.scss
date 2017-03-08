@@ -1,0 +1,54 @@
+.page-contact {
+	
+	header {
+		text-align: center;
+		font: 300 36px/48px $font-family;
+	}
+
+	.contact-links-container {
+		position: relative;
+
+		img {
+			display: block;
+		}
+	}
+
+	.contact-links {
+		position: absolute;
+		right: 0;
+		top: 100px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font: 400 14px/36px $font-family;
+		letter-spacing: 0.025em;	
+	}
+
+	.specific-contact,
+	.general-contact {
+		padding: 75px;
+
+		strong {
+			font: 600 14px/36px $font-family;
+			text-transform: uppercase;
+			letter-spacing: 0.2em;
+			display: block;
+		}
+	}
+
+	.specific-contact {
+		background: $grey-dark;
+		color: $white-color;
+
+		p:not(:last-child) {
+			margin-bottom: 36px;
+		}
+	}
+
+	.general-contact {
+		a {
+			display: block;
+		}
+	}
+
+}

@@ -69,6 +69,10 @@ $hero-picture-height : 90vh;
 			left: 50%;
 		}
 	}
+
+	&.hidden {
+		display: none;
+	}
 }
 
 .hero-picture-placeholder {

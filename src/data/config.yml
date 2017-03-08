@@ -6,7 +6,22 @@ _routes:
     '/agence':
         class: Agency
         slug: agency
+    '/talents':
+        class: Talents
+        slug: talents
+    '/perspectives':
+        class: Perspectives
+        slug: perspectives
+    '/contact':
+        class: Contact
+        slug: contact
     '/etudes-de-cas/*':
         class: CaseStudy
         slug: case-study
+    '/articles/*':
+        class: Article
+        slug: article
+    '/jobs/*':
+        class: Job
+        slug: job
 

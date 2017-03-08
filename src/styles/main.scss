@@ -13,6 +13,7 @@ body {
 	background : $background-color;
 	font: 400 16px/24px $font-family;
 	color: $text-color;
+	padding-bottom: $footer-height;
 }
 
 .ajaxContainer {
@@ -77,7 +78,6 @@ a {
 .page-content {
 	position: relative;
 	z-index: ($hero-picture-z-index + 1);
-	height: 1000px;
 	background: #F0F0F0;
 }
 

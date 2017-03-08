@@ -17,7 +17,6 @@ class MalabarPage extends Page {
 
 		this._initHeroPictures();
 		this._initSliders();
-
 		this._loadPictures();
 
 	}
