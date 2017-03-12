@@ -2,10 +2,11 @@
 
 {% block content %}
 
-	<header>
-		<h1>{{ data.header_subhead }}</h1>
-		<h2>{{ data.header_title }}</h2>
-	</header>
+	{% include 'components/hero-picture.html.twig' with {
+		subhead: data.header_subhead,
+		title: data.header_title,
+		picture: data.header_background.url
+	} %}
 
 	<div class="page-content">
 	
