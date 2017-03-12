@@ -8,6 +8,7 @@ import Slider from 'components/Slider';
 import GridGallery from 'components/GridGallery';
 import Gallery from 'components/Gallery';
 import Popin from 'components/Popin';
+import Accordion from 'components/Accordion';
 
 
 class MalabarPage extends Page {
@@ -23,6 +24,7 @@ class MalabarPage extends Page {
 		this._initGridGalleries();
 		this._initGalleries();
 		this._initPopins();
+		this._initAccordions();
 		this._loadPictures();
 
 	}
@@ -89,6 +91,17 @@ class MalabarPage extends Page {
 			this.popins = [];
 			popins.each( (key) => {
 				this.popins.push(new Popin(popins.eq(key)));
+			})
+		}
+	}
+
+	_initAccordions() {
+
+		let accordions = this.$container.find('.accordion');
+		if (accordions.length) {
+			this.accordions = [];
+			accordions.each( (key) => {
+				this.accordions.push(new Accordion(accordions.eq(key)));
 			})
 		}
 	}

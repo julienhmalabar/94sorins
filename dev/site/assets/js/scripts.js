@@ -5,6 +5,100 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _Component2 = require('./../../core/Component');
+
+var _Component3 = _interopRequireDefault(_Component2);
+
+var _jquery = require('jquery');
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _Events = require('./../../core/Events');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Accordion = function (_Component) {
+	_inherits(Accordion, _Component);
+
+	function Accordion() {
+		_classCallCheck(this, Accordion);
+
+		return _possibleConstructorReturn(this, (Accordion.__proto__ || Object.getPrototypeOf(Accordion)).apply(this, arguments));
+	}
+
+	_createClass(Accordion, [{
+		key: '_initContent',
+
+
+		// --------------------------------------------------------------o Private
+
+		value: function _initContent() {
+
+			_get(Accordion.prototype.__proto__ || Object.getPrototypeOf(Accordion.prototype), '_initContent', this).call(this);
+
+			this.$items = this.$container.find('.item');
+		}
+	}, {
+		key: '_initEvents',
+		value: function _initEvents() {
+
+			_get(Accordion.prototype.__proto__ || Object.getPrototypeOf(Accordion.prototype), '_initEvents', this).call(this);
+
+			this.$items.find('.title').on(_Events.MouseEvent.CLICK, this._onItemClick.bind(this));
+		}
+
+		// --------------------------------------------------------------o Listeners
+
+	}, {
+		key: '_onItemClick',
+		value: function _onItemClick(e) {
+
+			var $item = (0, _jquery2.default)(e.currentTarget);
+			var $parent = $item.parent();
+			var isOpened = $parent.hasClass('active');
+
+			var $currentItem = this.$items.filter('.active');
+			var $currentTextContainer = $currentItem.find('.text-container');
+
+			$currentItem.removeClass('active');
+			$currentTextContainer.css('height', 0);
+
+			if (isOpened) {
+				return;
+			}
+
+			var $textContainer = $parent.find('.text-container');
+			var $text = $parent.find('.text');
+			$item.parent().addClass('active');
+			$textContainer.css('height', $text.outerHeight());
+		}
+
+		// --------------------------------------------------------------o Public
+
+	}]);
+
+	return Accordion;
+}(_Component3.default);
+
+exports.default = Accordion;
+
+},{"./../../core/Component":8,"./../../core/Events":10,"jquery":"jquery"}],2:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
 var _Component2 = require('./../../core/Component');
 
 var _Component3 = _interopRequireDefault(_Component2);
@@ -31,7 +125,7 @@ var Gallery = function (_Component) {
 
 exports.default = Gallery;
 
-},{"./../../core/Component":7}],2:[function(require,module,exports){
+},{"./../../core/Component":8}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -64,7 +158,7 @@ var GridGallery = function (_Component) {
 
 exports.default = GridGallery;
 
-},{"./../../core/Component":7}],3:[function(require,module,exports){
+},{"./../../core/Component":8}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -247,7 +341,7 @@ var HeroPicture = function (_Component) {
 
 exports.default = HeroPicture;
 
-},{"./../../core/Component":7,"./../../core/Events":9,"./../../core/ImageUtils":10,"./../../core/Viewport":16,"raf":"raf"}],4:[function(require,module,exports){
+},{"./../../core/Component":8,"./../../core/Events":10,"./../../core/ImageUtils":11,"./../../core/Viewport":17,"raf":"raf"}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -364,7 +458,7 @@ MainHeader._Class = {
 };
 exports.default = new MainHeader();
 
-},{"./../../core/Component":7,"./../../core/Events":9,"./../../core/Viewport":16,"jquery":"jquery"}],5:[function(require,module,exports){
+},{"./../../core/Component":8,"./../../core/Events":10,"./../../core/Viewport":17,"jquery":"jquery"}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -442,7 +536,9 @@ var Popin = function (_Component) {
 
 			this._isOpened = true;
 
-			this.$container.addClass('opened');
+			this.$container.addClass('pre-opened');
+			this.$container[0].offsetHeight;
+			this.$container.addClass('opened').removeClass('pre-opened');
 		}
 	}, {
 		key: '_onCloseButtonClick',
@@ -466,7 +562,7 @@ var Popin = function (_Component) {
 
 exports.default = Popin;
 
-},{"./../../core/Component":7,"./../../core/Events":9,"jquery":"jquery"}],6:[function(require,module,exports){
+},{"./../../core/Component":8,"./../../core/Events":10,"jquery":"jquery"}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -521,6 +617,11 @@ var Slider = function (_Component) {
 				this.$navItems = this.$nav.find('.slider-nav-item');
 			}
 
+			if (this.$container.attr('data-timer')) {
+				this._sliderDuration = this.$container.attr('data-timer');
+				this._launchTimer();
+			}
+
 			this.prevIndex = undefined;
 			this.currIndex = undefined;
 			this.slidesLength = this.$slides.length;
@@ -538,6 +639,18 @@ var Slider = function (_Component) {
 			if (this.$nav) {
 				this.$navItems.on(_Events.MouseEvent.CLICK, this._onNavItemClick.bind(this));
 			}
+		}
+	}, {
+		key: '_launchTimer',
+		value: function _launchTimer() {
+			var _this2 = this;
+
+			if (this._timer) {
+				clearTimeout(this._timer);
+			}
+			this._timer = setTimeout(function () {
+				_this2._nextSlide();
+			}, this._sliderDuration);
 		}
 	}, {
 		key: '_prevSlide',
@@ -596,6 +709,10 @@ var Slider = function (_Component) {
 			currentSlide[0].offsetHeight;
 
 			currentSlide.removeClass(this.states[1] + ' no-transition-all');
+
+			if (this._timer) {
+				this._launchTimer();
+			}
 
 			this.emit(Slider.CHANGE + '.*', noStateChange);
 		}
@@ -662,7 +779,7 @@ var Slider = function (_Component) {
 Slider.CHANGE = 'slider:change';
 exports.default = Slider;
 
-},{"./../../core/Component":7,"./../../core/Events":9,"jquery":"jquery"}],7:[function(require,module,exports){
+},{"./../../core/Component":8,"./../../core/Events":10,"jquery":"jquery"}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -742,7 +859,7 @@ var Component = function (_EventEmitter) {
 
 exports.default = Component;
 
-},{"./Events":9,"./Viewport":16,"eventemitter2":"eventemitter2","jquery":"jquery"}],8:[function(require,module,exports){
+},{"./Events":10,"./Viewport":17,"eventemitter2":"eventemitter2","jquery":"jquery"}],9:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1045,7 +1162,7 @@ var Ease = function () {
 
 exports.default = new Ease();
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1114,7 +1231,7 @@ var Tab = exports.Tab = {
 
 };
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1164,7 +1281,7 @@ var ImageUtils = function () {
 
 exports.default = new ImageUtils();
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1282,7 +1399,7 @@ var Keyboard = function (_EventEmitter) {
 
 exports.default = new Keyboard();
 
-},{"./Events":9,"./Viewport":16,"eventemitter2":"eventemitter2"}],12:[function(require,module,exports){
+},{"./Events":10,"./Viewport":17,"eventemitter2":"eventemitter2"}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1504,7 +1621,7 @@ var Page = function (_EventEmitter) {
 
 exports.default = Page;
 
-},{"./../components/HeroPicture":3,"./Events":9,"./TextUtils":14,"./Viewport":16,"./ViewsManager":17,"eventemitter2":"eventemitter2","jquery":"jquery"}],13:[function(require,module,exports){
+},{"./../components/HeroPicture":4,"./Events":10,"./TextUtils":15,"./Viewport":17,"./ViewsManager":18,"eventemitter2":"eventemitter2","jquery":"jquery"}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1649,7 +1766,7 @@ var Router = function (_EventEmitter) {
 
 exports.default = new Router();
 
-},{"./../data/data.json":18,"eventemitter2":"eventemitter2","jquery":"jquery","page":"page","superagent":"superagent"}],14:[function(require,module,exports){
+},{"./../data/data.json":19,"eventemitter2":"eventemitter2","jquery":"jquery","page":"page","superagent":"superagent"}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1718,7 +1835,7 @@ var TextUtils = function () {
 
 exports.default = new TextUtils();
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1886,7 +2003,7 @@ var Tween = function (_EventEmitter) {
 
 exports.default = new Tween();
 
-},{"./Ease":8,"eventemitter2":"eventemitter2","raf":"raf"}],16:[function(require,module,exports){
+},{"./Ease":9,"eventemitter2":"eventemitter2","raf":"raf"}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2132,7 +2249,7 @@ var Viewport = function (_EventEmitter) {
 
 exports.default = new Viewport();
 
-},{"./Events":9,"./Tween":15,"eventemitter2":"eventemitter2","jquery":"jquery"}],17:[function(require,module,exports){
+},{"./Events":10,"./Tween":16,"eventemitter2":"eventemitter2","jquery":"jquery"}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2301,9 +2418,9 @@ var ViewsManager = function (_EventEmitter) {
 
 exports.default = new ViewsManager();
 
-},{"./../data/data.json":18,"./Page":12,"./Router":13,"./TextUtils":14,"./Viewport":16,"eventemitter2":"eventemitter2","jquery":"jquery"}],18:[function(require,module,exports){
+},{"./../data/data.json":19,"./Page":13,"./Router":14,"./TextUtils":15,"./Viewport":17,"eventemitter2":"eventemitter2","jquery":"jquery"}],19:[function(require,module,exports){
 module.exports={"_routes":{"/":{"class":"Homepage","slug":"homepage"},"/agence":{"class":"Agency","slug":"agency"},"/talents":{"class":"Talents","slug":"talents"},"/perspectives":{"class":"Perspectives","slug":"perspectives"},"/contact":{"class":"Contact","slug":"contact"},"/etudes-de-cas/*":{"class":"CaseStudy","slug":"case-study"},"/articles/*":{"class":"Article","slug":"article"},"/jobs/*":{"class":"Job","slug":"job"}}}
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 'use strict';
 
 var _jquery = require('jquery');
@@ -2369,7 +2486,7 @@ for (var key in requiredPages) {
 _ViewsManager2.default.init(pages);
 _Router2.default.init();
 
-},{"./components/MainHeader":4,"./core/Keyboard":11,"./core/Router":13,"./core/Viewport":16,"./core/ViewsManager":17,"./data/data.json":18,"./pages/agency/index.js":21,"./pages/article/index.js":22,"./pages/case-study/index.js":23,"./pages/contact/index.js":24,"./pages/homepage/index.js":25,"./pages/job/index.js":26,"./pages/perspectives/index.js":27,"./pages/talents/index.js":28,"jquery":"jquery"}],20:[function(require,module,exports){
+},{"./components/MainHeader":5,"./core/Keyboard":12,"./core/Router":14,"./core/Viewport":17,"./core/ViewsManager":18,"./data/data.json":19,"./pages/agency/index.js":22,"./pages/article/index.js":23,"./pages/case-study/index.js":24,"./pages/contact/index.js":25,"./pages/homepage/index.js":26,"./pages/job/index.js":27,"./pages/perspectives/index.js":28,"./pages/talents/index.js":29,"jquery":"jquery"}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2408,6 +2525,10 @@ var _Popin = require('./../components/Popin');
 
 var _Popin2 = _interopRequireDefault(_Popin);
 
+var _Accordion = require('./../components/Accordion');
+
+var _Accordion2 = _interopRequireDefault(_Accordion);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2443,6 +2564,7 @@ var MalabarPage = function (_Page) {
 			this._initGridGalleries();
 			this._initGalleries();
 			this._initPopins();
+			this._initAccordions();
 			this._loadPictures();
 		}
 	}, {
@@ -2522,6 +2644,19 @@ var MalabarPage = function (_Page) {
 				});
 			}
 		}
+	}, {
+		key: '_initAccordions',
+		value: function _initAccordions() {
+			var _this7 = this;
+
+			var accordions = this.$container.find('.accordion');
+			if (accordions.length) {
+				this.accordions = [];
+				accordions.each(function (key) {
+					_this7.accordions.push(new _Accordion2.default(accordions.eq(key)));
+				});
+			}
+		}
 
 		// --------------------------------------------------------------o Listeners
 
@@ -2533,16 +2668,26 @@ var MalabarPage = function (_Page) {
 
 exports.default = MalabarPage;
 
-},{"./../components/Gallery":1,"./../components/GridGallery":2,"./../components/HeroPicture":3,"./../components/Popin":5,"./../components/Slider":6,"./../core/Page":12,"jquery":"jquery"}],21:[function(require,module,exports){
+},{"./../components/Accordion":1,"./../components/Gallery":2,"./../components/GridGallery":3,"./../components/HeroPicture":4,"./../components/Popin":6,"./../components/Slider":7,"./../core/Page":13,"jquery":"jquery"}],22:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
 var _MalabarPage2 = require('./../../lib/MalabarPage');
 
 var _MalabarPage3 = _interopRequireDefault(_MalabarPage2);
+
+var _Events = require('./../../core/Events');
+
+var _Slider = require('./../../components/Slider');
+
+var _Slider2 = _interopRequireDefault(_Slider);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2561,12 +2706,56 @@ var Agency = function (_MalabarPage) {
 		return _possibleConstructorReturn(this, (Agency.__proto__ || Object.getPrototypeOf(Agency)).apply(this, arguments));
 	}
 
+	_createClass(Agency, [{
+		key: '_initContent',
+
+
+		// --------------------------------------------------------------o Private
+		value: function _initContent() {
+
+			_get(Agency.prototype.__proto__ || Object.getPrototypeOf(Agency.prototype), '_initContent', this).call(this);
+
+			this.$breadcrumb = this.$container.find('.breadcrumb');
+			this.$breadcrumbItems = this.$breadcrumb.find('li');
+
+			// ---o Init breadcrumb
+			this.slider = this.sliders[0];
+			this.$breadcrumbItems.eq(this.slider.currentIndex).addClass('active');
+		}
+	}, {
+		key: '_initEvents',
+		value: function _initEvents() {
+
+			_get(Agency.prototype.__proto__ || Object.getPrototypeOf(Agency.prototype), '_initEvents', this).call(this);
+
+			this.$breadcrumbItems.on(_Events.MouseEvent.CLICK, this._onBreadcrumbItemClick.bind(this));
+
+			this.slider.on(_Slider2.default.CHANGE + '.agency', this._onSliderChange.bind(this));
+		}
+
+		// --------------------------------------------------------------o Listeners
+
+	}, {
+		key: '_onBreadcrumbItemClick',
+		value: function _onBreadcrumbItemClick() {}
+	}, {
+		key: '_onSliderChange',
+		value: function _onSliderChange() {
+
+			this.$breadcrumbItems.filter('.active').removeClass('active');
+			this.$breadcrumbItems.eq(this.slider.currentIndex).addClass('active');
+		}
+
+		// --------------------------------------------------------------o Public
+
+	}]);
+
 	return Agency;
 }(_MalabarPage3.default);
 
 exports.default = Agency;
 
-},{"./../../lib/MalabarPage":20}],22:[function(require,module,exports){
+},{"./../../components/Slider":7,"./../../core/Events":10,"./../../lib/MalabarPage":21}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2599,7 +2788,7 @@ var Article = function (_MalabarPage) {
 
 exports.default = Article;
 
-},{"./../../lib/MalabarPage":20}],23:[function(require,module,exports){
+},{"./../../lib/MalabarPage":21}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2662,7 +2851,7 @@ var CaseStudy = function (_MalabarPage) {
 
 exports.default = CaseStudy;
 
-},{"./../../lib/MalabarPage":20}],24:[function(require,module,exports){
+},{"./../../lib/MalabarPage":21}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2695,7 +2884,7 @@ var Contact = function (_MalabarPage) {
 
 exports.default = Contact;
 
-},{"./../../lib/MalabarPage":20}],25:[function(require,module,exports){
+},{"./../../lib/MalabarPage":21}],26:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2762,7 +2951,7 @@ var Homepage = function (_MalabarPage) {
 
 exports.default = Homepage;
 
-},{"./../../lib/MalabarPage":20}],26:[function(require,module,exports){
+},{"./../../lib/MalabarPage":21}],27:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2795,7 +2984,7 @@ var Job = function (_MalabarPage) {
 
 exports.default = Job;
 
-},{"./../../lib/MalabarPage":20}],27:[function(require,module,exports){
+},{"./../../lib/MalabarPage":21}],28:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2828,7 +3017,7 @@ var Perspectives = function (_MalabarPage) {
 
 exports.default = Perspectives;
 
-},{"./../../lib/MalabarPage":20}],28:[function(require,module,exports){
+},{"./../../lib/MalabarPage":21}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2861,6 +3050,6 @@ var Talents = function (_MalabarPage) {
 
 exports.default = Talents;
 
-},{"./../../lib/MalabarPage":20}]},{},[19])
+},{"./../../lib/MalabarPage":21}]},{},[20])
 
 //# sourceMappingURL=maps/scripts.js.map

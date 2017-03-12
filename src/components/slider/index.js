@@ -20,6 +20,11 @@ class Slider extends Component {
 			this.$navItems = this.$nav.find('.slider-nav-item');
 		}
 
+		if (this.$container.attr('data-timer')) {
+			this._sliderDuration = this.$container.attr('data-timer');
+			this._launchTimer();
+		}
+
 		this.prevIndex = undefined;
 		this.currIndex = undefined;
 		this.slidesLength = this.$slides.length;
@@ -41,6 +46,17 @@ class Slider extends Component {
 
 	}
 
+	_launchTimer() {
+
+		if (this._timer) {
+			clearTimeout(this._timer);
+		}
+		this._timer = setTimeout( () => {
+			this._nextSlide();
+		}, this._sliderDuration);
+
+	}
+
 	_prevSlide() {
 
 		let index = this.currIndex - 1;
@@ -51,7 +67,7 @@ class Slider extends Component {
 			noStateChange = true;
 		}
 
-		this._goToSlide(index, noStateChange)
+		this._goToSlide(index, noStateChange);
 
 	}
 
@@ -72,32 +88,36 @@ class Slider extends Component {
 	_goToSlide(index, noStateChange) {
 
 		if (index === this.currIndex) {
-			return
+			return;
 		}
 
-		this.states = ['prev', 'next']
+		this.states = ['prev', 'next'];
 
-		this.prevIndex = this.currIndex
-		this.currIndex = index
+		this.prevIndex = this.currIndex;
+		this.currIndex = index;
 
 		if (this.prevIndex > this.currIndex) {
-			this.states.reverse()
+			this.states.reverse();
 		}
 
 		if (noStateChange == true) {
-			this.states.reverse()
+			this.states.reverse();
 		}
 
-		this.$slides.eq(this.prevIndex).removeClass(this.states[1]).addClass(this.states[0])
+		this.$slides.eq(this.prevIndex).removeClass(this.states[1]).addClass(this.states[0]);
 
-		let currentSlide = this.$slides.eq(this.currIndex)
+		let currentSlide = this.$slides.eq(this.currIndex);
 
-		currentSlide.addClass(this.states[1] + ' no-transition-all').removeClass(this.states[0])
-		currentSlide[0].offsetHeight
+		currentSlide.addClass(this.states[1] + ' no-transition-all').removeClass(this.states[0]);
+		currentSlide[0].offsetHeight;
 
-		currentSlide.removeClass(this.states[1] + ' no-transition-all')
-			
-		this.emit(Slider.CHANGE +'.*', noStateChange)
+		currentSlide.removeClass(this.states[1] + ' no-transition-all');
+
+		if (this._timer) {
+			this._launchTimer();
+		}
+				
+		this.emit(Slider.CHANGE +'.*', noStateChange);
 
 
 	}

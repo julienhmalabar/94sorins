@@ -65,7 +65,7 @@ $slider-z-index: 1;
 	// ------o Animations
 
 	.title,
-	.description,
+	.text,
 	a {
 		display: block;
 		position: relative;
@@ -86,7 +86,7 @@ $slider-z-index: 1;
 
 		&.prev {
 			.title,
-			.description,
+			.text,
 			a {
 				transform: translate3d(0, 50%, 0);
 
@@ -106,7 +106,7 @@ $slider-z-index: 1;
 
 		&.next {
 			.title,
-			.description,
+			.text,
 			a {
 				transform: translate3d(0, -50%, 0);
 
@@ -139,7 +139,7 @@ $slider-z-index: 1;
 				}
 			}
 
-			.description {
+			.text {
 				transition-delay: 200ms;
 
 				.inner {

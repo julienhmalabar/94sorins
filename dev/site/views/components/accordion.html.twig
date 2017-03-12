@@ -1,0 +1,12 @@
+<div class="accordion">
+	<ul>
+		{% for item in items %}
+		<li class="item">
+			<p class="title">{{ item.title }}</p>
+			<div class="text-container">
+				<div class="text">{{ item.text|raw }}</div>
+			</div>
+		</li>
+		{% endfor %}
+	</ul>
+</div>

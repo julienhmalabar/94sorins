@@ -7,4 +7,46 @@
 		<h2>{{ data.header_title }}</h2>
 	</header>
 
+	<div class="page-content">
+	
+		<div class="block block-about">
+			<header>
+				<p class="block-title">{{ data.description_title }}</p>
+			</header>
+			<div class="text">{{ data.description_text }}</div>
+			<p class="sub-text">{{ data.description_sub_text }}</p>
+		</div>
+
+		<div class="block block-slider">
+			<header>
+				<p class="block-title">Nos dernières études de cas</p>
+			</header>
+			{% include 'components/slider.html.twig' with {
+				slides: data.carousel_slides,
+				timer: 4000
+			} %}
+			<ul class="breadcrumb center">
+				{% for slide in data.carousel_slides %}
+				{% set lastItem = not (loop.index < data.carousel_slides|length) %}
+				<li>
+					<p>{{ slide.title }}</p>
+					{% if not lastItem %}
+					<span class="progress-line"></span>
+					{% endif %}
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+
+		<div class="block block-accordion">
+			<header>
+				<p class="block-title">{{ data.accordion_title }}</p>
+			</header>
+			{% include 'components/accordion.html.twig' with {
+				items: data.accordion_blocs
+			} %}
+		</div>
+
+	</div>
+
 {% endblock %}

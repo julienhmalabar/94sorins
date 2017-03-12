@@ -1,11 +1,11 @@
-<div class="slider">
+<div class="slider" {% if timer %}data-timer="{{ timer }}"{% endif %}>
 	<ul>
 		{% for slide in slides %}
 		<li>
 			<div class="slide-content">
 				<p class="title"><span class="inner">{{ slide.title }}</span></p>
-				{% if slide.description %}
-				<div class="description"><div class="inner">{{ slide.description|raw }}</div></div>
+				{% if slide.text %}
+				<div class="text"><div class="inner">{{ slide.text|raw }}</div></div>
 				{% endif %}
 				{% if slide.link %}
 				<a href="{{ slide.link }}">
@@ -17,7 +17,7 @@
 				{% endif %}
 			</div>
 			<div class="picture-container">
-				<img src="{% if slide.picture %}{{ slide.picture }}{% else %}{{ ASSETS ~ 'temp/pic.jpg' }}{% endif %}" />
+				<img src="{% if slide.picture %}{{ slide.picture.url }}{% else %}{{ ASSETS ~ 'temp/pic.jpg' }}{% endif %}" />
 			</div>
 		</li>
 		{% endfor %}

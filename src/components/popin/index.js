@@ -42,7 +42,9 @@ class Popin extends Component {
 
 		this._isOpened = true;
 
-		this.$container.addClass('opened');
+		this.$container.addClass('pre-opened');
+		this.$container[0].offsetHeight;
+		this.$container.addClass('opened').removeClass('pre-opened');
 
 	}
 
