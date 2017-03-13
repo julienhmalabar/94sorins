@@ -18,6 +18,17 @@
 
 	.logo {
 		width: 20%;
+		text-align: center;
+
+		svg {
+			height: 48px;
+			width: 58px;
+			fill: $red-color;
+		}
+
+		p {
+			text-transform: uppercase;
+		}
 	}
 
 	.links {

@@ -8,35 +8,8 @@
 	z-index: 1000;
 
 	.close-button {
-		position: absolute;
 		top: 50px;
-		right: 50px;
-		width: 50px;
-		padding: 15px;
-		box-sizing: border-box;
-		cursor: pointer;
-		z-index: 100;
-		overflow: hidden;
-
-		span {
-			display: block;
-			height: 1px;
-			width: 20px;
-			background: $black-color;
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			margin-left: -10px;
-			will-change: transform;
-
-			&:nth-child(1) {
-				transform: rotate(45deg);
-			}
-
-			&:nth-child(2) {
-				transform: rotate(-45deg);
-			}
-		}
+		left: 50px;
 	}
 
 	// ---o Pre-displayed

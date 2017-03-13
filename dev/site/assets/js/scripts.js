@@ -436,7 +436,9 @@ var MainHeader = function (_Component) {
 				return;
 			}
 
-			this.$container.addClass(MainHeader._Class.MENU_OPENED);
+			this.$container.addClass(MainHeader._Class.MENU_PRE_OPENED);
+			this.$container[0].offsetHeight;
+			this.$container.addClass(MainHeader._Class.MENU_OPENED).removeClass(MainHeader._Class.MENU_PRE_OPENED);
 		}
 	}, {
 		key: 'closeMenu',
@@ -454,7 +456,8 @@ var MainHeader = function (_Component) {
 }(_Component3.default);
 
 MainHeader._Class = {
-	MENU_OPENED: 'menu-opened'
+	MENU_OPENED: 'opened',
+	MENU_PRE_OPENED: 'pre-opened'
 };
 exports.default = new MainHeader();
 

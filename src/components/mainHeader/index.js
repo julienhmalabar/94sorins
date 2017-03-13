@@ -7,7 +7,8 @@ import { MouseEvent, Event } from 'core/Events';
 class MainHeader extends Component {
 
 	static _Class = {
-		MENU_OPENED: 'menu-opened'
+		MENU_OPENED: 'opened',
+		MENU_PRE_OPENED: 'pre-opened'
 	}
 
 	// --------------------------------------------------------------o Private
@@ -59,7 +60,11 @@ class MainHeader extends Component {
 			return
 		}
 
-		this.$container.addClass(MainHeader._Class.MENU_OPENED);
+		this.$container.addClass(MainHeader._Class.MENU_PRE_OPENED);
+		this.$container[0].offsetHeight;
+		this.$container
+			.addClass(MainHeader._Class.MENU_OPENED)
+			.removeClass(MainHeader._Class.MENU_PRE_OPENED);
 
 	}
 
