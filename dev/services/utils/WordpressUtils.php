@@ -1,4 +1,6 @@
 <?php
+ 
+namespace Utils;
 
 class WordpressUtils {
 
@@ -8,79 +10,96 @@ class WordpressUtils {
 
     }
 
-    public function getData($postType, $postTitle) {
+    public function getPostByPostType($postType, $postSlug = '') {
 
-        $data = array();
-        $options = [
-            'post_type' => array($postType),
-            'posts_per_page' => '-1'
-        ];
+        $options = array(
+            'post_type' => $postType,
+            'posts_per_page' => 1
+        );
 
-        if (isset($postTitle)) {
-            $options['name'] = $postTitle;
+        if ($postSlug !== '') {
+            $options['name'] = $postSlug;
         }
 
-        query_posts( $options );
+        $item = get_posts($options);
+        $item = $item[0];
 
-        while (have_posts()){
-            the_post();
+        return $this->prepareForOutput($item);
 
-            $fields = get_fields($post->ID);
-            $postType = get_post_type($post->ID);
-            $fields['posttype'] = $postType;
-            $fields['permalink'] = get_the_permalink();
-            $fields['slug'] = $post->post_name;
-                
-            array_push($data, $fields);
+    }
+
+    public function getPostsByPostType($postType, $postsPerPage = 10, $orderBy = 'none') {
+
+        $options = array(
+            'post_type' => $postType,
+            'posts_per_page' => $postsPerPage,
+            'orderby' => $orderBy
+        );
+
+        $items = get_posts($options);
+
+        foreach ($items as $key=>$item) {
+            $items[$key] = $this->prepareForOutput($item);
         }
 
-        if (count($data) == 1){
-            $data = $data[0];
+        return $items;
+
+    }
+
+    private function prepareForOutput($input, $simple = false) {
+
+        $output = (object) array();
+
+        $output->id = $input->ID;
+        $output->title = $input->post_title;
+        $output->slug = $input->post_name;
+        $output->post_type = $input->post_type;
+        $output->permalink = get_permalink($input->ID);
+
+        if ($input->post_content) {
+            $output->content = $input->post_content;
         }
 
-        /*foreach ($data as $key=>$item) {
-            if (is_array($item)) {
-                foreach ($item as $subKey => $subItem) {
-                    $data[$key][$subKey] = $this->getDataByID($subItem['id']);
+        $fields = get_fields($input->ID);
+        if ($fields) {
+            foreach ($fields as $key=>$field) {
+
+                if ($key === 'text') {
+                    $field = preg_replace('#(<[a-z ]*)(style=("|\')(.*?)("|\'))([a-z ]*>)#', '\\1\\6', $field);
+                }
+
+                if ($key !== '' && $key !== NULL && $field !== NULL) {
+                    $output->{$key} = $field;
                 }
             }
-        }   */     
+        }
+    
+        $profilePicture = get_field('profile_picture', 'user_' . $input->post_author);
 
-        return $data;
+        if (!$profilePicture) {
+            $profilePicture = get_avatar_url($input->post_author);
+        }
+        else {
+             $profilePicture = $profilePicture['sizes']['thumbnail'];
+        }
+
+        $output->author = (object) array(
+            'name' => get_field('first_name', 'user_' . $input->post_author) . ' ' . get_field('last_name', 'user_' . $input->post_author),
+            'picture' => $profilePicture
+        );
+
+        $output->permalink = str_replace(ADMIN, ROOT_WEB . '/', $output->permalink);
+        $output->permalink = rtrim($output->permalink, "/");
+
+        return $output;
+
     }
 
-    public function getDataByID($id) {
+    public function getAuthorByPostId ($id) {
 
-        $data = array();
-        $options = [
-            'post_type' => array('case-study'),
-            'p' => $id
-        ];
 
-        if (isset($postTitle)) {
-            $options['name'] = $postTitle;
-        }
-
-        query_posts( $options );
-
-        while (have_posts()){
-            the_post();
-
-            $fields = get_fields($post->ID);
-            $postType = get_post_type($post->ID);
-            $fields['posttype'] = $postType;
-            $fields['permalink'] = get_the_permalink();
-            $fields['slug'] = $post->post_name;
-                
-            array_push($data, $fields);
-        }
-
-        if (count($data) == 1){
-            $data = $data[0];
-        }
-
-        return $data;
 
     }
+
 
 }

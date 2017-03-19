@@ -21,3 +21,5 @@ define('ASSETS', ROOT_WEB . '/assets/');
 define('SERVICES', 'http://services.' . DOMAIN . '/');
 define('MEDIAS', 'http://medias.' . DOMAIN . '/');
 define('ADMIN', 'http://admin.' . DOMAIN . '/');
+
+define('CACHE_FOLDER', '/cache');

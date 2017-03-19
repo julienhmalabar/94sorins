@@ -1,16 +1,14 @@
 <?php
- 
-namespace Utils;
 
 class CacheManager {
 
     function __construct() {
 
+        define('CACHE_FOLDER', '/cache');
+
         if( !file_exists($_SERVER['DOCUMENT_ROOT'] . CACHE_FOLDER) ){
             mkdir($_SERVER['DOCUMENT_ROOT'] . CACHE_FOLDER , 0777);
         }
-
-
     }
     
     public function getCache($path) {
@@ -20,7 +18,7 @@ class CacheManager {
             return json_decode($json, true);
         }
 
-        return false;
+        return NULL;
 
     }
 
@@ -39,11 +37,9 @@ class CacheManager {
 
         }
 
-        //$fp = fopen($_SERVER['DOCUMENT_ROOT'] . CACHE_FOLDER . '/' . $rootPath . $params[count($params) - 1] . '.json', 'w');
-        //fwrite($fp, json_encode($data, true));
-        //fclose($fp);
-
-        //$this->generatePicture($params[0], $data);
+        $fp = fopen($_SERVER['DOCUMENT_ROOT'] . CACHE_FOLDER . '/' . $rootPath . $params[count($params) - 1] . '.json', 'w');
+        fwrite($fp, json_encode($data, true));
+        fclose($fp);
 
     }
 
@@ -72,10 +68,6 @@ class CacheManager {
 
         $params = 'type=' . urlencode($type) . '&title=' . urlencode($data->title);
 
-        //$data = file_get_contents(SERVICES . 'share?' . $params);
-
-        //var_dump($data);
-
     }
 
     private function removeFolder ($dir) {
@@ -91,18 +83,6 @@ class CacheManager {
         }
 
         rmdir($dir);
-    }
-
-    private function getDataFromURL ($url) {
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $output = curl_exec($ch);
-        curl_close($ch);
-
-        return $output;
-
     }
 
 }

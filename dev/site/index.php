@@ -68,14 +68,11 @@ $app->get('(/)(/:params+)', function($params = array()) use ($app, $config) {
 
 	// ---o Get data
 	$url = SERVICES . join($params, '/');
+	$data = getDataFromUrl($url);
 
-	// ---o Get data by curl
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $url);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	$output = curl_exec($ch);
-	curl_close($ch);
-	$data = json_decode($output, true);
+	// ---o Get Global data
+	$url = SERVICES . 'global';
+	$globalData = getDataFromUrl($url);
 
 	// ---o Call controller
 	$meta = call_user_func_array(array($controller, 'index'), array(
@@ -92,6 +89,7 @@ $app->get('(/)(/:params+)', function($params = array()) use ($app, $config) {
 	$app->render($viewPath, array(
 		'data' => $data,
 		'meta' => $meta,
+		'global' => $globalData,
 		'view' => $pageName,
 		'viewName' => call_user_func_array(array('TextUtils', 'camelCase'), array($pageName)),
 		'ROOT_WEB' => ROOT_WEB,
@@ -101,6 +99,15 @@ $app->get('(/)(/:params+)', function($params = array()) use ($app, $config) {
 	));
 
 });
+
+function getDataFromUrl($url) {
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	$output = curl_exec($ch);
+	curl_close($ch);
+	return json_decode($output, true);
+}
 
 
 $app->run();
