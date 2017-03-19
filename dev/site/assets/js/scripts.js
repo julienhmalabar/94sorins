@@ -1506,8 +1506,8 @@ var Page = function (_EventEmitter) {
 		_this._isEntered = false;
 
 		//this._preEnter();
-		_this._initContent();
-		_this._initEvents();
+		//this._initContent();
+		//this._initEvents();
 
 		return _this;
 	}
@@ -1544,7 +1544,7 @@ var Page = function (_EventEmitter) {
 
 			this._isRendered = true;
 
-			this.$container = (0, _jquery2.default)(this.template);
+			this.$container = this.template ? (0, _jquery2.default)(this.template) : _ViewsManager2.default.pageContainer.children();
 			_ViewsManager2.default.pageContainer.html(this.$container);
 
 			this._initContent();
@@ -1552,7 +1552,7 @@ var Page = function (_EventEmitter) {
 
 			_Viewport2.default.resize();
 
-			this.enter();
+			//this.enter();
 		}
 	}, {
 		key: '_initContent',
@@ -1588,23 +1588,21 @@ var Page = function (_EventEmitter) {
 	}, {
 		key: 'enter',
 		value: function enter(template) {
-
 			if (template) {
 				this.template = template;
 			}
-
-			if (this._isRendered === false) {
-				//this._isEntered = true;
-			}
-
-			if (this._isRendered === true || this._isPreEntered === false) {
-				return;
-			}
-
-			if (this._isLoaded === true) {
-				this._render();
-				return;
-			}
+			this._render();
+			/*
+   	if (this._isRendered === false) {
+   	//this._isEntered = true;
+   }
+   	if (this._isRendered === true || this._isPreEntered === false) {
+   	return;
+   }
+   	if (this._isLoaded === true) {
+   	this._render();
+   	return;
+   }*/
 		}
 	}, {
 		key: 'exit',
@@ -2421,13 +2419,16 @@ var ViewsManager = function (_EventEmitter) {
 			}
 
 			if (response) {
-				this.currentClass.template = (0, _jquery2.default)(response.text).filter('.page-container').html();
+
+				var template = (0, _jquery2.default)(response.text).filter('.page-container').html();
 
 				this.currentClass.loaded = true;
-
-				this.currentClass.enter();
+				this.currentClass.enter(template);
 
 				this.emit(this.REQUEST_END + '.*');
+			} else {
+				this.currentClass.loaded = true;
+				this.currentClass.enter();
 			}
 		}
 	}, {
@@ -2440,7 +2441,8 @@ var ViewsManager = function (_EventEmitter) {
 		key: '_onPageExited',
 		value: function _onPageExited() {
 
-			this.currentClass.enter();
+			//this.currentClass.enter();
+
 		}
 	}]);
 

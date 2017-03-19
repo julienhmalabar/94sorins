@@ -100,15 +100,18 @@ class ViewsManager extends EventEmitter {
 			return;
 		}
 
-		if (response) {
-			this.currentClass.template = $(response.text).filter('.page-container').html();
-		
+		if (response) {	
+
+			let template = $(response.text).filter('.page-container').html();
 
 			this.currentClass.loaded = true;
-			
-			this.currentClass.enter();
+			this.currentClass.enter(template);
 
 			this.emit(this.REQUEST_END + '.*');
+		}
+		else {
+			this.currentClass.loaded = true;
+			this.currentClass.enter();
 		}
 		
 	}
@@ -127,7 +130,7 @@ class ViewsManager extends EventEmitter {
 
 	_onPageExited() {
 
-		this.currentClass.enter();
+		//this.currentClass.enter();
 
 	}
 

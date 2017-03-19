@@ -36,8 +36,8 @@ class Page extends EventEmitter {
 		this._isEntered = false;
 
 		//this._preEnter();
-		this._initContent();
-		this._initEvents();
+		//this._initContent();
+		//this._initEvents();
 		
 	}
 
@@ -72,7 +72,7 @@ class Page extends EventEmitter {
 
 		this._isRendered = true;
 
-		this.$container = $(this.template);
+		this.$container = this.template ? $(this.template) : ViewsManager.pageContainer.children();
 		ViewsManager.pageContainer.html(this.$container);
 
 		this._initContent();
@@ -80,7 +80,7 @@ class Page extends EventEmitter {
 
 		Viewport.resize();
 
-		this.enter();
+		//this.enter();
 
 	}
 
@@ -119,10 +119,11 @@ class Page extends EventEmitter {
 	// --------------------------------------------------------------o Public
 
 	enter (template) {
-
 		if (template) {
 			this.template = template;
 		}
+		this._render();
+		/*
 
 		if (this._isRendered === false) {
 			//this._isEntered = true;
@@ -135,7 +136,7 @@ class Page extends EventEmitter {
 		if (this._isLoaded === true) {
 			this._render();
 			return;
-		}
+		}*/
 
 	}
 
