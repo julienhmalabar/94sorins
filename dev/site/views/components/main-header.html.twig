@@ -22,12 +22,22 @@
 
 	<div class="main-menu">
 		<ul>
-			<li><a href="{{ ROOT_WEB }}"><span>Accueil</span></a></li>
-			<li><a href="{{  ROOT_WEB ~ '/realisations' }}"><span>Réalisations</span></a></li>
-			<li><a href="{{  ROOT_WEB ~ '/agence' }}"><span>Agence</span></a></li>
-			<li><a href="{{  ROOT_WEB ~ '/talents' }}"><span>Talents</span></a></li>
-			<li><a href="{{  ROOT_WEB ~ '/perspective' }}"><span>Perspective</span></a></li>
-			<li><a href="{{  ROOT_WEB ~ '/contact' }}"><span>Contact</span></a></li>
+			<li><a href="{{ ROOT_WEB }}"><p><span>Accueil</span></p></a></li>
+			<li>
+				<p><span>Réalisations</span></p>
+				<div class="sub-menu">
+					<ul>
+						{% for casestudy in global.casestudies %}
+						<li><a href="{{ casestudy.permalink }}"><p><span>{{ casestudy.title }}</span></p></a></li>
+						{% endfor  %}
+					</ul>
+					<p class="back-button">{% include 'components/arrow.html.twig' with {type: 'long', direction: 'left'} %}Retour</p>
+				</div>
+			</li>
+			<li><a href="{{  ROOT_WEB ~ '/agence' }}"><p><span>Agence</span></p></a></li>
+			<li><a href="{{  ROOT_WEB ~ '/talents' }}"><p><span>Talents</span></p></a></li>
+			<li><a href="{{  ROOT_WEB ~ '/perspective' }}"><p><span>Perspective</span></p></a></li>
+			<li><a href="{{  ROOT_WEB ~ '/contact' }}"><p><span>Contact</span></p></a></li>
 		</ul>
 
 		<div class="contact">

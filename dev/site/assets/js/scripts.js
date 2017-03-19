@@ -398,6 +398,9 @@ var MainHeader = function (_Component) {
 			this.$openButton = this.$container.find('.open-button');
 			this.$closeButton = this.$container.find('.close-button');
 
+			this.$subMenuItems = this.$container.find('.sub-menu').prev();
+			this.$subMenuBackButtons = this.$container.find('.sub-menu .back-button');
+
 			this._isMenuOpened = false;
 		}
 	}, {
@@ -409,6 +412,10 @@ var MainHeader = function (_Component) {
 			this.$openButton.on(_Events.MouseEvent.CLICK, this._onOpenButtonClick.bind(this));
 
 			this.$closeButton.on(_Events.MouseEvent.CLICK, this._onCloseButtonClick.bind(this));
+
+			this.$subMenuItems.on(_Events.MouseEvent.CLICK, this._onSubMenuItemClick.bind(this));
+
+			this.$subMenuBackButtons.on(_Events.MouseEvent.CLICK, this._onSubMenuBackButtonClick.bind(this));
 		}
 
 		// --------------------------------------------------------------o Listeners
@@ -424,6 +431,27 @@ var MainHeader = function (_Component) {
 		value: function _onCloseButtonClick() {
 
 			this.closeMenu();
+		}
+	}, {
+		key: '_onSubMenuItemClick',
+		value: function _onSubMenuItemClick(event) {
+
+			console.log(this.$mainMenu.hasClass(MainHeader._Class.SUB_MENU_OPENED));
+			if (this.$mainMenu.hasClass(MainHeader._Class.SUB_MENU_OPENED)) {
+				return;
+			}
+
+			this.$mainMenu.addClass(MainHeader._Class.SUB_MENU_OPENED);
+			(0, _jquery2.default)(event.currentTarget).addClass(MainHeader._Class.SUB_MENU_OPENED);
+		}
+	}, {
+		key: '_onSubMenuBackButtonClick',
+		value: function _onSubMenuBackButtonClick() {
+
+			console.log('ok');
+
+			this.$mainMenu.removeClass(MainHeader._Class.SUB_MENU_OPENED);
+			(0, _jquery2.default)(event.currentTarget).parents('.sub-menu').removeClass(MainHeader._Class.SUB_MENU_OPENED);
 		}
 
 		// --------------------------------------------------------------o Public
@@ -457,7 +485,8 @@ var MainHeader = function (_Component) {
 
 MainHeader._Class = {
 	MENU_OPENED: 'opened',
-	MENU_PRE_OPENED: 'pre-opened'
+	MENU_PRE_OPENED: 'pre-opened',
+	SUB_MENU_OPENED: 'sub-menu-opened'
 };
 exports.default = new MainHeader();
 

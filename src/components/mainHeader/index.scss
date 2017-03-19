@@ -104,17 +104,19 @@
 	width: 480px;
 	padding-top: 200px;
 	font: 300 30px/90px $font-family;
+	overflow: hidden;
 
-	a {
+	p {
 		display: block;
 		position: relative;
 		padding: 0 50px 0 140px;
+		cursor: pointer;
 
 		span {
 			display: block;
 		}
 
-		&:before {
+		&:not(.back-button):before {
 			content: '';
 			display: block;
 			height: 1px;
@@ -127,9 +129,43 @@
 		}
 	}
 
+	.sub-menu {
+		font: 400 16px/60px $font-family;
+		text-transform: uppercase;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		left: 100%;
+		overflow: hidden;
+	}
+
+	.back-button {
+		font: 400 14px/24px $font-family;
+		text-transform: none;
+		margin-top: 20px;
+
+		.arrow {
+			float: left;
+			position: relative;
+			top: 10px;
+			margin-right: 10px;
+		}
+	}
+
 	// ---o Animations
 
-	a {
+	& > ul {
+		transition: transform 600ms $ease-out-expo 0ms;
+	}
+
+	&.sub-menu-opened {
+		& > ul {
+			transform: translate3d(-100%, 0, 0);
+		}
+	}
+
+	p {
 		span {
 			transition: transform 500ms $ease-out-expo 0ms;
 		}
