@@ -868,7 +868,6 @@ var Component = function (_EventEmitter) {
 		value: function _initEvents() {
 
 			if (this._onResize) {
-				console.log(_Events.Event.RESIZE);
 				_Viewport2.default.on(_Events.Event.RESIZE + '.' + this.constructor.name, this._onResize.bind(this));
 			}
 
