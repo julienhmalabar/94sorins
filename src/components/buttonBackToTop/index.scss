@@ -1,0 +1,38 @@
+.button-back-to-top {
+	position: absolute;
+	bottom: 60px + $footer-height;
+	right: 30px;
+	z-index: 1000;
+	color: $grey-color;
+	text-transform: uppercase;
+	font-size: 10px;
+	letter-spacing: 0.2em;
+	padding: 0 20px;
+	cursor: pointer;
+
+	.arrow {
+		margin: 0 auto;
+		background: $grey-color;
+		margin-bottom: 10px;
+		transition: transform 300ms $ease-out-sine 0ms;
+
+		svg {
+			fill: $grey-color;
+		}
+	}
+
+	&:hover {
+		.arrow {
+			transform: rotate(-90deg) translate3d(10px, 10px, 0);
+		}
+	}
+}
+
+
+// -----------------------------------------------------------------------o Responsive
+
+@media all and (max-width: $mobile-size) {
+	.button-back-to-top {
+		display: none;
+	}
+}

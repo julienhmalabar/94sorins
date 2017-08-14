@@ -1,12 +1,22 @@
 {% set src = picture ? picture : ASSETS ~ 'temp/pic.jpg' %}
 
-<figure class="hero-picture">
-	<img data-src="{{ src }}"/>
-	<figcaption>
-		<h1>{{ title }}</h1>
-		<h2>{{ subhead }}</h2>
-	</figcaption>
-	<div class="scroll-button">Scroll</div>
-</figure>
+<div class="hero-picture {% if small %}small{% endif %}">
+	<figure>
+		<img data-src="{{ src }}"/>
+
+		{% if video %}
+			<video src="{{ video }}" loop></video>
+		{% endif %}
+
+		<figcaption>
+			<h1>{{ title }}</h1>
+			<h2>{{ subhead }}</h2>
+			{% if subtitle %}<h3>{{ subtitle }}</h3>{% endif %}
+		</figcaption>
+	</figure>
+	{% if not small %}
+		<div class="scroll-button">{% if scrollText %}{{ scrollText }}{% else %}Scroll{% endif %}</div>
+	{% endif %}
+</div>
 
 <div class="hero-picture-placeholder"></div>

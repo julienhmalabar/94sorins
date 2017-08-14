@@ -1,10 +1,89 @@
 {% extends ajax ? "default/empty.html.twig" : "default/layout.html.twig" %}
 
 {% block content %}
+	
+	<div class="page-inner page-content">
 
-	<header>
-		<h1>{{ data.header_subhead }}</h1>
-		<h2>{{ data.header_title }}</h2>
-	</header>
+		<div class="center">
+			<header>
+				<h1 class="page-title">{{ data.title }}</h1>
+			</header>
+
+			<div class="text-container">
+				{{ data.content|raw }}
+
+				<div class="bottom-text">
+					<p class="date">{{ time_ago(data.post_date) }}</p>
+					<ul>
+						<li class="social-link" data-type="twitter" data-url="{{ data.permalink }}" data-text="{{ data.title ~ ' — Malabar Design — ' ~ data.permalink}}">
+							{{ icons('icon-twitter') }}
+						</li>
+						<li class="social-link" data-type="facebook" data-url="{{ data.permalink }}">
+							{{ icons('icon-facebook') }}
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="sidebar">
+				<p class="sidebar-title">Rémunération</p>
+				<div class="text">{{ data.salary|raw }}</div>
+				<p class="sidebar-title">Durée</p>
+				<div class="text">{{ data.duration|raw }}</div>
+				<p class="sidebar-title">Modalités</p>
+				<div class="text">{{ data.conditions|raw }}</div>					
+			</div>
+		</div>
+	</div>
+
+	<div class="jobs-cards">
+		<div class="center">
+			<p class="title">Nos dernières offres d'emploi</p>
+			<div class="jobs-list">
+				{% for job in data.moreJobs %}
+				<div class="card-job">
+					<figure>
+						<img src="{{ job.picture }}" />
+					</figure>
+					<div class="info">
+						<p class="title">{{ job.title }}</p>
+						{% if job.type %}
+						<p class="type">{{ job.type }}</p>
+						{% endif %}
+						<div class="text">
+							{{ job.text }}
+							<a href="{{ job.permalink }}" class="read-more">Lire la suite</a>
+						</div>
+					</div>
+
+					<p class="date">{{ time_ago(job.post_date) }}</p>
+
+					<ul class="social">
+						<li class="social-link" data-type="twitter" data-url="{{ job.permalink }}" data-text="{{ job.title ~ ' — Malabar Design — ' ~ job.permalink}}">
+							{{ icons('icon-twitter') }}
+						</li>
+						<li class="social-link" data-type="facebook" data-url="{{ job.permalink }}">
+							{{ icons('icon-facebook') }}
+						</li>
+					</ul>
+				</div>
+				{% endfor %}
+
+				<div class="card-job card-application">
+					<figure>
+						<img src="{{ data.application.picture }}" />
+					</figure>
+					<div class="info">
+						<p class="title">{{ data.application.title }}</p>
+						<div class="text">
+							{{ data.application.text|raw }}
+						</div>
+						<a href="mailto:{{ data.application.button.link }}">{{ data.application.button.text }} {% include 'components/arrow.html.twig' with {direction: 'right'} %}</span>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
 
 {% endblock %}

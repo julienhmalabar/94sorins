@@ -92,7 +92,485 @@ var Accordion = function (_Component) {
 
 exports.default = Accordion;
 
-},{"./../../core/Component":8,"./../../core/Events":10,"jquery":"jquery"}],2:[function(require,module,exports){
+},{"./../../core/Component":13,"./../../core/Events":16,"jquery":"jquery"}],2:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _jquery = require('jquery');
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _eventemitter = require('eventemitter2');
+
+var _eventemitter2 = _interopRequireDefault(_eventemitter);
+
+var _Viewport = require('./../../core/Viewport');
+
+var _Viewport2 = _interopRequireDefault(_Viewport);
+
+var _Events = require('./../../core/Events');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var BackToTopButton = function (_EventEmitter) {
+	_inherits(BackToTopButton, _EventEmitter);
+
+	function BackToTopButton() {
+		_classCallCheck(this, BackToTopButton);
+
+		return _possibleConstructorReturn(this, (BackToTopButton.__proto__ || Object.getPrototypeOf(BackToTopButton)).apply(this, arguments));
+	}
+
+	_createClass(BackToTopButton, [{
+		key: 'init',
+
+
+		// --------------------------------------------------------------o Private
+
+		value: function init() {
+
+			this.$container = (0, _jquery2.default)('.button-back-to-top');
+
+			this._initEvents();
+		}
+	}, {
+		key: '_initEvents',
+		value: function _initEvents() {
+
+			this.$container.on(_Events.MouseEvent.CLICK, this._onContainerClick.bind(this));
+		}
+
+		// --------------------------------------------------------------o Listeners
+
+	}, {
+		key: '_onContainerClick',
+		value: function _onContainerClick(e) {
+
+			_Viewport2.default.scrollTo(0);
+		}
+
+		// --------------------------------------------------------------o Public
+
+	}]);
+
+	return BackToTopButton;
+}(_eventemitter2.default);
+
+exports.default = new BackToTopButton();
+
+},{"./../../core/Events":16,"./../../core/Viewport":24,"eventemitter2":"eventemitter2","jquery":"jquery"}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _jquery = require('jquery');
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _Component2 = require('./../../core/Component');
+
+var _Component3 = _interopRequireDefault(_Component2);
+
+var _raf = require('raf');
+
+var _raf2 = _interopRequireDefault(_raf);
+
+var _Viewport = require('./../../core/Viewport');
+
+var _Viewport2 = _interopRequireDefault(_Viewport);
+
+var _Events = require('./../../core/Events');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Carousel = function (_Component) {
+	_inherits(Carousel, _Component);
+
+	function Carousel() {
+		_classCallCheck(this, Carousel);
+
+		return _possibleConstructorReturn(this, (Carousel.__proto__ || Object.getPrototypeOf(Carousel)).apply(this, arguments));
+	}
+
+	_createClass(Carousel, [{
+		key: '_initContent',
+
+
+		// --------------------------------------------------------------o Private
+
+		value: function _initContent() {
+
+			_get(Carousel.prototype.__proto__ || Object.getPrototypeOf(Carousel.prototype), '_initContent', this).call(this);
+
+			this.$carouselList = this.$container.find('.pictures');
+			this.currentIndex = 0;
+			this.position = {
+				current: 0,
+				prev: 0,
+				dest: 0,
+				init: 0
+			};
+
+			this.mouseX = {
+				init: 0,
+				prev: 0,
+				current: 0
+			};
+
+			this.isDragging = false;
+
+			this.defaultEase = 0.15;
+			this.ease = this.defaultEase;
+			this.marginBetweenPictures = 0;
+			this.maxPosition = 0;
+			this.minPosition = 0;
+
+			this._listPictures();
+		}
+	}, {
+		key: '_initEvents',
+		value: function _initEvents() {
+
+			_get(Carousel.prototype.__proto__ || Object.getPrototypeOf(Carousel.prototype), '_initEvents', this).call(this);
+
+			this.$pictures.on(_Events.MouseEvent.CLICK, this._onPictureClick.bind(this));
+
+			//this.$carouselList
+			//	.on(MouseEvent.DOWN, ::this._onMouseDown);
+		}
+	}, {
+		key: '_listPictures',
+		value: function _listPictures() {
+			var _this2 = this;
+
+			this.pictures = [];
+			this.$pictures = this.$container.find('.pictures img');
+
+			this.$pictures.each(function (key, pic) {
+				var $pic = (0, _jquery2.default)(pic);
+				_this2.pictures.push({
+					$elm: $pic,
+					elm: pic,
+					width: ~~$pic.attr('data-width'),
+					height: ~~$pic.attr('data-height')
+				});
+			});
+
+			this._onResize();
+		}
+	}, {
+		key: '_resizeCarousel',
+		value: function _resizeCarousel() {}
+	}, {
+		key: '_updatePosition',
+		value: function _updatePosition() {
+
+			this.position.current += (this.position.dest - this.position.current) * this.ease;
+
+			if (this.position.dest === this.position.current && this.ease !== 1) {
+				return;
+			}
+
+			if (Math.abs(this.position.current - this.position.dest) < 0.1) {
+				this.position.current = this.position.dest;
+			}
+
+			this.$carouselList.css('transform', 'translate3d(' + this.position.current + 'px, 0, 0)');
+
+			(0, _raf2.default)(this._updatePosition.bind(this));
+		}
+	}, {
+		key: '_goToIndex',
+		value: function _goToIndex(index) {
+			var _this3 = this;
+
+			var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+
+			if (index === this.currentIndex && force === false) {
+				return;
+			}
+
+			this.currentIndex = index;
+
+			var pos = this.initLeftMargin;
+
+			_jquery2.default.each(this.pictures, function (key, pic) {
+				if (key < _this3.currentIndex) {
+					pos -= pic.currentWidth + _this3.marginBetweenPictures;
+				} else if (key === _this3.currentIndex) {
+					pos -= (pic.currentWidth + _this3.marginBetweenPictures) * 0.5;
+				}
+			});
+
+			this._goToPos(pos, force);
+		}
+	}, {
+		key: '_goToPos',
+		value: function _goToPos(pos, force) {
+
+			if (pos > this.minPosition) {
+				pos = this.minPosition;
+			} else if (pos < this.maxPosition) {
+				pos = this.maxPosition;
+			}
+
+			this.position.dest = pos;
+			this._updatePosition();
+		}
+
+		// --------------------------------------------------------------o Listeners
+
+	}, {
+		key: '_onPictureClick',
+		value: function _onPictureClick(e) {
+
+			var $pic = (0, _jquery2.default)(e.currentTarget);
+			var $parent = $pic.parent();
+			var index = $parent.index();
+
+			this.ease = this.defaultEase;
+			this._goToIndex(index);
+		}
+	}, {
+		key: '_onMouseDown',
+		value: function _onMouseDown(event) {
+
+			var e = event.type == 'touchstart' ? event.originalEvent.touches[0] : event;
+
+			if ([0, 1].indexOf(event.which) == -1) {
+				// test if it's a left click
+				return;
+			}
+
+			this.isDragging = true;
+			this.ease = 1;
+
+			this.position.init = this.position.current;
+			this.mouseX.init = e.pageX;
+
+			_Viewport2.default.$body.on(_Events.MouseEvent.UP + '.carousel', this._onMouseUp.bind(this)).on(_Events.MouseEvent.MOVE + '.carousel', this._onMouseMove.bind(this));
+		}
+	}, {
+		key: '_onMouseMove',
+		value: function _onMouseMove(event) {
+
+			var e = event.type == 'touchmove' ? event.originalEvent.touches[0] : event;
+
+			this.mouseX.prev = this.mouseX.current;
+			this.mouseX.current = -(this.mouseX.init - e.pageX);
+
+			this._goToPos(this.position.init + this.mouseX.current, true);
+
+			event.preventDefault();
+		}
+	}, {
+		key: '_onMouseUp',
+		value: function _onMouseUp() {
+			var _this4 = this;
+
+			this.isDragging = false;
+
+			this.ease = this.defaultEase;
+			var pos = this.position.init + this.mouseX.current - (this.mouseX.prev - this.mouseX.current) * 7;
+			var index = 0;
+
+			_jquery2.default.each(this.pictures, function (key, pic) {
+				if (pos < pic.leftPos && pos > pic.leftPos - pic.width - _this4.marginBetweenPictures) {
+					index = key;
+				}
+			});
+
+			this._goToIndex(index, true);
+
+			_Viewport2.default.$body.off(_Events.MouseEvent.UP + '.carousel').off(_Events.MouseEvent.MOVE + '.carousel');
+		}
+	}, {
+		key: '_onResize',
+		value: function _onResize() {
+			var _this5 = this;
+
+			this.marginBetweenPictures = parseInt(this.$carouselList.find('li').eq(0).css('margin-left').replace('px', '')) * 2;
+			this.containerHeight = Math.min(_Viewport2.default.height - 300, 1000);
+
+			this.$container.css('height', this.containerHeight);
+
+			this.maxPosition = 0;
+			this.initLeftMargin = 0;
+			this.initRightMargin = 0;
+			this.incPos = 0;
+			var carouselListWidth = 0;
+			var landscapeMaxWidth = _Viewport2.default.width - this.marginBetweenPictures * 4;
+			var portraitMaxWidth = 400;
+
+			_jquery2.default.each(this.pictures, function (key, pic) {
+				var width = pic.width > pic.height ? landscapeMaxWidth : portraitMaxWidth;
+				var height = pic.height / pic.width * width;
+
+				if (height > _this5.containerHeight) {
+					height = _this5.containerHeight;
+					width = pic.width / pic.height * height;
+				}
+
+				pic.$elm.css({
+					width: width,
+					height: height
+				});
+
+				pic.currentWidth = width;
+
+				carouselListWidth += width + _this5.marginBetweenPictures;
+				if (key === 0) {
+					_this5.initLeftMargin = _Viewport2.default.width * 0.5;
+					_this5.maxPosition = _this5.initLeftMargin;
+					_this5.incPos = _this5.initLeftMargin - (width + _this5.marginBetweenPictures) * 0.5;
+				} else {}
+
+				_this5.maxPosition -= width;
+
+				if (key === _this5.pictures.length - 1) {
+					_this5.maxPosition -= width * 0.5 + _this5.marginBetweenPictures;
+				}
+
+				pic.leftPos = _this5.incPos;
+				_this5.incPos = pic.leftPos - width - _this5.marginBetweenPictures;
+			});
+
+			this.minPosition = this.initLeftMargin - (this.pictures[0].currentWidth + this.marginBetweenPictures) * 0.5;
+
+			this.$carouselList.css('width', carouselListWidth);
+
+			this.ease = 1;
+			this._goToIndex(this.currentIndex, true);
+		}
+
+		// --------------------------------------------------------------o Public
+
+	}]);
+
+	return Carousel;
+}(_Component3.default);
+
+exports.default = Carousel;
+
+},{"./../../core/Component":13,"./../../core/Events":16,"./../../core/Viewport":24,"jquery":"jquery","raf":"raf"}],4:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _jquery = require('jquery');
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _Events = require('./../../core/Events');
+
+var _Cookies = require('./../../core/Cookies');
+
+var _Cookies2 = _interopRequireDefault(_Cookies);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var BackToTopButton = function () {
+	function BackToTopButton() {
+		_classCallCheck(this, BackToTopButton);
+	}
+
+	_createClass(BackToTopButton, [{
+		key: 'init',
+
+
+		// --------------------------------------------------------------o Private
+
+		value: function init() {
+
+			this.$container = (0, _jquery2.default)('.cookie-band');
+			this.$closeButton = this.$container.find('.close-button');
+
+			if (_Cookies2.default.get('allowed')) {
+				this._remove();
+				this._setAnalytics();
+			} else {
+				this.$container.addClass('opened');
+			}
+
+			this._initEvents();
+		}
+	}, {
+		key: '_initEvents',
+		value: function _initEvents() {
+
+			this.$closeButton.on(_Events.MouseEvent.CLICK, this._onCloseButtonClick.bind(this));
+		}
+	}, {
+		key: '_remove',
+		value: function _remove() {
+
+			_Cookies2.default.set('allowed', true);
+			this.$container.remove();
+		}
+	}, {
+		key: '_setAnalytics',
+		value: function _setAnalytics() {
+
+			(function (i, s, o, g, r, a, m) {
+				i['GoogleAnalyticsObject'] = r;i[r] = i[r] || function () {
+					(i[r].q = i[r].q || []).push(arguments);
+				}, i[r].l = 1 * new Date();a = s.createElement(o), m = s.getElementsByTagName(o)[0];a.async = 1;a.src = g;m.parentNode.insertBefore(a, m);
+			})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+			ga('create', ANALYTICS_ID, 'auto');
+			ga('send', 'pageview');
+		}
+
+		// --------------------------------------------------------------o Listeners
+
+	}, {
+		key: '_onCloseButtonClick',
+		value: function _onCloseButtonClick(e) {
+
+			this._remove();
+			this._setAnalytics();
+		}
+
+		// --------------------------------------------------------------o Public
+
+	}]);
+
+	return BackToTopButton;
+}();
+
+exports.default = new BackToTopButton();
+
+},{"./../../core/Cookies":14,"./../../core/Events":16,"jquery":"jquery"}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -125,7 +603,7 @@ var Gallery = function (_Component) {
 
 exports.default = Gallery;
 
-},{"./../../core/Component":8}],3:[function(require,module,exports){
+},{"./../../core/Component":13}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -158,7 +636,7 @@ var GridGallery = function (_Component) {
 
 exports.default = GridGallery;
 
-},{"./../../core/Component":8}],4:[function(require,module,exports){
+},{"./../../core/Component":13}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -186,6 +664,10 @@ var _Viewport2 = _interopRequireDefault(_Viewport);
 var _ImageUtils = require('./../../core/ImageUtils');
 
 var _ImageUtils2 = _interopRequireDefault(_ImageUtils);
+
+var _MainHeader = require('./../MainHeader');
+
+var _MainHeader2 = _interopRequireDefault(_MainHeader);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -225,11 +707,23 @@ var HeroPicture = function (_Component) {
 			this._containerHeight = 0;
 			this._isHidden = false;
 
-			this.$backgroundPicture = this.$container.find('img');
+			this.$figure = this.$container.find('figure');
+
 			this.$content = this.$container.find('figcaption');
 			this.$scrollButton = this.$container.find('.scroll-button');
 
-			this._isBackgroundPictureLoaded = false;
+			this.$placeHolder = this.$container.siblings('.hero-picture-placeholder');
+
+			this.isBackgroundPictureLoaded = false;
+			this.isSmall = this.$container.hasClass('small');
+
+			if (_Viewport2.default.width > 600) {
+				var $video = this.$figure.find('video');
+
+				if ($video.length) {
+					$video.addClass('playable').get(0).play();
+				}
+			}
 		}
 	}, {
 		key: '_initEvents',
@@ -239,17 +733,15 @@ var HeroPicture = function (_Component) {
 
 			_Viewport2.default.on(_Events.Event.SCROLL + '.heroPicture', this._onScroll.bind(this));
 
-			if (this.$backgroundPicture[0].complete) {
-				this._onBackgroundPictureLoaded();
-			} else {
-				this.$backgroundPicture.on('loaded', this._onBackgroundPictureLoaded.bind(this));
-			}
-
 			this.$scrollButton.on(_Events.MouseEvent.CLICK, this._onScrollButtonClick.bind(this));
 		}
 	}, {
 		key: '_updatePosition',
 		value: function _updatePosition() {
+
+			if (_MainHeader2.default.isMenuOpened === true) {
+				return;
+			}
 
 			this._scrollTop.current += (this._scrollTop.destination - this._scrollTop.current) * this._ease;
 
@@ -274,14 +766,14 @@ var HeroPicture = function (_Component) {
 				}
 			}
 
-			this.$backgroundPicture.css({ 'transform': 'translate3d(0, ' + -this._scrollTop.current * 0.3 + 'px, 0)' });
+			this.$figure.css({ 'transform': 'translate3d(0, ' + -this._scrollTop.current * 0.3 + 'px, 0)' });
 			this.$content.css({
 				'transform': 'translate3d(0, ' + -this._scrollTop.current * 0.5 + 'px, 0)',
 				'opacity': '1'
 			});
 			this.$scrollButton.css({
 				'transform': 'translate3d(0, ' + -this._scrollTop.current + 'px, 0)',
-				'opacity': '1'
+				'opacity': 1 - this._scrollTop.current / (this._containerHeight / 10)
 			});
 
 			(0, _raf2.default)(this._updatePosition.bind(this));
@@ -298,13 +790,6 @@ var HeroPicture = function (_Component) {
 			this._updatePosition();
 		}
 	}, {
-		key: '_onBackgroundPictureLoaded',
-		value: function _onBackgroundPictureLoaded() {
-
-			this._isBackgroundPictureLoaded = true;
-			this._resizeBackgroundPicture();
-		}
-	}, {
 		key: '_onScrollButtonClick',
 		value: function _onScrollButtonClick() {
 
@@ -314,23 +799,25 @@ var HeroPicture = function (_Component) {
 		key: '_onResize',
 		value: function _onResize() {
 
-			this._containerHeight = this.$container.height();
+			var height = this.isSmall ? 500 : _Viewport2.default.height * 0.90;
 
-			if (this._isBackgroundPictureLoaded) {
-				this._resizeBackgroundPicture();
+			if (_Viewport2.default.responsiveState === 'mobile') {
+				height = this.isSmall ? 300 : _Viewport2.default.height * 0.75;
 			}
+
+			this.$container.css({
+				'height': height
+			});
+
+			this.$placeHolder.css({
+				'height': height
+			});
+
+			this._containerHeight = height;
 		}
 
 		// --------------------------------------------------------------o Resize
 
-	}, {
-		key: '_resizeBackgroundPicture',
-		value: function _resizeBackgroundPicture() {
-
-			var dims = _ImageUtils2.default.getCoverSizeImage(this.$backgroundPicture.width(), this.$backgroundPicture.height(), this.$container.width(), this.$container.height());
-
-			this.$backgroundPicture.css(dims);
-		}
 
 		// --------------------------------------------------------------o Public
 
@@ -341,7 +828,7 @@ var HeroPicture = function (_Component) {
 
 exports.default = HeroPicture;
 
-},{"./../../core/Component":8,"./../../core/Events":10,"./../../core/ImageUtils":11,"./../../core/Viewport":17,"raf":"raf"}],5:[function(require,module,exports){
+},{"./../../core/Component":13,"./../../core/Events":16,"./../../core/ImageUtils":17,"./../../core/Viewport":24,"./../MainHeader":9,"raf":"raf"}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -350,21 +837,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+var _eventemitter = require('eventemitter2');
+
+var _eventemitter2 = _interopRequireDefault(_eventemitter);
 
 var _jquery = require('jquery');
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
-var _Component2 = require('./../../core/Component');
+var _Popin = require('./../Popin');
 
-var _Component3 = _interopRequireDefault(_Component2);
-
-var _Viewport = require('./../../core/Viewport');
-
-var _Viewport2 = _interopRequireDefault(_Viewport);
-
-var _Events = require('./../../core/Events');
+var _Popin2 = _interopRequireDefault(_Popin);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -374,8 +857,70 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var MainHeader = function (_Component) {
-	_inherits(MainHeader, _Component);
+var MainFooter = function (_EventEmitter) {
+	_inherits(MainFooter, _EventEmitter);
+
+	function MainFooter() {
+		_classCallCheck(this, MainFooter);
+
+		return _possibleConstructorReturn(this, (MainFooter.__proto__ || Object.getPrototypeOf(MainFooter)).apply(this, arguments));
+	}
+
+	_createClass(MainFooter, [{
+		key: 'init',
+		value: function init() {}
+	}]);
+
+	return MainFooter;
+}(_eventemitter2.default);
+
+exports.default = new MainFooter();
+
+},{"./../Popin":10,"eventemitter2":"eventemitter2","jquery":"jquery"}],9:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _eventemitter = require('eventemitter2');
+
+var _eventemitter2 = _interopRequireDefault(_eventemitter);
+
+var _jquery = require('jquery');
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _Component = require('./../../core/Component');
+
+var _Component2 = _interopRequireDefault(_Component);
+
+var _Viewport = require('./../../core/Viewport');
+
+var _Viewport2 = _interopRequireDefault(_Viewport);
+
+var _Events = require('./../../core/Events');
+
+var _ImageUtils = require('./../../core/ImageUtils');
+
+var _ImageUtils2 = _interopRequireDefault(_ImageUtils);
+
+var _ViewsManager = require('./../../core/ViewsManager');
+
+var _ViewsManager2 = _interopRequireDefault(_ViewsManager);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MainHeader = function (_EventEmitter) {
+	_inherits(MainHeader, _EventEmitter);
 
 	function MainHeader() {
 		_classCallCheck(this, MainHeader);
@@ -384,38 +929,84 @@ var MainHeader = function (_Component) {
 	}
 
 	_createClass(MainHeader, [{
-		key: '_initContent',
+		key: 'init',
+		value: function init() {
 
+			this._initContent();
+			this._initEvents();
+		}
 
 		// --------------------------------------------------------------o Private
 
+	}, {
+		key: '_initContent',
 		value: function _initContent() {
 
-			_get(MainHeader.prototype.__proto__ || Object.getPrototypeOf(MainHeader.prototype), '_initContent', this).call(this);
+			this.$pageContainer = (0, _jquery2.default)('.page-container');
 
 			this.$container = (0, _jquery2.default)('.main-header');
 			this.$mainMenu = this.$container.find('.main-menu');
 			this.$openButton = this.$container.find('.open-button');
 			this.$closeButton = this.$container.find('.close-button');
 
-			this.$subMenuItems = this.$container.find('.sub-menu').prev();
+			this.$subMenuButton = this.$container.find('.sub-menu').prev();
 			this.$subMenuBackButtons = this.$container.find('.sub-menu .back-button');
+			this.$subMenuItems = this.$container.find('.sub-menu li');
 
-			this._isMenuOpened = false;
+			this.$subMenuPicturesContainer = this.$container.find('.case-studies-pictures');
+			this.$subMenuPictures = this.$subMenuPicturesContainer.find('img');
+
+			this.isMenuOpened = false;
+
+			this.isLogoColored = false;
+			this.isLogoColorLocked = false;
+
+			this._onViewsManagerRequestEnd();
 		}
 	}, {
 		key: '_initEvents',
 		value: function _initEvents() {
-
-			_get(MainHeader.prototype.__proto__ || Object.getPrototypeOf(MainHeader.prototype), '_initEvents', this).call(this);
+			var _this2 = this;
 
 			this.$openButton.on(_Events.MouseEvent.CLICK, this._onOpenButtonClick.bind(this));
 
 			this.$closeButton.on(_Events.MouseEvent.CLICK, this._onCloseButtonClick.bind(this));
 
-			this.$subMenuItems.on(_Events.MouseEvent.CLICK, this._onSubMenuItemClick.bind(this));
+			this.$subMenuButton.on(_Events.MouseEvent.CLICK, this._onSubMenuButtonClick.bind(this));
+
+			this.$subMenuItems.on(_Events.MouseEvent.ENTER, this._onSubMenuItemEnter.bind(this)).on(_Events.MouseEvent.LEAVE, this._onSubMenuItemLeave.bind(this));
 
 			this.$subMenuBackButtons.on(_Events.MouseEvent.CLICK, this._onSubMenuBackButtonClick.bind(this));
+
+			this.$subMenuPicturesContainer.on(_Events.MouseEvent.CLICK, this._onSubMenuPicturesContainerClick.bind(this));
+
+			this.$subMenuPictures.each(function (key, picture) {
+				if (picture.complete) {
+					_this2._resizeSubMenuPicture(picture);
+				} else {
+					picture.onload = function () {
+						_this2._resizeSubMenuPicture(picture);
+					};
+				}
+			});
+
+			_Viewport2.default.on(_Events.Event.RESIZE + '.header', this._onResize.bind(this)).on(_Events.Event.SCROLL + '.header', this._onScroll.bind(this));
+
+			_ViewsManager2.default.on(_ViewsManager2.default.REQUEST_START + '.header', this._onViewsManagerRequestStart.bind(this)).on(_ViewsManager2.default.REQUEST_END + '.header', this._onViewsManagerRequestEnd.bind(this));
+		}
+	}, {
+		key: '_resizeSubMenuPicture',
+		value: function _resizeSubMenuPicture(picture) {
+
+			if (!picture.complete || this.isMenuOpened === false) {
+				return;
+			}
+
+			var $picture = (0, _jquery2.default)(picture);
+
+			var dims = _ImageUtils2.default.getCoverSizeImage(picture.naturalWidth, picture.naturalHeight, this.$subMenuPicturesContainer.width(), this.$subMenuPicturesContainer.height());
+
+			$picture.css(dims);
 		}
 
 		// --------------------------------------------------------------o Listeners
@@ -433,10 +1024,9 @@ var MainHeader = function (_Component) {
 			this.closeMenu();
 		}
 	}, {
-		key: '_onSubMenuItemClick',
-		value: function _onSubMenuItemClick(event) {
+		key: '_onSubMenuButtonClick',
+		value: function _onSubMenuButtonClick(event) {
 
-			console.log(this.$mainMenu.hasClass(MainHeader._Class.SUB_MENU_OPENED));
 			if (this.$mainMenu.hasClass(MainHeader._Class.SUB_MENU_OPENED)) {
 				return;
 			}
@@ -445,13 +1035,74 @@ var MainHeader = function (_Component) {
 			(0, _jquery2.default)(event.currentTarget).addClass(MainHeader._Class.SUB_MENU_OPENED);
 		}
 	}, {
+		key: '_onSubMenuItemEnter',
+		value: function _onSubMenuItemEnter(e) {
+
+			var $item = (0, _jquery2.default)(e.currentTarget);
+			var index = $item.index();
+
+			this.$subMenuPictures.eq(index).parent().addClass('active');
+		}
+	}, {
+		key: '_onSubMenuItemLeave',
+		value: function _onSubMenuItemLeave(e) {
+
+			var $item = (0, _jquery2.default)(e.currentTarget);
+			var index = $item.index();
+
+			this.$subMenuPictures.eq(index).parent().removeClass('active');
+		}
+	}, {
 		key: '_onSubMenuBackButtonClick',
 		value: function _onSubMenuBackButtonClick() {
 
-			console.log('ok');
-
 			this.$mainMenu.removeClass(MainHeader._Class.SUB_MENU_OPENED);
 			(0, _jquery2.default)(event.currentTarget).parents('.sub-menu').removeClass(MainHeader._Class.SUB_MENU_OPENED);
+		}
+	}, {
+		key: '_onSubMenuPicturesContainerClick',
+		value: function _onSubMenuPicturesContainerClick() {
+
+			this.closeMenu();
+		}
+	}, {
+		key: '_onViewsManagerRequestStart',
+		value: function _onViewsManagerRequestStart() {
+
+			this.closeMenu();
+		}
+	}, {
+		key: '_onViewsManagerRequestEnd',
+		value: function _onViewsManagerRequestEnd() {
+
+			if (_ViewsManager2.default.currentClass && ['job', 'article', 'legals', 'press', 'p404'].indexOf(_ViewsManager2.default.currentClass.slug) > -1) {
+				this.colorLogo(true);
+			} else {
+				this.whitewashLogo(false);
+			}
+		}
+	}, {
+		key: '_onResize',
+		value: function _onResize() {
+			var _this3 = this;
+
+			this.$subMenuPictures.each(function (key, picture) {
+				_this3._resizeSubMenuPicture(picture);
+			});
+		}
+	}, {
+		key: '_onScroll',
+		value: function _onScroll(scrollTop) {
+
+			if (this.isLogoColorLocked) {
+				return;
+			}
+
+			if (scrollTop.current > _Viewport2.default.height * 0.9 - 50 && this.isLogoColored === false) {
+				this.colorLogo();
+			} else if (scrollTop.current <= _Viewport2.default.height * 0.9 - 50 && this.isLogoColored === true) {
+				this.whitewashLogo();
+			}
 		}
 
 		// --------------------------------------------------------------o Public
@@ -460,28 +1111,87 @@ var MainHeader = function (_Component) {
 		key: 'openMenu',
 		value: function openMenu() {
 
-			if (this._isMenuOpened === true) {
+			if (this.isMenuOpened === true) {
 				return;
 			}
 
+			this.isMenuOpened = true;
+			this._savedScroll = _Viewport2.default.scrollTop.current;
+
+			this.$pageContainer.addClass('fixed').css('top', -this._savedScroll);
+
 			this.$container.addClass(MainHeader._Class.MENU_PRE_OPENED);
 			this.$container[0].offsetHeight;
-			this.$container.addClass(MainHeader._Class.MENU_OPENED).removeClass(MainHeader._Class.MENU_PRE_OPENED);
+			this.$container.addClass(MainHeader._Class.MENU_OPENED).removeClass(MainHeader._Class.MENU_PRE_OPENED).css('top', 0);
+
+			_Viewport2.default.$body.addClass('menu-opened');
+
+			this.$subMenuBackButtons.trigger(_Events.MouseEvent.CLICK);
+
+			this._onResize();
 		}
 	}, {
 		key: 'closeMenu',
 		value: function closeMenu() {
 
-			if (this._isMenuOpened === true) {
+			if (this.isMenuOpened === false) {
 				return;
 			}
 
-			this.$container.removeClass(MainHeader._Class.MENU_OPENED);
+			this.isMenuOpened = false;
+
+			this.$pageContainer.removeClass('fixed').css('top', 0);
+			_Viewport2.default.$window.scrollTop(this._savedScroll);
+
+			this.$container.removeClass(MainHeader._Class.MENU_OPENED).css('top', -_Viewport2.default.scrollTop.current);
+
+			_Viewport2.default.$body.removeClass('menu-opened');
+		}
+	}, {
+		key: 'hide',
+		value: function hide() {
+
+			this.$container.addClass('hidden');
+		}
+	}, {
+		key: 'show',
+		value: function show() {
+
+			this.$container.removeClass('hidden');
+		}
+	}, {
+		key: 'openWorks',
+		value: function openWorks() {
+
+			this.openMenu();
+			this.$subMenuButton.eq(0).trigger(_Events.MouseEvent.CLICK);
+		}
+	}, {
+		key: 'colorLogo',
+		value: function colorLogo() {
+			var locked = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+
+			this.$container.addClass('logo-colored');
+			this.isLogoColored = true;
+
+			this.isLogoColorLocked = locked;
+		}
+	}, {
+		key: 'whitewashLogo',
+		value: function whitewashLogo() {
+			var locked = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+
+			this.$container.removeClass('logo-colored');
+			this.isLogoColored = false;
+
+			this.isLogoColorLocked = locked;
 		}
 	}]);
 
 	return MainHeader;
-}(_Component3.default);
+}(_eventemitter2.default);
 
 MainHeader._Class = {
 	MENU_OPENED: 'opened',
@@ -490,7 +1200,7 @@ MainHeader._Class = {
 };
 exports.default = new MainHeader();
 
-},{"./../../core/Component":8,"./../../core/Events":10,"./../../core/Viewport":17,"jquery":"jquery"}],6:[function(require,module,exports){
+},{"./../../core/Component":13,"./../../core/Events":16,"./../../core/ImageUtils":17,"./../../core/Viewport":24,"./../../core/ViewsManager":25,"eventemitter2":"eventemitter2","jquery":"jquery"}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -510,6 +1220,10 @@ var _Component2 = require('./../../core/Component');
 var _Component3 = _interopRequireDefault(_Component2);
 
 var _Events = require('./../../core/Events');
+
+var _MainHeader = require('./../MainHeader');
+
+var _MainHeader2 = _interopRequireDefault(_MainHeader);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -544,6 +1258,7 @@ var Popin = function (_Component) {
 
 			this.$popinButtons = (0, _jquery2.default)('.popin-button-' + this._name);
 			this.$closeButton = this.$container.find('.popin-close-button');
+			this.$overlay = this.$container.find('.overlay');
 		}
 	}, {
 		key: '_initEvents',
@@ -554,6 +1269,10 @@ var Popin = function (_Component) {
 			this.$popinButtons.on(_Events.MouseEvent.CLICK, this._onPopinButtonClick.bind(this));
 
 			this.$closeButton.on(_Events.MouseEvent.CLICK, this._onCloseButtonClick.bind(this));
+
+			if (this.$overlay.length) {
+				this.$overlay.on(_Events.MouseEvent.CLICK, this._onOverlayClick.bind(this));
+			}
 		}
 
 		// --------------------------------------------------------------o Listeners
@@ -571,10 +1290,29 @@ var Popin = function (_Component) {
 			this.$container.addClass('pre-opened');
 			this.$container[0].offsetHeight;
 			this.$container.addClass('opened').removeClass('pre-opened');
+
+			this.emit(Popin.OPENED);
+
+			_MainHeader2.default.hide();
 		}
 	}, {
 		key: '_onCloseButtonClick',
 		value: function _onCloseButtonClick() {
+
+			this.close();
+		}
+	}, {
+		key: '_onOverlayClick',
+		value: function _onOverlayClick() {
+
+			this.close();
+		}
+
+		// --------------------------------------------------------------o Public
+
+	}, {
+		key: 'close',
+		value: function close() {
 
 			if (this._isOpened === false) {
 				return;
@@ -583,18 +1321,115 @@ var Popin = function (_Component) {
 			this._isOpened = false;
 
 			this.$container.removeClass('opened');
+
+			this.emit(Popin.CLOSED);
+
+			_MainHeader2.default.show();
+		}
+	}]);
+
+	return Popin;
+}(_Component3.default);
+
+Popin.OPENED = 'popin:opened';
+Popin.CLOSED = 'popin:closed';
+exports.default = Popin;
+
+},{"./../../core/Component":13,"./../../core/Events":16,"./../MainHeader":9,"jquery":"jquery"}],11:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _jquery = require('jquery');
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _Events = require('./../../core/Events');
+
+var _Popin = require('./../Popin');
+
+var _Popin2 = _interopRequireDefault(_Popin);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var PopinInscription = function () {
+	function PopinInscription() {
+		_classCallCheck(this, PopinInscription);
+	}
+
+	_createClass(PopinInscription, [{
+		key: 'init',
+		value: function init() {
+
+			this._initContent();
+			this._initEvents();
+		}
+
+		// --------------------------------------------------------------o Private
+
+	}, {
+		key: '_initContent',
+		value: function _initContent() {
+
+			this.$container = (0, _jquery2.default)('.form-inscription');
+
+			this.$form = this.$container.find('form');
+			this.$validation = this.$container.find('.validation');
+
+			this.$buttonSubmit = this.$container.find('.button-submit');
+
+			this.popin = new _Popin2.default((0, _jquery2.default)('.popin-inscription'));
+		}
+	}, {
+		key: '_initEvents',
+		value: function _initEvents() {
+
+			this.$buttonSubmit.on(_Events.MouseEvent.CLICK, this._onButtonSubmitClick.bind(this));
+
+			this.popin.on(_Popin2.default.OPENED, this._onPopinOpened.bind(this));
+		}
+	}, {
+		key: '_validateEmail',
+		value: function _validateEmail() {
+
+			this.$form.addClass('hidden');
+			this.$validation.addClass('displayed');
+		}
+
+		// --------------------------------------------------------------o Listeners
+
+	}, {
+		key: '_onButtonSubmitClick',
+		value: function _onButtonSubmitClick() {
+
+			// Do the request for the email.
+			// In the callback call the following method.
+			this._validateEmail();
+		}
+	}, {
+		key: '_onPopinOpened',
+		value: function _onPopinOpened() {
+
+			this.$form.removeClass('hidden');
+			this.$validation.removeClass('displayed');
 		}
 
 		// --------------------------------------------------------------o Public
 
 	}]);
 
-	return Popin;
-}(_Component3.default);
+	return PopinInscription;
+}();
 
-exports.default = Popin;
+exports.default = new PopinInscription();
 
-},{"./../../core/Component":8,"./../../core/Events":10,"jquery":"jquery"}],7:[function(require,module,exports){
+},{"./../../core/Events":16,"./../Popin":10,"jquery":"jquery"}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -642,16 +1477,22 @@ var Slider = function (_Component) {
 
 			_get(Slider.prototype.__proto__ || Object.getPrototypeOf(Slider.prototype), '_initContent', this).call(this);
 
-			this.$slides = this.$container.find('li');
+			this.$slides = this.$container.find('.slides li');
 			this.$nav = this.$container.find('.slider-nav');
 
-			if (this.$nav) {
+			if (this.$nav.length) {
 				this.$navItems = this.$nav.find('.slider-nav-item');
 			}
 
 			if (this.$container.attr('data-timer')) {
 				this._sliderDuration = this.$container.attr('data-timer');
 				this._launchTimer();
+			}
+
+			this.$stepsNav = this.$container.find('.slider-steps');
+
+			if (this.$stepsNav.length) {
+				this.$steps = this.$stepsNav.find('li');
 			}
 
 			this.prevIndex = undefined;
@@ -668,8 +1509,12 @@ var Slider = function (_Component) {
 
 			_get(Slider.prototype.__proto__ || Object.getPrototypeOf(Slider.prototype), '_initEvents', this).call(this);
 
-			if (this.$nav) {
+			if (this.$nav.length) {
 				this.$navItems.on(_Events.MouseEvent.CLICK, this._onNavItemClick.bind(this));
+			}
+
+			if (this.$steps) {
+				this.$steps.on(_Events.MouseEvent.CLICK, this._onBallClick.bind(this));
 			}
 		}
 	}, {
@@ -740,6 +1585,11 @@ var Slider = function (_Component) {
 			currentSlide.addClass(this.states[1] + ' no-transition-all').removeClass(this.states[0]);
 			currentSlide[0].offsetHeight;
 
+			if (this.$steps) {
+				this.$steps.eq(this.prevIndex).removeClass('active');
+				this.$steps.eq(this.currentIndex).addClass('active');
+			}
+
 			currentSlide.removeClass(this.states[1] + ' no-transition-all');
 
 			if (this._timer) {
@@ -765,6 +1615,15 @@ var Slider = function (_Component) {
 			} else {
 				this.goTo($this.index());
 			}
+		}
+	}, {
+		key: '_onBallClick',
+		value: function _onBallClick(e) {
+
+			var $this = (0, _jquery2.default)(e.currentTarget);
+			var index = $this.index();
+
+			this.goTo(index);
 		}
 
 		// --------------------------------------------------------------o Public
@@ -811,7 +1670,7 @@ var Slider = function (_Component) {
 Slider.CHANGE = 'slider:change';
 exports.default = Slider;
 
-},{"./../../core/Component":8,"./../../core/Events":10,"jquery":"jquery"}],8:[function(require,module,exports){
+},{"./../../core/Component":13,"./../../core/Events":16,"jquery":"jquery"}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -890,7 +1749,64 @@ var Component = function (_EventEmitter) {
 
 exports.default = Component;
 
-},{"./Events":10,"./Viewport":17,"eventemitter2":"eventemitter2","jquery":"jquery"}],9:[function(require,module,exports){
+},{"./Events":16,"./Viewport":24,"eventemitter2":"eventemitter2","jquery":"jquery"}],14:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Cookies = function () {
+	function Cookies() {
+		_classCallCheck(this, Cookies);
+	}
+
+	_createClass(Cookies, [{
+		key: 'set',
+		value: function set(name, value, expirationDays) {
+
+			expirationDays = expirationDays ? expirationDays : 31;
+			var date = new Date();
+			date.setTime(date.getTime() + expirationDays * 24 * 60 * 60 * 1000);
+			var expires = "expires=" + date.toUTCString();
+
+			document.cookie = name + '=' + value + ';' + expires;
+		}
+	}, {
+		key: 'get',
+		value: function get(name) {
+
+			name = name + '=';
+			var decodedCookie = decodeURIComponent(document.cookie);
+			var ca = decodedCookie.split(';');
+			for (var i = 0; i < ca.length; i++) {
+				var c = ca[i];
+				while (c.charAt(0) == ' ') {
+					c = c.substring(1);
+				}
+				if (c.indexOf(name) == 0) {
+					return c.substring(name.length, c.length);
+				}
+			}
+			return '';
+		}
+	}, {
+		key: 'delete',
+		value: function _delete(name) {
+			document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+		}
+	}]);
+
+	return Cookies;
+}();
+
+exports.default = new Cookies();
+
+},{}],15:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1193,7 +2109,7 @@ var Ease = function () {
 
 exports.default = new Ease();
 
-},{}],10:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1262,7 +2178,7 @@ var Tab = exports.Tab = {
 
 };
 
-},{}],11:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1312,7 +2228,7 @@ var ImageUtils = function () {
 
 exports.default = new ImageUtils();
 
-},{}],12:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1430,7 +2346,7 @@ var Keyboard = function (_EventEmitter) {
 
 exports.default = new Keyboard();
 
-},{"./Events":10,"./Viewport":17,"eventemitter2":"eventemitter2"}],13:[function(require,module,exports){
+},{"./Events":16,"./Viewport":24,"eventemitter2":"eventemitter2"}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1545,7 +2461,12 @@ var Page = function (_EventEmitter) {
 			this._isRendered = true;
 
 			this.$container = this.template ? (0, _jquery2.default)(this.template) : _ViewsManager2.default.pageContainer.children();
-			_ViewsManager2.default.pageContainer.html(this.$container);
+			_ViewsManager2.default.pageContainer.append(this.$container);
+
+			this.$container[0].offsetHeight;
+			this.$container.addClass('displayed');
+
+			_ViewsManager2.default.pageContainer.css('height', 'auto').removeClass('in-transition');
 
 			this._initContent();
 			this._initEvents();
@@ -1608,8 +2529,8 @@ var Page = function (_EventEmitter) {
 		key: 'exit',
 		value: function exit() {
 
-			this.emit(this.EXITED);
-
+			_ViewsManager2.default.pageContainer.css('height', this.$container.height()).addClass('in-transition');
+			this.$container.addClass('removed').css('top', _Viewport2.default.scrollTop.current);
 			this.destroy();
 		}
 	}, {
@@ -1650,7 +2571,7 @@ var Page = function (_EventEmitter) {
 
 exports.default = Page;
 
-},{"./../components/HeroPicture":4,"./Events":10,"./TextUtils":15,"./Viewport":17,"./ViewsManager":18,"eventemitter2":"eventemitter2","jquery":"jquery"}],14:[function(require,module,exports){
+},{"./../components/HeroPicture":7,"./Events":16,"./TextUtils":22,"./Viewport":24,"./ViewsManager":25,"eventemitter2":"eventemitter2","jquery":"jquery"}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1712,12 +2633,15 @@ var Router = function (_EventEmitter) {
 			this.currentRoute = undefined;
 
 			var routes = _data2.default._routes;
+			var is404 = true;
 
 			var _loop = function _loop(path) {
 
 				var route = routes[path];
 
 				(0, _page2.default)(ROOT_PATH + path, function (ctx) {
+
+					is404 = false;
 
 					if (typeof route !== 'string') {
 						if (route.redirect) {
@@ -1754,6 +2678,28 @@ var Router = function (_EventEmitter) {
 				_loop(path);
 			};
 
+			// 404 pages
+			(0, _page2.default)('*', function (ctx) {
+				_this2.currentRoute = {
+					routePath: ctx.path,
+					path: ctx.path,
+					params: ctx.params,
+					class: {
+						class: 'p404',
+						slug: 'p404'
+					}
+				};
+				_this2.emit(_this2.REQUEST_START, _this2.currentRoute);
+
+				if (_this2.firstRequest === true) {
+					_this2.request(ctx.path);
+					return;
+				}
+
+				_this2.firstRequest = true;
+				_this2.emit(_this2.REQUEST_END);
+			});
+
 			(0, _page2.default)();
 		}
 
@@ -1769,7 +2715,6 @@ var Router = function (_EventEmitter) {
 			_superagent2.default.get(url).set('X-Requested-With', 'XMLHttpRequest').end(function (err, response) {
 
 				if (err !== null) {
-
 					return;
 				}
 
@@ -1795,7 +2740,87 @@ var Router = function (_EventEmitter) {
 
 exports.default = new Router();
 
-},{"./../data/data.json":19,"eventemitter2":"eventemitter2","jquery":"jquery","page":"page","superagent":"superagent"}],15:[function(require,module,exports){
+},{"./../data/data.json":26,"eventemitter2":"eventemitter2","jquery":"jquery","page":"page","superagent":"superagent"}],21:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _jquery = require('jquery');
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _Events = require('./Events');
+
+var _Viewport = require('./Viewport');
+
+var _Viewport2 = _interopRequireDefault(_Viewport);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var SocialSharing = function () {
+	function SocialSharing() {
+		_classCallCheck(this, SocialSharing);
+
+		this.$links = (0, _jquery2.default)('.social-link');
+
+		this._initEvents();
+	}
+
+	// ------------------------------------------------------------o Private
+
+	_createClass(SocialSharing, [{
+		key: '_initEvents',
+		value: function _initEvents() {
+
+			(0, _jquery2.default)(document).on(_Events.MouseEvent.CLICK, '.social-link', this._onLinkClick.bind(this));
+		}
+	}, {
+		key: '_onLinkClick',
+		value: function _onLinkClick(e) {
+
+			e.preventDefault();
+
+			var $this = (0, _jquery2.default)(e.currentTarget);
+			var type = $this.attr('data-type');
+			var url = $this.attr('data-url');
+			var sharedUrl = '';
+
+			if (type === 'twitter') {
+				var text = $this.attr('data-text');
+				sharedUrl = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + url + '&original_referer=' + url;
+			} else if (type === 'facebook') {
+				sharedUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + url;
+			} else if (type === 'google') {
+				sharedUrl = 'hhttps://plus.google.com/share?url=' + url;
+			} else if (type === 'pinterest') {
+				var media = $this.attr('data-media');
+				sharedUrl = 'https://www.pinterest.com/pin/create/button/?media=' + media + '&url=' + url;
+			}
+
+			var width = 800;
+			var height = 500;
+
+			var leftPosition = _Viewport2.default.width / 2 - (width / 2 + 10);
+			var topPosition = _Viewport2.default.height / 2 - (height / 2 + 50);
+
+			var options = "status=no,height=" + height + ",width=" + width + ",resizable=yes,left=" + leftPosition + ",top=" + topPosition + ",screenX=" + leftPosition + ",screenY=" + topPosition + ",toolbar=no,menubar=no,scrollbars=no,location=no,directories=no";
+
+			window.open(sharedUrl, '', options);
+		}
+	}]);
+
+	return SocialSharing;
+}();
+
+exports.default = new SocialSharing();
+
+},{"./Events":16,"./Viewport":24,"jquery":"jquery"}],22:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1857,6 +2882,20 @@ var TextUtils = function () {
 
 			return str.charAt(0).toLowerCase() + str.slice(1);
 		}
+	}, {
+		key: 'pascalize',
+		value: function pascalize(str) {
+			return str.replace(/(\w)(\w*)/g, function (g0, g1, g2) {
+				return g1.toUpperCase() + g2.toLowerCase();
+			});
+		}
+	}, {
+		key: 'camelize',
+		value: function camelize(str) {
+			return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
+				return index == 0 ? letter.toLowerCase() : letter.toUpperCase();
+			}).replace(/\s+/g, '');
+		}
 	}]);
 
 	return TextUtils;
@@ -1864,7 +2903,7 @@ var TextUtils = function () {
 
 exports.default = new TextUtils();
 
-},{}],16:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2032,7 +3071,7 @@ var Tween = function (_EventEmitter) {
 
 exports.default = new Tween();
 
-},{"./Ease":9,"eventemitter2":"eventemitter2","raf":"raf"}],17:[function(require,module,exports){
+},{"./Ease":15,"eventemitter2":"eventemitter2","raf":"raf"}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2136,10 +3175,11 @@ var Viewport = function (_EventEmitter) {
 
 			this._checkResponsive();
 
-			this.width = this.$window.width();
-			this.height = this.$window.height();
+			this.width = this.$window[0].innerWidth;
+			this.height = this.$window[0].innerHeight;
 			this.screenWidth = screen.width;
 			this.screenHeight = screen.height;
+			this.scrollHeight = this.$body.height() - this.height;
 
 			this.updateScroll();
 
@@ -2259,7 +3299,6 @@ var Viewport = function (_EventEmitter) {
 				duration: 1000,
 				ease: 'quintOut',
 				onProgress: function onProgress(data) {
-					console.log(data.value);
 					_this2.$window.scrollTop(data.value);
 				},
 				onComplete: function onComplete(data) {
@@ -2278,7 +3317,7 @@ var Viewport = function (_EventEmitter) {
 
 exports.default = new Viewport();
 
-},{"./Events":10,"./Tween":16,"eventemitter2":"eventemitter2","jquery":"jquery"}],18:[function(require,module,exports){
+},{"./Events":16,"./Tween":23,"eventemitter2":"eventemitter2","jquery":"jquery"}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2374,7 +3413,7 @@ var ViewsManager = function (_EventEmitter) {
 		key: '_onRouterStart',
 		value: function _onRouterStart(res) {
 
-			var pageSlug = _TextUtils2.default.lowercaseFirstLetter(res.class.slug);
+			var pageSlug = res.class.view || res.class.slug;
 
 			if (this.currentClass && pageSlug === this.currentClass.slug) {
 				if (this.currentClass.shouldStayOnSamePage(res) === true) {
@@ -2419,11 +3458,12 @@ var ViewsManager = function (_EventEmitter) {
 			}
 
 			if (response) {
-
 				var template = (0, _jquery2.default)(response.text).filter('.page-container').html();
 
 				this.currentClass.loaded = true;
 				this.currentClass.enter(template);
+				document.title = (0, _jquery2.default)(response.text).filter('title').text();
+				_Viewport2.default.scrollTo(0, true);
 
 				this.emit(this.REQUEST_END + '.*');
 			} else {
@@ -2451,9 +3491,9 @@ var ViewsManager = function (_EventEmitter) {
 
 exports.default = new ViewsManager();
 
-},{"./../data/data.json":19,"./Page":13,"./Router":14,"./TextUtils":15,"./Viewport":17,"eventemitter2":"eventemitter2","jquery":"jquery"}],19:[function(require,module,exports){
-module.exports={"_routes":{"/":{"class":"Homepage","slug":"homepage"},"/agence":{"class":"Agency","slug":"agency"},"/talents":{"class":"Talents","slug":"talents"},"/perspectives":{"class":"Perspectives","slug":"perspectives"},"/contact":{"class":"Contact","slug":"contact"},"/etudes-de-cas/*":{"class":"CaseStudy","slug":"case-study"},"/articles/*":{"class":"Article","slug":"article"},"/jobs/*":{"class":"Job","slug":"job"}}}
-},{}],20:[function(require,module,exports){
+},{"./../data/data.json":26,"./Page":19,"./Router":20,"./TextUtils":22,"./Viewport":24,"eventemitter2":"eventemitter2","jquery":"jquery"}],26:[function(require,module,exports){
+module.exports={"analyticsId":"ua-","_routes":{"/":{"slug":"homepage"},"/agence-communication-digitale":{"slug":"agency"},"/talents":{"slug":"talents"},"/blog-creation-digitale":{"slug":"perspectives"},"/blog-creation-digitale/page/:pageNumber":{"slug":"perspectives"},"/contact":{"slug":"contact"},"/communiques-de-presse":{"slug":"press"},"/references/*":{"slug":"case-study","postType":"case-studies"},"/articles/*":{"slug":"article","postType":"articles"},"/jobs/*":{"slug":"job","postType":"jobs"},"/mentions-legales":{"slug":"legals","postType":"legals","view":"simple-page"},"/conditions-generales-de-vente":{"slug":"terms","postType":"terms","view":"simple-page"}}}
+},{}],27:[function(require,module,exports){
 'use strict';
 
 var _jquery = require('jquery');
@@ -2463,6 +3503,10 @@ var _jquery2 = _interopRequireDefault(_jquery);
 var _Keyboard = require('./core/Keyboard');
 
 var _Keyboard2 = _interopRequireDefault(_Keyboard);
+
+var _Cookies = require('./core/Cookies');
+
+var _Cookies2 = _interopRequireDefault(_Cookies);
 
 var _Viewport = require('./core/Viewport');
 
@@ -2480,22 +3524,45 @@ var _data = require('./data/data.json');
 
 var _data2 = _interopRequireDefault(_data);
 
+var _SocialSharing = require('./core/SocialSharing');
+
+var _SocialSharing2 = _interopRequireDefault(_SocialSharing);
+
 var _MainHeader = require('./components/MainHeader');
 
 var _MainHeader2 = _interopRequireDefault(_MainHeader);
+
+var _MainFooter = require('./components/MainFooter');
+
+var _MainFooter2 = _interopRequireDefault(_MainFooter);
+
+var _ButtonBackToTop = require('./components/ButtonBackToTop');
+
+var _ButtonBackToTop2 = _interopRequireDefault(_ButtonBackToTop);
+
+var _CookieBand = require('./components/CookieBand');
+
+var _CookieBand2 = _interopRequireDefault(_CookieBand);
+
+var _PopinInscription = require('./components/PopinInscription');
+
+var _PopinInscription2 = _interopRequireDefault(_PopinInscription);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Import views
 
 
+// ---o Init the rest of the core
+
+
 // ---o Init keyboard events
-var requiredPages = {'agency/index': require('./pages/agency/index.js'),'article/index': require('./pages/article/index.js'),'case-study/index': require('./pages/case-study/index.js'),'contact/index': require('./pages/contact/index.js'),'homepage/index': require('./pages/homepage/index.js'),'job/index': require('./pages/job/index.js'),'perspectives/index': require('./pages/perspectives/index.js'),'talents/index': require('./pages/talents/index.js')};
+var requiredPages = {'agency/index': require('./pages/agency/index.js'),'article/index': require('./pages/article/index.js'),'case-study/index': require('./pages/case-study/index.js'),'contact/index': require('./pages/contact/index.js'),'homepage/index': require('./pages/homepage/index.js'),'job/index': require('./pages/job/index.js'),'legals/index': require('./pages/legals/index.js'),'p404/index': require('./pages/p404/index.js'),'perspectives/index': require('./pages/perspectives/index.js'),'press/index': require('./pages/press/index.js'),'simple-page/index': require('./pages/simple-page/index.js'),'simplePage/index': require('./pages/simplePage/index.js'),'talents/index': require('./pages/talents/index.js'),'terms/index': require('./pages/terms/index.js')};
 
 // ---o Import main elements 
 
 
-// ---o Init the rest of the core
+// ---o Init cookies
 // ---o Core
 
 
@@ -2518,8 +3585,13 @@ for (var key in requiredPages) {
 // ---o Order init for cycling thing
 _ViewsManager2.default.init(pages);
 _Router2.default.init();
+_ButtonBackToTop2.default.init();
+_CookieBand2.default.init();
+_MainHeader2.default.init();
+_MainFooter2.default.init();
+_PopinInscription2.default.init();
 
-},{"./components/MainHeader":5,"./core/Keyboard":12,"./core/Router":14,"./core/Viewport":17,"./core/ViewsManager":18,"./data/data.json":19,"./pages/agency/index.js":22,"./pages/article/index.js":23,"./pages/case-study/index.js":24,"./pages/contact/index.js":25,"./pages/homepage/index.js":26,"./pages/job/index.js":27,"./pages/perspectives/index.js":28,"./pages/talents/index.js":29,"jquery":"jquery"}],21:[function(require,module,exports){
+},{"./components/ButtonBackToTop":2,"./components/CookieBand":4,"./components/MainFooter":8,"./components/MainHeader":9,"./components/PopinInscription":11,"./core/Cookies":14,"./core/Keyboard":18,"./core/Router":20,"./core/SocialSharing":21,"./core/Viewport":24,"./core/ViewsManager":25,"./data/data.json":26,"./pages/agency/index.js":29,"./pages/article/index.js":30,"./pages/case-study/index.js":31,"./pages/contact/index.js":32,"./pages/homepage/index.js":33,"./pages/job/index.js":34,"./pages/legals/index.js":35,"./pages/p404/index.js":36,"./pages/perspectives/index.js":37,"./pages/press/index.js":38,"./pages/simple-page/index.js":39,"./pages/simplePage/index.js":40,"./pages/talents/index.js":41,"./pages/terms/index.js":42,"jquery":"jquery"}],28:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2562,6 +3634,10 @@ var _Accordion = require('./../components/Accordion');
 
 var _Accordion2 = _interopRequireDefault(_Accordion);
 
+var _Carousel = require('./../components/Carousel');
+
+var _Carousel2 = _interopRequireDefault(_Carousel);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2598,6 +3674,7 @@ var MalabarPage = function (_Page) {
 			this._initGalleries();
 			this._initPopins();
 			this._initAccordions();
+			this._initCarousels();
 			this._loadPictures();
 		}
 	}, {
@@ -2690,6 +3767,19 @@ var MalabarPage = function (_Page) {
 				});
 			}
 		}
+	}, {
+		key: '_initCarousels',
+		value: function _initCarousels() {
+			var _this8 = this;
+
+			var carousels = this.$container.find('.carousel');
+			if (carousels.length) {
+				this.carousels = [];
+				carousels.each(function (key) {
+					_this8.carousels.push(new _Carousel2.default(carousels.eq(key)));
+				});
+			}
+		}
 
 		// --------------------------------------------------------------o Listeners
 
@@ -2701,7 +3791,7 @@ var MalabarPage = function (_Page) {
 
 exports.default = MalabarPage;
 
-},{"./../components/Accordion":1,"./../components/Gallery":2,"./../components/GridGallery":3,"./../components/HeroPicture":4,"./../components/Popin":6,"./../components/Slider":7,"./../core/Page":13,"jquery":"jquery"}],22:[function(require,module,exports){
+},{"./../components/Accordion":1,"./../components/Carousel":3,"./../components/Gallery":5,"./../components/GridGallery":6,"./../components/HeroPicture":7,"./../components/Popin":10,"./../components/Slider":12,"./../core/Page":19,"jquery":"jquery"}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2721,6 +3811,10 @@ var _Events = require('./../../core/Events');
 var _Slider = require('./../../components/Slider');
 
 var _Slider2 = _interopRequireDefault(_Slider);
+
+var _MainHeader = require('./../../components/MainHeader');
+
+var _MainHeader2 = _interopRequireDefault(_MainHeader);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2754,6 +3848,8 @@ var Agency = function (_MalabarPage) {
 			// ---o Init breadcrumb
 			this.slider = this.sliders[0];
 			this.$breadcrumbItems.eq(this.slider.currentIndex).addClass('active');
+
+			this.$bottomButton = this.$container.find('.button-bottom');
 		}
 	}, {
 		key: '_initEvents',
@@ -2764,6 +3860,8 @@ var Agency = function (_MalabarPage) {
 			this.$breadcrumbItems.on(_Events.MouseEvent.CLICK, this._onBreadcrumbItemClick.bind(this));
 
 			this.slider.on(_Slider2.default.CHANGE + '.agency', this._onSliderChange.bind(this));
+
+			this.$bottomButton.on(_Events.MouseEvent.CLICK, this._onBottomButtonClick);
 		}
 
 		// --------------------------------------------------------------o Listeners
@@ -2778,6 +3876,12 @@ var Agency = function (_MalabarPage) {
 			this.$breadcrumbItems.filter('.active').removeClass('active');
 			this.$breadcrumbItems.eq(this.slider.currentIndex).addClass('active');
 		}
+	}, {
+		key: '_onBottomButtonClick',
+		value: function _onBottomButtonClick() {
+
+			_MainHeader2.default.openWorks();
+		}
 
 		// --------------------------------------------------------------o Public
 
@@ -2788,7 +3892,7 @@ var Agency = function (_MalabarPage) {
 
 exports.default = Agency;
 
-},{"./../../components/Slider":7,"./../../core/Events":10,"./../../lib/MalabarPage":21}],23:[function(require,module,exports){
+},{"./../../components/MainHeader":9,"./../../components/Slider":12,"./../../core/Events":16,"./../../lib/MalabarPage":28}],30:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2821,7 +3925,7 @@ var Article = function (_MalabarPage) {
 
 exports.default = Article;
 
-},{"./../../lib/MalabarPage":21}],24:[function(require,module,exports){
+},{"./../../lib/MalabarPage":28}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2884,7 +3988,7 @@ var CaseStudy = function (_MalabarPage) {
 
 exports.default = CaseStudy;
 
-},{"./../../lib/MalabarPage":21}],25:[function(require,module,exports){
+},{"./../../lib/MalabarPage":28}],32:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2917,7 +4021,7 @@ var Contact = function (_MalabarPage) {
 
 exports.default = Contact;
 
-},{"./../../lib/MalabarPage":21}],26:[function(require,module,exports){
+},{"./../../lib/MalabarPage":28}],33:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2928,9 +4032,23 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
+var _jquery = require('jquery');
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _raf = require('raf');
+
+var _raf2 = _interopRequireDefault(_raf);
+
 var _MalabarPage2 = require('./../../lib/MalabarPage');
 
 var _MalabarPage3 = _interopRequireDefault(_MalabarPage2);
+
+var _Viewport = require('./../../core/Viewport');
+
+var _Viewport2 = _interopRequireDefault(_Viewport);
+
+var _Events = require('./../../core/Events');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2958,16 +4076,112 @@ var Homepage = function (_MalabarPage) {
 		value: function _initContent() {
 
 			_get(Homepage.prototype.__proto__ || Object.getPrototypeOf(Homepage.prototype), '_initContent', this).call(this);
+
+			this._scrollTop = {
+				current: 0,
+				destination: 0,
+				prev: 0
+			};
+
+			this._initShapes();
 		}
 	}, {
 		key: '_initEvents',
 		value: function _initEvents() {
 
 			_get(Homepage.prototype.__proto__ || Object.getPrototypeOf(Homepage.prototype), '_initEvents', this).call(this);
+
+			_Viewport2.default.on(_Events.Event.SCROLL + '.heroPicture', this._onScroll.bind(this));
+		}
+	}, {
+		key: '_initShapes',
+		value: function _initShapes() {
+
+			var types = ['circle', 'triangle', 'band'];
+
+			this.$shapesContainer = this.$container.find('.shapes-container');
+			this.shapes = [];
+			var shapesContainerWidth = this.$shapesContainer.width();
+			var shapesContainerHeight = this.$shapesContainer.height();
+			var shapesNumber = 10;
+
+			for (var i = 0; i < shapesNumber; i++) {
+				var type = types[~~(Math.random() * types.length)];
+				var $shape = (0, _jquery2.default)('<div class="' + type + '"><span></span></div>');
+				var $innerShape = $shape.find('span');
+				var width = 20;
+				var height = 20;
+
+				if (type === 'band') {
+					width = ~~(20 + Math.random() * 20);
+					height = ~~(5 + Math.random() * 10);
+					$innerShape.css('transform', 'rotate(' + ~~(Math.random() * 360) + 'deg)');
+				} else if (type === 'circle') {
+					width = ~~(10 + Math.random() * 30);
+					height = width;
+				} else if (type === 'triangle') {
+					width = 0;
+					height = 0;
+					var size = ~~(10 + Math.random() * 20);
+					$innerShape.css({
+						'border-left': size + 'px solid transparent',
+						'border-right': size + 'px solid transparent',
+						'border-bottom-width': size + 'px',
+						'transform': 'rotate(' + ~~(Math.random() * 360) + 'deg)'
+					});
+				}
+
+				$innerShape.css({
+					'height': height,
+					'width': width,
+					'opacity': Math.random() * 0.8 + 0.2
+				});
+
+				$shape.css({
+					'left': 20 + Math.random() * (shapesContainerWidth - 50),
+					'top': 20 + Math.random() * (shapesContainerHeight - 50)
+				});
+
+				this.$shapesContainer.append($shape);
+				this.shapes.push({
+					speed: 2 + Math.random() * 5 - 3,
+					item: $shape
+				});
+			}
+		}
+	}, {
+		key: '_updateShapesPosition',
+		value: function _updateShapesPosition() {
+			var _this2 = this;
+
+			this._scrollTop.current += (this._scrollTop.destination - this._scrollTop.current) * 0.1;
+
+			if (this._scrollTop.current === this._scrollTop.destination) {
+				return;
+			}
+
+			if (Math.abs(this._scrollTop.destination - this._scrollTop.current) < 0.1) {
+				this._scrollTop.current = this._scrollTop.destination;
+			}
+
+			_jquery2.default.each(this.shapes, function (key, shape) {
+				var position = _this2._scrollTop.current / _Viewport2.default.scrollHeight * shape.speed * 100;
+				shape.item.css('transform', 'translate3d(0, ' + position + 'px, 0)');
+			});
+
+			(0, _raf2.default)(this._updateShapesPosition.bind(this));
 		}
 
 		// --------------------------------------------------------------o Listeners
 
+	}, {
+		key: '_onScroll',
+		value: function _onScroll(scrollTop) {
+
+			this._scrollTop.destination = scrollTop.current;
+
+			this._updateShapesPosition();
+		}
 
 		// --------------------------------------------------------------o Public
 
@@ -2984,7 +4198,7 @@ var Homepage = function (_MalabarPage) {
 
 exports.default = Homepage;
 
-},{"./../../lib/MalabarPage":21}],27:[function(require,module,exports){
+},{"./../../core/Events":16,"./../../core/Viewport":24,"./../../lib/MalabarPage":28,"jquery":"jquery","raf":"raf"}],34:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3017,12 +4231,82 @@ var Job = function (_MalabarPage) {
 
 exports.default = Job;
 
-},{"./../../lib/MalabarPage":21}],28:[function(require,module,exports){
+},{"./../../lib/MalabarPage":28}],35:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+
+var _MalabarPage2 = require('./../../lib/MalabarPage');
+
+var _MalabarPage3 = _interopRequireDefault(_MalabarPage2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var legals = function (_MalabarPage) {
+	_inherits(legals, _MalabarPage);
+
+	function legals() {
+		_classCallCheck(this, legals);
+
+		return _possibleConstructorReturn(this, (legals.__proto__ || Object.getPrototypeOf(legals)).apply(this, arguments));
+	}
+
+	return legals;
+}(_MalabarPage3.default);
+
+exports.default = legals;
+
+},{"./../../lib/MalabarPage":28}],36:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _MalabarPage2 = require('./../../lib/MalabarPage');
+
+var _MalabarPage3 = _interopRequireDefault(_MalabarPage2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var p404 = function (_MalabarPage) {
+	_inherits(p404, _MalabarPage);
+
+	function p404() {
+		_classCallCheck(this, p404);
+
+		return _possibleConstructorReturn(this, (p404.__proto__ || Object.getPrototypeOf(p404)).apply(this, arguments));
+	}
+
+	return p404;
+}(_MalabarPage3.default);
+
+exports.default = p404;
+
+},{"./../../lib/MalabarPage":28}],37:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
 var _MalabarPage2 = require('./../../lib/MalabarPage');
 
@@ -3045,12 +4329,130 @@ var Perspectives = function (_MalabarPage) {
 		return _possibleConstructorReturn(this, (Perspectives.__proto__ || Object.getPrototypeOf(Perspectives)).apply(this, arguments));
 	}
 
+	_createClass(Perspectives, [{
+		key: '_render',
+
+
+		// --------------------------------------------------------------o Private
+
+		value: function _render() {
+			_get(Perspectives.prototype.__proto__ || Object.getPrototypeOf(Perspectives.prototype), '_render', this).call(this);
+
+			console.log(this.$container);
+		}
+
+		// --------------------------------------------------------------o Listeners
+
+
+		// --------------------------------------------------------------o Public
+
+	}]);
+
 	return Perspectives;
 }(_MalabarPage3.default);
 
 exports.default = Perspectives;
 
-},{"./../../lib/MalabarPage":21}],29:[function(require,module,exports){
+},{"./../../lib/MalabarPage":28}],38:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _MalabarPage2 = require('./../../lib/MalabarPage');
+
+var _MalabarPage3 = _interopRequireDefault(_MalabarPage2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var press = function (_MalabarPage) {
+	_inherits(press, _MalabarPage);
+
+	function press() {
+		_classCallCheck(this, press);
+
+		return _possibleConstructorReturn(this, (press.__proto__ || Object.getPrototypeOf(press)).apply(this, arguments));
+	}
+
+	return press;
+}(_MalabarPage3.default);
+
+exports.default = press;
+
+},{"./../../lib/MalabarPage":28}],39:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _MalabarPage2 = require('./../../lib/MalabarPage');
+
+var _MalabarPage3 = _interopRequireDefault(_MalabarPage2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SimplePage = function (_MalabarPage) {
+	_inherits(SimplePage, _MalabarPage);
+
+	function SimplePage() {
+		_classCallCheck(this, SimplePage);
+
+		return _possibleConstructorReturn(this, (SimplePage.__proto__ || Object.getPrototypeOf(SimplePage)).apply(this, arguments));
+	}
+
+	return SimplePage;
+}(_MalabarPage3.default);
+
+exports.default = SimplePage;
+
+},{"./../../lib/MalabarPage":28}],40:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _MalabarPage2 = require('./../../lib/MalabarPage');
+
+var _MalabarPage3 = _interopRequireDefault(_MalabarPage2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var simplePage = function (_MalabarPage) {
+	_inherits(simplePage, _MalabarPage);
+
+	function simplePage() {
+		_classCallCheck(this, simplePage);
+
+		return _possibleConstructorReturn(this, (simplePage.__proto__ || Object.getPrototypeOf(simplePage)).apply(this, arguments));
+	}
+
+	return simplePage;
+}(_MalabarPage3.default);
+
+exports.default = simplePage;
+
+},{"./../../lib/MalabarPage":28}],41:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3083,6 +4485,39 @@ var Talents = function (_MalabarPage) {
 
 exports.default = Talents;
 
-},{"./../../lib/MalabarPage":21}]},{},[20])
+},{"./../../lib/MalabarPage":28}],42:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _MalabarPage2 = require('./../../lib/MalabarPage');
+
+var _MalabarPage3 = _interopRequireDefault(_MalabarPage2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Terms = function (_MalabarPage) {
+	_inherits(Terms, _MalabarPage);
+
+	function Terms() {
+		_classCallCheck(this, Terms);
+
+		return _possibleConstructorReturn(this, (Terms.__proto__ || Object.getPrototypeOf(Terms)).apply(this, arguments));
+	}
+
+	return Terms;
+}(_MalabarPage3.default);
+
+exports.default = Terms;
+
+},{"./../../lib/MalabarPage":28}]},{},[27])
 
 //# sourceMappingURL=maps/scripts.js.map

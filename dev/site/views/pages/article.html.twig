@@ -1,10 +1,79 @@
 {% extends ajax ? "default/empty.html.twig" : "default/layout.html.twig" %}
 
 {% block content %}
+	
+	<div class="page-inner page-content">
 
-	<header>
-		<h1>{{ data.header_subhead }}</h1>
-		<h2>{{ data.header_title }}</h2>
-	</header>
+		<div class="center">
+			<header>
+				<h1 class="page-title">{{ data.title }}</h1>
+			</header>
+
+			<div class="text-container">
+				<img src="{{ data.picture.url }}" class="main-picture" />
+				{{ data.content|raw }}
+			</div>
+			<div class="sidebar">
+				<div class="author">
+					<img src="{{ data.author.picture }}" />
+					<div class="info">
+						<p class="name">{{ data.author.name }}</p>
+						<p class="date">{{ time_ago(data.post_date) }}</p>
+					</div>
+				</div>
+				{% if data.tags %}
+				<div class="tags">
+					<p class="sidebar-title">Tags</p>
+					<ul>
+						{% for tag in data.tags %}
+						<li>{{ tag.name }}</li>
+						{% endfor %}
+					</ul>
+				</div>
+				{% endif %}
+				<div class="social">
+					<p class="sidebar-title">Partager</p>
+					<ul>
+						<li class="social-link" data-type="twitter" data-url="{{ data.permalink }}" data-text="{{ data.title ~ ' — Malabar Design — ' ~ data.permalink}}">
+							{{ icons('icon-twitter') }}
+						</li>
+						<li class="social-link" data-type="facebook" data-url="{{ data.permalink }}">
+							{{ icons('icon-facebook') }}
+						</li>
+					</ul>
+				</div>	
+			</div>
+		</div>
+	</div>
+
+	<div class="more-articles">
+		<div class="center">
+			<p class="title">Articles similaires</p>
+			<div class="articles-list">
+				{% for article in data.moreArticles %}
+				<a href="{{ article.permalink }}" class="card-article">
+					<figure>
+						<img src="{{ article.picture }}" />
+						<div class="hover">
+							<p>
+								Lire
+								{% include 'components/arrow.html.twig' with {direction: 'right', type: 'long'} %}
+							</p>
+						</div>
+					</figure>
+					<div class="info">
+						<p class="title">{{ article.title }}</p>
+						{% if article.tag %}
+						<p class="tag">{{ article.tag.name }}</p>
+						{% endif %}
+					</div>
+				</a>
+				{% endfor %}
+			</div>
+
+			<a href="{{  ROOT_WEB ~ '/perspectives' }}" class="back-button">{% include 'components/arrow.html.twig' with {direction: 'left'} %} Retour</a>
+
+		</div>
+	</div>
 
 {% endblock %}

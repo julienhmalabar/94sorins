@@ -1,20 +1,23 @@
 <div class="grid-gallery">
+	
+	<div class="block block-about">
+		<header>
+			<p class="block-title">{{ data.description_title }}</p>
+		</header>
+		<div class="text">{{ data.description_text }}</div>
+		<p class="sub-text">
+			{{ data.description_sub_text }}
+			<img src="{{ ROOT_WEB ~ '/assets/img/talents-signature.jpg' }}" />
+		</p>
+	</div>
 
 	<ul class="grid">
-	
-		<div class="block block-description">
-			<header>
-				<p class="block-title">{{ data.description_title }}</p>
-			</header>
-			<div class="text">{{ data.description_text }}</div>
-			<p class="sub-text">{{ data.description_sub_text }}</p>
-		</div>
 
 		{% for picture in pictures|slice(0,4) %}
 		<li class="popin-button popin-button-gallery">
 			<img data-src="{{ picture.picture.url }}" />
 			<div class="fullscreen-button">
-				{{ icon('fullscreen-icon') }}
+				{{ icons('icon-fullscreen') }}
 				<span>Voir la gallerie</span>
 			</div>
 		</li>

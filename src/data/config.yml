@@ -1,27 +1,36 @@
+analyticsId: 'ua-'
+
 # Routes
 _routes: 
     '/': 
-        class: Homepage
         slug: homepage
-    '/agence':
-        class: Agency
+    '/agence-communication-digitale':
         slug: agency
     '/talents':
-        class: Talents
         slug: talents
-    '/perspectives':
-        class: Perspectives
+    '/blog-creation-digitale':
+        slug: perspectives
+    '/blog-creation-digitale/page/:pageNumber':
         slug: perspectives
     '/contact':
-        class: Contact
         slug: contact
-    '/etudes-de-cas/*':
-        class: CaseStudy
+    '/communiques-de-presse':
+        slug: press
+    '/references/*':
         slug: case-study
+        postType: case-studies
     '/articles/*':
-        class: Article
         slug: article
+        postType: articles
     '/jobs/*':
-        class: Job
         slug: job
+        postType: jobs
+    '/mentions-legales':
+        slug: legals
+        postType: legals
+        view: simple-page
+    '/conditions-generales-de-vente':
+        slug: terms
+        postType: terms
+        view: simple-page
 

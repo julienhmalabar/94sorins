@@ -3,15 +3,42 @@
 {% block content %}
 
 	{% include 'components/hero-picture.html.twig' with {
-		subhead: "Le temps d'y voir plus clair",
-		title: 'Perspectives',
-		picture: ASSETS ~ 'img/perspectives-hero-picture.jpg'
+		subhead: data.info.subhead,
+		title: data.info.title,
+		picture: data.info.background.url,
+		video: data.header_background_video.url,
+		small: true
 	} %}
 
-	<div class="page-content">
-		<div class="center">
-			Content
+	<div class="page-inner">
+
+		<div class="block block-about">
+			<div class="text">{{ data.info.content|raw }}</div>
 		</div>
+
+		{% include 'components/social-grid.html.twig' with {
+			items: global.social_feed,
+			length: 16
+		} %}
+
+		<nav class="pagination">
+			{% if data.page != 1 %}
+			<a href="">Précédent</a>
+			<span>...</span>
+			{% else %}
+			<span>Précédent</span>
+			{% endif %}
+
+			
+
+			{% if data.page != data.lastPage %}
+			<span>...</span>
+			<a href="">Suivant</a>
+			{% else %}
+			<span>Suivant</span>
+			{% endif %}
+
+		</nav>
 	</div>
 
 {% endblock %}

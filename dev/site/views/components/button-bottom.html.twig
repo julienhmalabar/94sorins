@@ -1,0 +1,29 @@
+<div class="button-bottom{% if fix %} fix{% endif %}">
+	{% if link %}<a href="{{ link }}">{% endif %}
+	
+	<div class="picture">
+		<div class="outer-mask mask">
+			<div class="inner-mask mask">
+				<img src="{{ src }}" />
+			</div>
+		</div>
+	</div>
+
+	<div class="text text-black">
+		<div class="outer-mask mask">
+			<div class="inner-mask mask">
+				<div>{{ text|raw }}</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="text text-white">
+		<div class="outer-mask mask">
+			<div class="inner-mask mask">
+				<div>{{ text|raw }}</div>
+			</div>
+		</div>
+	</div>
+
+	{% if link %}</a>{% endif %}
+</div>

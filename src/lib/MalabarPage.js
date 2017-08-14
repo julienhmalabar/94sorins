@@ -9,6 +9,7 @@ import GridGallery from 'components/GridGallery';
 import Gallery from 'components/Gallery';
 import Popin from 'components/Popin';
 import Accordion from 'components/Accordion';
+import Carousel from 'components/Carousel';
 
 
 class MalabarPage extends Page {
@@ -25,6 +26,7 @@ class MalabarPage extends Page {
 		this._initGalleries();
 		this._initPopins();
 		this._initAccordions();
+		this._initCarousels();
 		this._loadPictures();
 
 	}
@@ -102,6 +104,17 @@ class MalabarPage extends Page {
 			this.accordions = [];
 			accordions.each( (key) => {
 				this.accordions.push(new Accordion(accordions.eq(key)));
+			})
+		}
+	}
+
+	_initCarousels() {
+
+		let carousels = this.$container.find('.carousel');
+		if (carousels.length) {
+			this.carousels = [];
+			carousels.each( (key) => {
+				this.carousels.push(new Carousel(carousels.eq(key)));
 			})
 		}
 	}

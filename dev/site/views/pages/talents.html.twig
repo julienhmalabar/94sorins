@@ -5,14 +5,64 @@
 	{% include 'components/hero-picture.html.twig' with {
 		subhead: data.header_subhead,
 		title: data.header_title,
-		picture: data.header_background.url
+		picture: data.header_background.url,
+		video: data.header_background_video.url
 	} %}
 
-	<div class="page-content">
-		<div class="center">
-			{% include 'components/grid-gallery.html.twig' with {
-				pictures: data.pictures_gallery
-			} %}
+	<div class="page-inner">
+		{% include 'components/grid-gallery.html.twig' with {
+			pictures: data.pictures_gallery
+		} %}
+
+		<div class="jobs-cards">
+			<div class="center">
+				<p class="title">Nos offres d'emploi en cours</p>
+				<div class="jobs-list">
+					{% for job in data.jobs %}
+					<div class="card-job">
+						<figure>
+							<img src="{{ job.picture }}" />
+						</figure>
+						<div class="info">
+							<p class="title">{{ job.title }}</p>
+							{% if job.type %}
+							<p class="type">{{ job.type }}</p>
+							{% endif %}
+							<div class="text">
+								{{ job.text }}
+								<a href="{{ job.permalink }}" class="read-more">Lire la suite</a>
+							</div>
+						</div>
+
+						<p class="date">{{ time_ago(job.post_date) }}</p>
+
+						<ul class="social">
+							<li class="social-link" data-type="twitter" data-url="{{ job.permalink }}" data-text="{{ job.title ~ ' — Malabar Design — ' ~ job.permalink}}">
+								{{ icons('icon-twitter') }}
+							</li>
+							<li class="social-link" data-type="facebook" data-url="{{ job.permalink }}">
+								{{ icons('icon-facebook') }}
+							</li>
+						</ul>
+					</div>
+					{% endfor %}
+
+					<div class="card-job card-application">
+						<figure>
+							<img src="{{ data.application.picture }}" />
+						</figure>
+						<div class="info">
+							<p class="title">{{ data.application.title }}</p>
+							<div class="text">
+								{{ data.application.text|raw }}
+							</div>
+							<a href="mailto:{{ data.application.button.link }}">{{ data.application.button.text }} {% include 'components/arrow.html.twig' with {direction: 'right'} %}</a>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
 		</div>
 	</div>
 

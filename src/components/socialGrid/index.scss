@@ -1,0 +1,166 @@
+.social-grid {
+	max-width: 1200px;
+	margin: 0 auto;
+
+	.items-group {
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		position: relative;
+	}
+	
+	.item {
+		position: relative;
+		width: 25%;
+
+		.outer {
+			position: relative;
+			padding: calc(100% - 15px) 15px 15px;
+			box-sizing: border-box;
+		}
+
+		.inner {
+			position: absolute;
+			background: $white-color;
+			width: calc(100% - 60px);
+			height: calc(100% - 60px);
+			top: 15px;
+			left: 15px;
+			padding: 15px;
+			overflow: hidden;
+  			background-size: cover;
+  			background-position: center;
+		}
+
+		img {
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			top: 0;
+			left: 0;
+		}
+	}
+
+	svg {
+		position: absolute;
+		bottom: 15px;
+		left: 15px;
+		width: 16px;
+		height: 16px;
+	}
+
+	.icon-twitter {
+		fill: #1da1f2;
+	}
+
+	.icon-instagram {
+		fill: $white-color;
+	}
+
+	.items-group {
+		&:nth-child(2n+1) {			
+			.item {
+				&:nth-child(1) {
+					margin-left: 25%;
+					margin-right: 50%;
+				}
+				&:nth-child(3) {
+					width: 50%;
+					position: absolute;
+					top: 0;
+					left: 50%;
+				}
+			}
+		}
+		&:nth-child(2n) {			
+			.item {
+				&:nth-child(1) {
+					width: 50%;
+					position: absolute;
+					top: 0;
+					left: 0;
+				}
+				&:nth-child(2),
+				&:nth-child(4), {
+					margin-left: 50%;
+				}
+			}
+		}
+	}
+
+	// --- o Inside
+
+	.content {
+		position: absolute;
+		bottom: 15px;
+		left: 15px;
+		width: calc(100% - 30px);
+		color: $white-color;
+
+		.title {
+			font: 700px 18px/22px $font-family;
+		}
+	}
+
+	.text {
+		font: 400 16px/24px $font-family;
+	}
+
+	.author {
+		display: block;
+		color: $grey-light-color;
+		margin-bottom: 24px;
+
+		&:before {
+			display: inline-block;
+			content: '';
+			height: 1px;
+			width: 30px;
+			background: $grey-light-color;
+			position: relative;
+			top: -3px;
+			margin-right: 10px;
+		}
+	}
+
+}
+
+// -----------------------------------------------------------------------o Responsive
+
+@media all and (max-width: $mobile-size) {
+	.social-grid {
+		.items-group:nth-child(n) {
+			&:nth-child(n+2) {
+				display: none;
+			}
+
+			.item:nth-child(n) {
+				position: relative;
+				top: 0;
+				left: 0;
+				margin: 0;		
+				width: 100%;
+				margin-bottom: 20px;
+
+				.outer {					
+					width: 100%;
+					height: calc(100vw - 40px);
+					margin: 0;
+					padding: 0;
+				}
+
+				.inner {
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+					padding: 0;
+				}
+
+				&:nth-child(n+4) {
+					display: none;
+				}
+			}
+		}
+	}
+}

@@ -1,29 +1,40 @@
 <div class="slider" {% if timer %}data-timer="{{ timer }}"{% endif %}>
-	<ul>
-		{% for slide in slides %}
-		<li>
-			<div class="slide-content">
-				<p class="title"><span class="inner">{{ slide.title }}</span></p>
-				{% if slide.text %}
-				<div class="text"><div class="inner">{{ slide.text|raw }}</div></div>
-				{% endif %}
-				{% if slide.link %}
-				<a href="{{ slide.link }}">
-					<span class="inner">
-						Découvrir
-						{% include 'components/arrow.html.twig' with {type: 'long'} %}
-					</span>
-				</a>
-				{% endif %}
-			</div>
-			<div class="picture-container">
-				<img src="{% if slide.picture %}{{ slide.picture.url }}{% else %}{{ ASSETS ~ 'temp/pic.jpg' }}{% endif %}" />
-			</div>
-		</li>
-		{% endfor %}
-	</ul>
-	<nav class="slider-nav">
-		<div class="slider-nav-item slider-prev">{% include 'components/arrow.html.twig' with {direction: 'left'} %}</div>
-		<div class="slider-nav-item slider-next">{% include 'components/arrow.html.twig' %}</div>
-	</nav>
+	<div class="slider-inner">
+		<ul class="slides">
+			{% for slide in slides %}
+			<li>
+				<div class="slide-content">
+					<p class="number"><span class="inner">{{ loop.index < 10 ? '0' ~ loop.index : loop.index }}</span></p>
+					<p class="title"><span class="inner">{{ slide.title }}</span></p>
+					{% if slide.text and noDescription != true %}
+					<div class="text"><div class="inner">{{ slide.text|raw }}</div></div>
+					{% endif %}
+					{% if slide.link %}
+					<a href="{{ slide.link }}">
+						<span class="inner">
+							Découvrir
+							{% include 'components/arrow.html.twig' with {type: 'long'} %}
+						</span>
+					</a>
+					{% endif %}
+				</div>
+				<div class="picture-container">
+					<div class="picture-inner">
+						<img src="{% if slide.picture %}{{ slide.picture.url }}{% else %}{{ ASSETS ~ 'temp/pic.jpg' }}{% endif %}" />
+					</div>
+				</div>
+			</li>
+			{% endfor %}
+		</ul>
+		<nav class="slider-nav">
+			<div class="slider-nav-item slider-prev">{% include 'components/arrow.html.twig' with {direction: 'left'} %}</div>
+			<div class="slider-nav-item slider-next">{% include 'components/arrow.html.twig' %}</div>
+		</nav>
+
+		<ul class="slider-steps">
+			{% for slide in slides %}
+			<li></li>
+			{% endfor %}
+		</ul>
+	</div>
 </div>

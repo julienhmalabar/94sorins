@@ -4,11 +4,14 @@ error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
 require '../vendor/autoload.php';
+
 require '../config.php';
 
 require('./utils/CacheManager.php');
+require('./utils/Instagram.php');
 require('./models/Post.php');
 require('./models/Posts.php');
+require('./models/Social.php');
 
 // ------------------------------------------------o Create App
 

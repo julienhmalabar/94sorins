@@ -1,19 +1,16 @@
 .page-homepage {
-	background: red;
+
+	.page-inner {
+		background: $white-color;
+	}
 
 	.block-about {
-		max-width: 800px;
-		margin: 0 auto;
-		text-align: center;
-		color: $grey-dark;
-
-		.text {
-			font: 300 36px/42px $font-family;
-		}
+		position: relative;
 
 		.sub-text {
 			font: 300 18px/24px $font-family;
-			color: $grey-light;
+			color: $grey-light-color;
+			margin-top: 50px;
 
 			&:before {
 				display: inline-block;
@@ -21,11 +18,60 @@
 				height: 1px;
 				width: 100px;
 				margin-right: 20px;
-				background: $grey-light;
+				background: $grey-light-color;
 				position: relative;
 				top: -5px;
 			}
 		}
 	}
+
+	.block-social {
+		//max-width: 1200px;
+		margin: 130px auto 0;
+	}
+
+	.block-slider {
+		position: relative;
+		z-index: 3;
+	}
+
+	.block-social {
+		background: $background-color;
+		padding-top: 200px;
+		margin-top: -60px;
+		padding-bottom: 130px;
+	}
 }
 	
+
+
+
+
+
+// -----------------------------------------------------------------------o Responsive
+
+@media all and (max-width: $mobile-size) {
+
+	.page-homepage {
+		.block-about {
+			.sub-text {
+				font-size: 14px;
+
+				&:after {
+					width: 50px;
+				}
+			}
+		}
+
+		.block-social {
+			margin-top: -120px;
+		}
+
+		.shapes-container {
+			div:nth-child(2n) {
+				display: none;
+			}
+		}
+	}
+
+}

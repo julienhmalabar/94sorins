@@ -10,7 +10,7 @@ browserSync:
 data: 
     src: data/
     dest: 
-        - ./dev/site/config.json
+        - ./dev/config.json
         - ./src/data/data.json
 
 # ---o Compile scripts to one single file

@@ -13,16 +13,22 @@ class Slider extends Component {
 
 		super._initContent();
 
-		this.$slides = this.$container.find('li');	
+		this.$slides = this.$container.find('.slides li');	
 		this.$nav = this.$container.find('.slider-nav');
 
-		if (this.$nav) {
+		if (this.$nav.length) {
 			this.$navItems = this.$nav.find('.slider-nav-item');
 		}
 
 		if (this.$container.attr('data-timer')) {
 			this._sliderDuration = this.$container.attr('data-timer');
 			this._launchTimer();
+		}
+
+		this.$stepsNav = this.$container.find('.slider-steps');
+
+		if (this.$stepsNav.length) {
+			this.$steps = this.$stepsNav.find('li');
 		}
 
 		this.prevIndex = undefined;
@@ -39,9 +45,14 @@ class Slider extends Component {
 
 		super._initEvents();
 
-		if (this.$nav) {
+		if (this.$nav.length) {
 			this.$navItems
 				.on(MouseEvent.CLICK, this._onNavItemClick.bind(this));
+		}
+
+		if (this.$steps) {
+			this.$steps
+				.on(MouseEvent.CLICK, this._onBallClick.bind(this));
 		}
 
 	}
@@ -111,6 +122,11 @@ class Slider extends Component {
 		currentSlide.addClass(this.states[1] + ' no-transition-all').removeClass(this.states[0]);
 		currentSlide[0].offsetHeight;
 
+		if (this.$steps) {
+			this.$steps.eq(this.prevIndex).removeClass('active');
+			this.$steps.eq(this.currentIndex).addClass('active');
+		}
+
 		currentSlide.removeClass(this.states[1] + ' no-transition-all');
 
 		if (this._timer) {
@@ -138,6 +154,15 @@ class Slider extends Component {
 		else {
 			this.goTo($this.index());
 		}
+	}
+
+	_onBallClick(e) {
+
+		let $this = $(e.currentTarget);
+		let index = $this.index();
+
+		this.goTo(index);
+
 	}
 
 	// --------------------------------------------------------------o Public

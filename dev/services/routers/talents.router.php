@@ -31,9 +31,27 @@ $app->get('/talents', function () use ($app) {
 		$data->jobs[$key] = (object) array(
 			'title' => $job->title,
 			'permalink' => $job->permalink,
-			'picture' => $job->picture['sizes']['medium_large']
+			'type' => $job->type,
+			'text' => substr(strip_tags($job->content), 0,  130) . '...',
+			'picture' => $job->picture['sizes']['medium_large'],
+			'date' => $job->post_date
 		);
 	}
+
+	// ---o Get more data
+	$moreData = $posts->getPosts('jobs-home');
+	$moreData = $moreData[0];
+
+	$moreData = (object) array(
+		'application' => (object) array(
+			'title' => $moreData->application_title,
+			'text' => $moreData->application_text,
+			'picture' => $moreData->application_picture['sizes']['medium_large'],
+			'button' => $moreData->application_button[0]
+		)
+	);
+
+	$data->application = $moreData->application;
 
 	$cacheManager->setCache('/talents', $data);
 

@@ -24,8 +24,8 @@ class CacheManager {
 
     }
 
-    public function setCache($path, $data) {
-
+    public function setCache($path, $data, $forceCache = false) {
+        
         $params = explode('/', substr($path, 1));
 
         $rootPath = '';
@@ -39,9 +39,11 @@ class CacheManager {
 
         }
 
-        //$fp = fopen($_SERVER['DOCUMENT_ROOT'] . CACHE_FOLDER . '/' . $rootPath . $params[count($params) - 1] . '.json', 'w');
-        //fwrite($fp, json_encode($data, true));
-        //fclose($fp);
+        if ($forceCache) {
+            $fp = fopen($_SERVER['DOCUMENT_ROOT'] . CACHE_FOLDER . '/' . $rootPath . $params[count($params) - 1] . '.json', 'w');
+            fwrite($fp, json_encode($data, true));
+            fclose($fp);
+        }
 
         //$this->generatePicture($params[0], $data);
 

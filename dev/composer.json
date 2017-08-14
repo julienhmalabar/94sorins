@@ -5,7 +5,8 @@
         "slim/views": "0.1.*",
         "twig/twig": "1.*",
         "mobiledetect/mobiledetectlib": "dev-master",
-        "twig/blank": "dev-master"
+        "twig/blank": "dev-master",
+		"abraham/twitteroauth": "^0.7.2"
 	},
 	
     "repositories": [

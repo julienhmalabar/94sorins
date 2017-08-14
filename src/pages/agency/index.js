@@ -2,6 +2,7 @@ import MalabarPage from 'lib/MalabarPage';
 
 import { MouseEvent } from 'core/Events';
 import Slider from 'components/Slider';
+import MainHeader from 'components/MainHeader';
 
 class Agency extends MalabarPage {
 
@@ -16,6 +17,8 @@ class Agency extends MalabarPage {
 		// ---o Init breadcrumb
 		this.slider = this.sliders[0];
 		this.$breadcrumbItems.eq(this.slider.currentIndex).addClass('active');
+
+		this.$bottomButton = this.$container.find('.button-bottom');
 	}
 
 	_initEvents() {
@@ -27,6 +30,9 @@ class Agency extends MalabarPage {
 
 		this.slider
 			.on(Slider.CHANGE + '.agency', ::this._onSliderChange);
+
+		this.$bottomButton
+			.on(MouseEvent.CLICK, this._onBottomButtonClick);
 
 	}
 
@@ -45,10 +51,15 @@ class Agency extends MalabarPage {
 
 	}
 
+	_onBottomButtonClick() {
+
+		MainHeader.openWorks();
+
+	}
+
 
 	// --------------------------------------------------------------o Public
 
 }
-
 
 export default Agency;

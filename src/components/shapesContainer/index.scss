@@ -1,0 +1,39 @@
+.shapes-container {
+	position: absolute;
+	top:0;
+	left: 0;
+	height:100%;
+	width: 100%;
+	pointer-events: none;
+	z-index: 2;
+
+	& ~ div {
+		position: relative;
+		z-index: 3;
+	}
+
+	& > div {
+		position: absolute;
+	}
+
+	span {
+		display: block;
+	}
+
+	.circle span {
+		border-radius: 100%;
+		border: 5px solid $red-color;
+		box-sizing: border-box;
+	}
+
+	.band span {
+		background: $red-color;
+	}
+
+	.triangle span {
+		width: 0; 
+		height: 0;
+		border-bottom-style: solid;
+		border-bottom-color: $red-color;
+	}
+}

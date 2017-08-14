@@ -8,6 +8,17 @@ class WordpressUtils {
         
         require '../admin/wp-blog-header.php';
 
+        $configContent = file_get_contents('../config.json');
+        $this->config = json_decode($configContent, true);
+
+    }
+
+    public function getPostById($id) {
+
+        $item = get_post($id);
+
+        return $this->prepareForOutput($item);
+
     }
 
     public function getPostByPostType($postType, $postSlug = '') {
@@ -24,11 +35,16 @@ class WordpressUtils {
         $item = get_posts($options);
         $item = $item[0];
 
+        $terms = $this->getTermsById($item->ID);        
+        if (count($terms)) {
+            $item->tags = $terms;
+        }
+
         return $this->prepareForOutput($item);
 
     }
 
-    public function getPostsByPostType($postType, $postsPerPage = 10, $orderBy = 'none') {
+    public function getPostsByPostType($postType, $postsPerPage = 10, $orderBy = 'none', $idToExlude = NULL, $paged = 0) {
 
         $options = array(
             'post_type' => $postType,
@@ -36,13 +52,34 @@ class WordpressUtils {
             'orderby' => $orderBy
         );
 
+        if ($idToExlude) {
+            $options['post__not_in'] = array($idToExlude);
+        }
+
+        if ($paged) {
+            $options['paged'] = $paged;
+        }
+
         $items = get_posts($options);
 
         foreach ($items as $key=>$item) {
+        
+            $terms = $this->getTermsById($item->ID);            
+            if (count($terms)) {
+                $item->tags = $terms;
+            }
             $items[$key] = $this->prepareForOutput($item);
         }
 
         return $items;
+
+    }
+
+    public function getTermsById($postId) {
+
+        $terms = wp_get_post_terms($postId);
+
+        return $terms;
 
     }
 
@@ -54,7 +91,7 @@ class WordpressUtils {
         $output->title = $input->post_title;
         $output->slug = $input->post_name;
         $output->post_type = $input->post_type;
-        $output->permalink = get_permalink($input->ID);
+        $output->post_date = $input->post_date;
 
         if ($input->post_content) {
             $output->content = $input->post_content;
@@ -88,8 +125,18 @@ class WordpressUtils {
             'picture' => $profilePicture
         );
 
-        $output->permalink = str_replace(ADMIN, ROOT_WEB . '/', $output->permalink);
-        $output->permalink = rtrim($output->permalink, "/");
+        if ($input->tags) {
+            $output->tags = array();
+            foreach ($input->tags as $key=>$term) {
+                $output->tags[$key] = (object) array(
+                    'slug' => $term->slug,
+                    'name' => $term->name
+                );
+            }
+        }
+
+        // ---o Set permalink
+        $output->permalink = $this->convertPermalink(get_permalink($input->ID));
 
         return $output;
 
@@ -98,6 +145,30 @@ class WordpressUtils {
     public function getAuthorByPostId ($id) {
 
 
+
+    }
+
+    public function convertPermalink($permalink = '', $test = false) {
+
+        $routes = $this->config['_routes'];
+
+        //print_r($routes);
+
+        foreach($routes as $key=>$route) {
+            $routeExploded = explode('/', $key);
+            $slug = $routeExploded[1];
+
+            if (strpos($permalink, $route['postType']) !== false) {
+                $permalink = str_replace($route['postType'], $slug, $permalink);
+            }
+        }
+
+
+
+        $permalink = str_replace(ADMIN, ROOT_WEB . '/', $permalink);
+        $permalink = rtrim($permalink, "/");
+
+        return $permalink;
 
     }
 

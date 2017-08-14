@@ -73,7 +73,12 @@ class Page extends EventEmitter {
 		this._isRendered = true;
 
 		this.$container = this.template ? $(this.template) : ViewsManager.pageContainer.children();
-		ViewsManager.pageContainer.html(this.$container);
+		ViewsManager.pageContainer.append(this.$container);
+
+		this.$container[0].offsetHeight;
+		this.$container.addClass('displayed');
+
+		ViewsManager.pageContainer.css('height', 'auto').removeClass('in-transition');
 
 		this._initContent();
 		this._initEvents();
@@ -142,9 +147,10 @@ class Page extends EventEmitter {
 
 	exit () {
 
-		this.emit(this.EXITED);
-
+		ViewsManager.pageContainer.css('height', this.$container.height()).addClass('in-transition');
+		this.$container.addClass('removed').css('top', Viewport.scrollTop.current);
 		this.destroy();
+
 
 	}
 

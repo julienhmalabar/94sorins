@@ -5,10 +5,11 @@
 	{% include 'components/hero-picture.html.twig' with {
 		subhead: data.header_subhead,
 		title: data.header_title,
-		picture: data.header_background.url
+		picture: data.header_background.url,
+		video: data.header_background_video.url
 	} %}
 
-	<div class="page-content">
+	<div class="page-inner">
 	
 		<div class="block block-about">
 			<header>
@@ -19,9 +20,6 @@
 		</div>
 
 		<div class="block block-slider">
-			<header>
-				<p class="block-title">Nos dernières études de cas</p>
-			</header>
 			{% include 'components/slider.html.twig' with {
 				slides: data.carousel_slides,
 				timer: 4000
@@ -47,6 +45,22 @@
 				items: data.accordion_blocs
 			} %}
 		</div>
+
+		<div class="block block-references">
+			<header>
+				<p class="block-title">Quelques unes de nos références</p>
+			</header>
+			<ul>
+				{% for ref in data.references %}
+				<li><img src="{{ ref.logo.url }}" /></li>
+				{% endfor %}
+			</ul>
+		</div>
+
+		{% include 'components/button-bottom.html.twig' with {
+			text: '<span>Découvrez nos</span><strong>réalisations</strong>',
+			src: data.header_background.url
+		} %}
 
 	</div>
 

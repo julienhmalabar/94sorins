@@ -1,7 +1,7 @@
 <header class="main-header">
 
 	<a href="{{ ROOT_WEB }}" class="main-logo">
-		{{ icon('malabar-logo') }}
+		{{ icons('malabar-logo') }}
 		<div class="text">
 			<div class="mask"><span>Malabar Design</span></div>
 			<div class="mask"><span>Your digital partner</span></div>
@@ -10,9 +10,9 @@
 
 	<div class="main-menu-button">
 		<div class="open-button">
-			<span></span>
-			<span></span>
-			<span></span>
+			<div><span>Menu</span></div>
+			<div></div>
+			<div></div>
 		</div>
 		<div class="close-button">
 			<span></span>
@@ -20,38 +20,46 @@
 		</div>
 	</div>
 
+	<div class="main-menu-overlay"></div>
+
 	<div class="main-menu">
 		<ul>
-			<li><a href="{{ ROOT_WEB }}"><p><span>Accueil</span></p></a></li>
+			<li><a href="{{  ROOT_WEB ~ '/agence-communication-digitale' }}"><p><span>Agence</span></p></a></li>
 			<li>
 				<p><span>Réalisations</span></p>
 				<div class="sub-menu">
 					<ul>
-						{% for casestudy in global.casestudies %}
-						<li><a href="{{ casestudy.permalink }}"><p><span>{{ casestudy.title }}</span></p></a></li>
+						{% for casestudy in global.case_studies %}
+						<li>
+							<a href="{{ casestudy.permalink }}"><p><span>{{ casestudy.title }}</span></p></a>
+						</li>
 						{% endfor  %}
 					</ul>
 					<p class="back-button">{% include 'components/arrow.html.twig' with {type: 'long', direction: 'left'} %}Retour</p>
 				</div>
 			</li>
-			<li><a href="{{  ROOT_WEB ~ '/agence' }}"><p><span>Agence</span></p></a></li>
 			<li><a href="{{  ROOT_WEB ~ '/talents' }}"><p><span>Talents</span></p></a></li>
-			<li><a href="{{  ROOT_WEB ~ '/perspectives' }}"><p><span>Perspective</span></p></a></li>
+			<li><a href="{{  ROOT_WEB ~ '/blog-creation-digitale' }}"><p><span>Perspectives</span></p></a></li>
 			<li><a href="{{  ROOT_WEB ~ '/contact' }}"><p><span>Contact</span></p></a></li>
 		</ul>
 
 		<div class="contact">
 			<p>
-				<strong>Contactez-nous</strong>
-				<a href="tel:" target="_blank">{{ '+33 (0)1 48 51 16 14' }}</a>
-				<a href="mailto:" target="_blank">{{ 'contact@malabardesign.fr' }}</a>
-			</p>
-			<p>
 				<strong>Suivez-nous</strong>
-				<a href="" target="_blank">Facebook</a>
-				<a href="" target="_blank">Twitter</a>
+				<a href="https://www.facebook.com/MalabarDesign/" target="_blank">Facebook</a>
+				<a href="https://twitter.com/malabardesign" target="_blank">Twitter</a>
 				<a href="" target="_blank">Newsletter</a>
 			</p>
 		</div>
+	</div>
+
+	<div class="case-studies-pictures">
+		<ul>
+			{% for casestudy in global.case_studies %}
+			<li>
+				<img src="{{ casestudy.picture }}" />
+			</li>
+			{% endfor %}
+		</ul>
 	</div>
 </header>

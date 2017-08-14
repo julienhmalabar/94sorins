@@ -1,0 +1,19 @@
+.carousel {
+	padding: 100px 0;
+	position: relative;
+	overflow: hidden;
+
+	.pictures {
+		overflow: auto;
+	}
+
+	li {
+		float: left;
+		margin: 0 30px;
+		cursor: pointer;
+	}
+
+	img {
+		display: block;
+	}
+}

@@ -1,0 +1,9 @@
+<div class="carousel">
+	<ul class="pictures">
+		{% for picture in pictures %}
+		<li>
+			<img src="{{ picture.url }}" data-width="{{ picture.width }}" data-height="{{ picture.height }}" />
+		</li>
+		{% endfor %}
+	</ul>
+</div>

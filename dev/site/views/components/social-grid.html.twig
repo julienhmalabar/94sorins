@@ -1,0 +1,41 @@
+<div class="social-grid">
+
+	{% for item in items %}
+
+		{% if loop.index0 < length %}
+
+			{% set isBig = loop.index0 == 2 and loop.index0 % 8 < 4 or (loop.index0 == 4 and loop.index0 % 8 >= 4) %}
+
+			{% if loop.index0 % 4 == 0 %}
+			<div class="items-group">
+			{% endif %}
+				<div class="item{% if isBig %} item-big{% endif %}" data-source="{{ item.source }}">
+					<div class="outer">
+						<div
+							class="inner"
+							{% if item.source == 'instagram' or item.source == 'blog' %}
+							style="background-image:url('{{ item.picture }}');"
+							{% endif %}>
+							{% if item.source == 'twitter' %}
+							<a href="https://twitter.com/malabardesign" target="_blank" class="author">@MalabarDesign</a>
+							<p class="text">{{ item.text|raw }}</p>
+							<a href="{{ item.link }}" target="_blank">{{ icons('icon-twitter') }}</a>
+							{% elseif item.source == 'instagram' %}
+							<a href="{{ item.link }}" target="_blank">{{ icons('icon-instagram') }}</a>
+							{% elseif item.source == 'blog' %}
+							<div class="content">
+								<p class="title"><a href="{{ item.link }}">{{ item.title }}</a></p>
+								<p class="text">{{ item.excerpt }}</p>
+							</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+
+			{% if loop.index0 % 4 == 3 or loop.index == items|length %}
+			</div>
+			{% endif %}
+		{% endif %}
+	{% endfor %}
+
+</div>

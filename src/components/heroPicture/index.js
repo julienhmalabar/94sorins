@@ -4,6 +4,7 @@ import Component from 'core/Component';
 import { Event, MouseEvent } from 'core/Events';
 import Viewport from 'core/Viewport';
 import ImageUtils from 'core/ImageUtils';
+import MainHeader from 'components/MainHeader';
 
 
 class HeroPicture extends Component {
@@ -25,11 +26,25 @@ class HeroPicture extends Component {
 		this._containerHeight = 0;
 		this._isHidden = false;
 
-		this.$backgroundPicture = this.$container.find('img');
+		this.$figure = this.$container.find('figure');
+
 		this.$content = this.$container.find('figcaption');
 		this.$scrollButton = this.$container.find('.scroll-button');
 
-		this._isBackgroundPictureLoaded = false;
+		this.$placeHolder = this.$container.siblings('.hero-picture-placeholder');
+
+		this.isBackgroundPictureLoaded = false;
+		this.isSmall = this.$container.hasClass('small');
+
+		if (Viewport.width > 600) {
+			let $video = this.$figure.find('video');
+
+			if ($video.length) {
+				$video
+					.addClass('playable')
+					.get(0).play();
+			}
+		}
 
 	}
 
@@ -40,20 +55,16 @@ class HeroPicture extends Component {
 		Viewport
 			.on(Event.SCROLL + '.heroPicture', ::this._onScroll);
 
-		if (this.$backgroundPicture[0].complete) {
-			this._onBackgroundPictureLoaded();
-		}
-		else {
-			this.$backgroundPicture
-				.on('loaded', ::this._onBackgroundPictureLoaded);
-		}
-
 		this.$scrollButton
 			.on(MouseEvent.CLICK, ::this._onScrollButtonClick);
 
 	}
 
 	_updatePosition() {
+
+		if (MainHeader.isMenuOpened === true) {
+			return;
+		}
 
 		this._scrollTop.current += (this._scrollTop.destination - this._scrollTop.current) * this._ease;
 
@@ -79,14 +90,14 @@ class HeroPicture extends Component {
 			}
 		}
 
-		this.$backgroundPicture.css({'transform': 'translate3d(0, ' + (- this._scrollTop.current * 0.3) + 'px, 0)'});
+		this.$figure.css({'transform': 'translate3d(0, ' + (- this._scrollTop.current * 0.3) + 'px, 0)'});
 		this.$content.css({
 			'transform': 'translate3d(0, ' + (- this._scrollTop.current * 0.5) + 'px, 0)',
 			'opacity': '1'
 		});
 		this.$scrollButton.css({
 			'transform': 'translate3d(0, ' + (- this._scrollTop.current) + 'px, 0)',
-			'opacity': '1'
+			'opacity': (1 - (this._scrollTop.current / (this._containerHeight / 10))) 
 		});
 
 		raf(::this._updatePosition);
@@ -103,13 +114,6 @@ class HeroPicture extends Component {
 
 	}
 
-	_onBackgroundPictureLoaded() {
-
-		this._isBackgroundPictureLoaded = true;
-		this._resizeBackgroundPicture();
-
-	}
-
 	_onScrollButtonClick() {
 
 		Viewport.scrollTo(this.$container.height());
@@ -118,28 +122,25 @@ class HeroPicture extends Component {
 
 	_onResize() {
 
-		this._containerHeight = this.$container.height();
+		var height = this.isSmall ? 500 : Viewport.height * 0.90;
 
-		if (this._isBackgroundPictureLoaded) {
-			this._resizeBackgroundPicture();
+		if (Viewport.responsiveState === 'mobile') {
+			height = this.isSmall ? 300 : Viewport.height * 0.75;
 		}
+
+		this.$container.css({
+			'height': height
+		});
+
+		this.$placeHolder.css({
+			'height': height
+		});
+
+		this._containerHeight = height;
 
 	}
 
 	// --------------------------------------------------------------o Resize
-
-	_resizeBackgroundPicture() {
-
-		let dims = ImageUtils.getCoverSizeImage(
-			this.$backgroundPicture.width(),
-			this.$backgroundPicture.height(),
-			this.$container.width(),
-			this.$container.height()
-		);
-
-		this.$backgroundPicture.css(dims);
-
-	}
 
 
 	// --------------------------------------------------------------o Public

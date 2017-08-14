@@ -78,10 +78,11 @@ class Viewport extends EventEmitter {
 
 		this._checkResponsive();
 
-		this.width = this.$window.width();
-		this.height = this.$window.height();
+		this.width = this.$window[0].innerWidth;
+		this.height = this.$window[0].innerHeight;
 		this.screenWidth = screen.width;
 		this.screenHeight = screen.height;
+		this.scrollHeight = this.$body.height() - this.height;
 
 		this.updateScroll();
 
@@ -131,7 +132,6 @@ class Viewport extends EventEmitter {
 		if (this.isBodyFixed === true) {
 			return;
 		}
-
 
 		this.savedScroll = this.$window.scrollTop();
 		this.isBodyFixed = true;
@@ -201,7 +201,6 @@ class Viewport extends EventEmitter {
 			duration: 1000,
 			ease: 'quintOut',
 			onProgress: (data) => {
-				console.log(data.value);
 				this.$window.scrollTop(data.value);
 			},
 			onComplete: (data) => {

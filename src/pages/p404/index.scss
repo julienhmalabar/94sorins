@@ -1,0 +1,96 @@
+.page-p404 {
+	background: $white-color;
+	min-height: 100vh;
+
+	.page-inner {
+		background: $white-color;
+		position: absolute;
+		min-height: auto;
+		top: 50%;
+		left: 50%;
+		transform: translate3d(-50%, -50%, 0);
+		padding: 20px;
+		box-sizing: border-box;
+	}
+
+	img {
+		display: block;
+	}
+
+	a {
+		display: block;
+		background: $black-color;
+		color: $white-color;
+		padding: 10px 20px;
+		position: absolute;
+		bottom: 50px;
+		left: -50px;
+
+		.arrow {
+			display: inline-block;
+			position: relative;
+			top: -4px;
+			background: $white-color;
+			margin-right: 10px;
+
+			svg {
+				fill: $white-color;
+			}
+		}
+	}
+
+	.content {
+		background: $black-color;
+		color: $white-color;
+		padding: 80px;
+		position: absolute;
+		top: 50px;
+		left: 60%;
+		width: 450px;
+		box-sizing: border-box;
+
+		strong {
+			display: block;
+			font: 700 90px/90px $font-family;
+			margin-bottom: 50px;
+		}
+	}
+}
+
+// -----------------------------------------------------------------------o Responsive
+
+@media all and (max-width: $mobile-size) {
+
+	.page-404 {
+		.page-inner {
+			position: relative;
+			transform: none;
+			top: 0;
+			left: 0;
+		}
+
+		img {
+			width: 100%;
+		}
+
+		a {
+			position: relative;
+			top: 0;
+			left: 0;
+			margin-top: 30px;
+		}
+
+		.content {
+			position: relative;
+			top: 0;
+			left: 0;
+			width: 100%;
+			padding: 40px;
+
+			strong {
+				margin-bottom: 30px;
+			}
+		}
+	}
+
+}

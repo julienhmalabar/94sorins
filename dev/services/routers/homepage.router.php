@@ -19,8 +19,13 @@ $app->get('/homepage', function () use ($app) {
 
 	// ---o Get data
 	require './utils/WordpressUtils.php';
+	$wordpressUtils = new Utils\WordpressUtils();
 	$post = new Post ();
 	$data = $post->getPost('homepage');
+
+	foreach ($data->case_studies as $key=>$case) {
+		$data->case_studies[$key]['link'] = $wordpressUtils->convertPermalink($case['link']);
+	}
 
 	$cacheManager->setCache('/homepage', $data);
 

@@ -11,9 +11,9 @@ class CaseStudyController {
 	public function index($data) {
 
 		$meta = array(
-			'title' => 'Case Study',
-			'description' => 'Case Study description',
-			'share_picture' => 'sharepicture.jpg'
+			'title' => $data['title'] . ' — Malabar Design',
+			'description' => substr(strip_tags($data['info_context']), 0,  130) . '...',
+			'share_picture' => $data['header_background']['url']
 		);
 
 		return $meta;

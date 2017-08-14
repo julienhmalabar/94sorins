@@ -1,8 +1,9 @@
 .main-header {
-	position: fixed;
+	position: absolute;
 	top: 0;
 	left: 0;
 	height: 100%;
+	pointer-events: none;
 	z-index: $main-header-z-index;
 }
 
@@ -14,6 +15,7 @@
 	z-index: $main-header-z-index + 2;
 	width: 58px;
 	white-space: nowrap;
+	pointer-events: auto;
 
 	svg {
 		fill: $white-color;
@@ -27,6 +29,7 @@
 		display: inline-block;
 		position: relative;
 		top: -12px;
+		pointer-events: none;
 
 		div {
 			font: 600 12px/16px $font-family;
@@ -50,25 +53,25 @@
 	left: 35px;
 	z-index: $main-header-z-index + 1;
 	cursor: pointer;
+	pointer-events: auto;
 
 
-	div {
+	& > div {
 		position: absolute;
 		top: 0;
 		left: 0;
-		width: 50px;
-		width: 50px;
+		width: 60px;
 		padding: 15px;
-		overflow: hidden;
 	}
 
 	// ---o Open button
 	.open-button {
-		span {
+		overflow: hidden;
+		div {
 			display: block;
 			height: 1px;
 			width: 100%;
-			background: $white-color;
+			position: relative;
 
 			&:not(:last-child) {
 				margin: 0 0 9px;
@@ -77,6 +80,27 @@
 			&:nth-child(1) { width: 28px; }
 			&:nth-child(2) { width: 18px; }
 			&:nth-child(3) { width: 38px; }
+
+			&:after {
+				content: '';
+				display: block;
+				height: 100%;
+				width: 100%;
+				background: $white-color;
+			}
+		}
+
+		span {
+			font: 300 10px/20px $font-family;
+			text-transform: uppercase;;
+			color: $white-color;
+			letter-spacing: 0.2em;
+			position: absolute;
+			top: 50%;
+			margin-top: -10px;
+			left: calc(100% + 15px);
+			opacity: 0;
+			transition: opacity 500ms $ease-out-expo;
 		}
 	}
 
@@ -86,42 +110,91 @@
 			background: $grey-color;
 			width: 34px;
 			position: absolute;
+		}
+	}
 
-			&:nth-child(1) {
+	// ---o States & animations
+	.open-button {
 
+		div:after {
+			transition: background 500ms $ease-out-expo 0ms, transform 500ms $ease-out-expo 0ms;
+			transform-origin: 0 50%;
+		}
+
+		div:first-child:after {
+			transform-origin: 50% 50%;
+		}
+
+		&:hover {
+			div {
+				&:nth-child(1):after { transform: scaleX(1.5); }
+				&:nth-child(2):after { transform: scaleX(0); }
+				&:nth-child(3):after { transform: scaleX(0); }
+			}
+
+			span {
+				opacity: 1;
+				transition-delay: 150ms;
 			}
 		}
 	}
 }
 
-// -----o Main Menu
-.main-menu {
-	position: absolute;
+
+// -----o Menu overlay
+.main-menu-overlay {
+	position: fixed;
 	top: 0;
 	left: 0;
 	height: 100%;
-	background: #F3F3F3;
-	width: 480px;
-	padding-top: 200px;
-	font: 300 30px/90px $font-family;
+	width: 100%;
+	background: rgba($black-color, 0.2);
+	visibility: hidden;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 1000ms $ease-out-expo 0ms, visibility 0ms $ease-out-expo 1000ms;
+}
+
+.main-header.opened .main-menu-overlay {
+	visibility: visible;
+	opacity: 1;
+	transition-delay: 0ms, 0ms;
+}
+
+
+// -----o Main Menu
+$main-menu-width: 480px;
+$main-menu-padding-top: 120px;
+
+.main-menu {
+	position: relative;
+	top: 0;
+	left: 0;
+	min-height: 100vh;
+	background: $white-color;
+	width: $main-menu-width;
+	padding-top: $main-menu-padding-top;
+	font: 300 30px/72px $font-family;
 	overflow: hidden;
+	box-sizing: border-box;
 
 	p {
 		display: block;
 		position: relative;
 		padding: 0 50px 0 140px;
-		cursor: pointer;
 
 		span {
 			display: block;
 		}
+	}
 
-		&:not(.back-button):before {
+	li {
+		p:not(.back-button):before {
 			content: '';
 			display: block;
 			height: 1px;
 			width: 100%;
-			background: $grey-dark;
+			background: $grey-dark-color;
 			position: absolute;
 			top: 50%;
 			left: 0;
@@ -143,29 +216,47 @@
 	.back-button {
 		font: 400 14px/24px $font-family;
 		text-transform: none;
-		margin-top: 20px;
+		margin-top: 60px;
+		color: $grey-light-color;
+		cursor: pointer;
 
 		.arrow {
 			float: left;
 			position: relative;
 			top: 10px;
 			margin-right: 10px;
+			background: $grey-light-color;
+
+			svg {
+				fill: $grey-light-color;
+			}
+		}
+
+		// ---o Transitions
+		.arrow {
+			transition: transform 500ms $ease-out-expo 0ms;
+		}
+
+		&:hover .arrow {
+			transform: rotate(180deg) translate3d(10px, 0, 0);
 		}
 	}
 
 	// ---o Animations
 
-	& > ul {
+	& > ul,
+	& > .contact {
 		transition: transform 600ms $ease-out-expo 0ms;
 	}
 
 	&.sub-menu-opened {
-		& > ul {
+		& > ul,
+		& > .contact {
 			transform: translate3d(-100%, 0, 0);
 		}
 	}
 
-	p {
+	p:not(.back-button) {
 		span {
 			transition: transform 500ms $ease-out-expo 0ms;
 		}
@@ -188,10 +279,43 @@
 	}
 }
 
+// ---o Sub menu pictures
+.case-studies-pictures {
+	position: fixed;
+	top: 0;
+	left: $main-menu-width;
+	height: 100%;
+	width: calc(100% - #{$main-menu-width});
+	display: none;
+
+	li {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		opacity: 0;
+		transition: opacity 500ms $ease-out-expo 0ms;
+
+		&.active {
+			opacity: 1;
+		}
+	}
+
+
+}
+
 
 // --------------------------------------o States + Animation
 
 .main-header {
+	transition: opacity 700ms $ease-out-expo 0ms, visibility 0ms $linear 0ms;
+
+	&.hidden {
+		opacity: 0;
+		visibility: hidden;
+		transition-delay: 0ms, 700ms;
+	}
 
 	.main-logo {
 		svg {
@@ -231,12 +355,14 @@
 	.open-button {
 		transition: opacity 1000ms $linear 0ms;
 
-		span {
-			transition: transform 700ms $ease-out-expo 0ms;
+		div {
+			&:after {
+				transition: transform 700ms $ease-out-expo 0ms;
+			}
 
-			&:nth-child(1)	{ transition-delay: 0ms; }			
-			&:nth-child(2)	{ transition-delay: 100ms; }			
-			&:nth-child(3)	{ transition-delay: 200ms; }			
+			&:nth-child(1):after	{ transition-delay: 0ms; }			
+			&:nth-child(2):after	{ transition-delay: 100ms; }			
+			&:nth-child(3):after	{ transition-delay: 200ms; }			
 		}
 	}
 
@@ -246,7 +372,51 @@
 		transition: opacity 0ms $linear 1000ms;
 	}
 
+	.contact {
+		font: 400 14px/20px $font-family;
+		margin-top: 60px;
+
+		strong,
+		a {
+			display: block;
+		}
+
+		p,
+		strong {
+			margin-bottom: 20px;
+		}
+
+		a {
+			color: $grey-middle-color;
+		}
+	}
+
+	// ---o States
+	&.logo-colored {
+		.main-logo {
+			svg {
+				fill: $red-color;
+			}
+		}
+
+		.open-button {
+			div:after {
+				background: $grey-color;
+			}
+
+			span {
+				color: $grey-color;
+			}
+		}
+	}
+
 	&.opened {
+		position: relative;
+		pointer-events: auto;
+
+		.case-studies-pictures {
+			display: block;
+		}
 
 		.main-logo {
 			svg {
@@ -284,8 +454,70 @@
 			//opacity: 0;
 			transition-delay: 1000ms;
 
-			span {
+			div:after {
 				transform: translate3d(calc(50px + 15px), 0, 0);
+			}
+		}
+
+		& ~ .button-back-to-top {
+			display: none;
+		}
+	}
+}
+
+// -----------------------------------------------------------------------o Responsive
+
+@media all and (max-width: $mobile-size) {
+
+	.main-logo {
+		top: 10px;
+		left: 20px;
+
+		.text {
+			display: none;
+		}
+	}
+
+	.main-menu-button {
+		top: 15px;
+		left: 80px;
+	}
+
+	.main-header {
+		height: 50vh;
+	}
+
+	.main-header.opened {
+		.main-menu-overlay,
+		.case-studies-pictures {
+			display: none;
+		}
+
+		& ~ .main-footer {
+			display: none;
+		}
+	}
+
+	.main-menu {
+		width: 100vw;
+		font-size: 22px;
+		line-height: 50px;
+		padding-top: 120px;
+
+		p {
+			padding: 0 50px 0 100px;
+
+			&:not(.back-button) {
+				&:hover,
+				&.active {
+					span {
+						transform: translate3d(20px, 0, 0);
+					}
+
+					&:before {
+						transform: translate3d(calc(-100% + 100px), 0, 0);
+					}
+				}
 			}
 		}
 	}

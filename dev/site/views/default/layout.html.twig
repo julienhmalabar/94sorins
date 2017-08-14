@@ -14,12 +14,15 @@
 {{ include('components/main-header.html.twig') }}
 
 <div class="page-container">
-	<div class="page-{{ viewName }}">
+	<div class="page-{{ viewName ? viewName : 'p404' }}">
 		{% block content %}{% endblock %}
 	</div>
 </div>
 
+{{ include('components/button-back-to-top.html.twig') }}
 {{ include('components/main-footer.html.twig') }}
+{{ include('components/cookie-band.html.twig') }}
+{{ include('components/popin-inscription.html.twig') }}
 
 {{ include('partials/foot.html.twig') }}
 </body>

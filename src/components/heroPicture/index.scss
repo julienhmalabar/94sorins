@@ -11,17 +11,55 @@ $hero-picture-height : 90vh;
 	left: 0;
 	overflow: hidden;
 	background: #F6F6F6;
-	display: flex;
-	justify-content: center;
-	align-items: center;
 	z-index: $hero-picture-z-index;
 	color: $white-color;
 
-	img {
+	&.small {
+		height: 500px;
+	}
+
+	figure {
+		position: relative;
+		height: 100%;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		&:after {
+			content: '';
+			display: block;
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			background: rgba($black-color, 0.3);
+		}
+	}
+
+	img,
+	video {
 		display: block;
 		position: absolute;
-		top: 0;
-		left: 0;
+		top: 50%;
+		left: 50%;
+		transform: translate3d(-50%, -50%, 0);
+		min-width: 100%;
+		min-height: 100%;
+		width: auto;
+		height: auto;
+	}
+
+	video {
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 2000ms $ease-out-sine 0ms;
+
+		&.playable {
+			opacity: 1;
+			visibility: visible;
+		}
 	}
 
 	figcaption {
@@ -29,20 +67,31 @@ $hero-picture-height : 90vh;
 		z-index: 10;
 		text-align: center;
 		margin-top: $subhead-line-height;
-		max-width: 1200px;
+		max-width: 1500px;
+		width: 100%;
+		margin: 0 auto;
+		box-sizing: border-box;
+		padding: 0 100px;
 	}
 
 	h1 {
 		font: 700 130px/130px $font-family;
+		margin-top: 40px;
 	}
 
 	h2 {
-		font: 500 16px/24px $font-family;
+		font: 300 16px/24px $font-family;
 		letter-spacing: 0.2em;
 		position: absolute;
 		bottom: 100%;
+		margin-bottom: 40px;
 		left: 0;
 		width:100%;
+		text-transform: uppercase;
+	}
+
+	h3 {
+		font: 700 36px/60px $font-family;
 	}
 
 	.scroll-button {
@@ -56,17 +105,25 @@ $hero-picture-height : 90vh;
 		text-align: center;
 		text-transform: uppercase;
 		cursor: pointer;
-		padding-top: 140px;
+		padding-top: 100px;
 
 		&:before {
 			content: '';
 			display: block;
-			height: 120px;
+			height: 80px;
 			width: 1px;
 			background: $white-color;
 			position: absolute;
 			top: 0;
 			left: 50%;
+			transition: transform 300ms $ease-out-sine 0ms;
+			transform-origin: 50% 100%;
+		}
+
+		&:hover {
+			&:before {
+				transform: scaleY(0.5);
+			}
 		}
 	}
 
@@ -77,4 +134,50 @@ $hero-picture-height : 90vh;
 
 .hero-picture-placeholder {
 	height: $hero-picture-height;
+}
+
+
+
+// -----------------------------------------------------------------------o Responsive
+
+@media all and (max-width: $large-screen-size) {
+	.hero-picture {
+
+		figcaption {
+			padding:0 50px;
+		}
+
+		h1 {
+			font-size: 80px;
+			line-height: 90px;
+		}
+	}
+}
+
+@media all and (max-width: $mobile-size) {
+	.hero-picture {
+
+		figcaption {
+			padding: 0 20px;
+		}
+
+		h1 {
+			font-size: 36px;
+			line-height: 42px;
+		}
+
+		h2 {
+			font-size: 14px;
+			margin-bottom: 10px;
+		}
+
+		.scroll-button {
+			padding-top: 40px;
+			display: none;
+			
+			&:before {
+				height: 30px;
+			}
+		}
+	}
 }

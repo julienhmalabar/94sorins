@@ -56,7 +56,7 @@ class ViewsManager extends EventEmitter {
 
 	_onRouterStart (res) {
 
-		let pageSlug = TextUtils.lowercaseFirstLetter(res.class.slug);
+		let pageSlug = res.class.view || res.class.slug;
 
 		if (this.currentClass && pageSlug === this.currentClass.slug) {
 			if (this.currentClass.shouldStayOnSamePage(res) === true) {
@@ -100,12 +100,13 @@ class ViewsManager extends EventEmitter {
 			return;
 		}
 
-		if (response) {	
-
+		if (response) {
 			let template = $(response.text).filter('.page-container').html();
 
 			this.currentClass.loaded = true;
 			this.currentClass.enter(template);
+			document.title = $(response.text).filter('title').text();
+			Viewport.scrollTo(0, true);
 
 			this.emit(this.REQUEST_END + '.*');
 		}

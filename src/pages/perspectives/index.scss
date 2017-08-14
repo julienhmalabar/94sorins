@@ -1,3 +1,32 @@
 .page-perspectives {
 	
+	.page-inner {
+		padding: 0 20px 220px;
+	}
+
+	.block-about .text {
+		font-size: 18px;
+		line-height: 28px;
+	}
+}
+
+
+
+
+// -----------------------------------------------------------------------o Responsive
+
+@media all and (max-width: $mobile-size) {
+
+	.page-perspectives {
+		.social-grid {
+			div.items-group:nth-child(n) {
+				display: block;
+
+				.item:nth-child(n) {
+					display: block;
+				}
+			}
+		}
+	}
+
 }

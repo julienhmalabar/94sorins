@@ -51,6 +51,20 @@ class TextUtils {
 		return str.charAt(0).toLowerCase() + str.slice(1);
 
 	}
+
+	pascalize(str) {
+		return str.replace(/(\w)(\w*)/g,
+        	function(g0,g1,g2){
+        		return g1.toUpperCase() + g2.toLowerCase();
+        	}
+        );
+	}
+
+	camelize(str) {
+		return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(letter, index) {
+			return index == 0 ? letter.toLowerCase() : letter.toUpperCase();
+		}).replace(/\s+/g, '');
+	}
 }
 
 export default new TextUtils()

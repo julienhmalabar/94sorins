@@ -4,11 +4,85 @@
 
 	{% include 'components/hero-picture.html.twig' with {
 		subhead: data.header_subhead,
-		title: data.header_title
+		title: data.header_title,
+		subtitle: data.header_subtitle,
+		picture: data.header_background.url,
+		scrollText: 'Découvrir'
 	} %}
 
-	<div class="page-content">
+	<div class="page-inner">
+
+		<div class="information">
+			<div class="accordion">
+				<ul>
+					<li class="item">
+						<p class="title">Contexte</p>
+						<div class="text-container">
+							<div class="text">
+								{{ data.info_context|raw }}
+								{% if data.info_link %}
+									<a href="{{ data.info_link[0].url }}" target="_blank">{{ data.info_link[0].text }}</a>
+								{% endif %}
+							</div>
+						</div>
+					</li>
+					<li class="item">
+						<p class="title">Expertises</p>
+						<div class="text-container">
+							<div class="text">
+								<ul>
+								{% for expertise in data.info_expertises %}
+									<li>{{ expertise.item }}</li>
+								{% endfor %}
+								</ul>
+							</div>
+						</div>
+					</li>
+					<li class="item">
+						<p class="title">Chiffres-clés</p>
+						<div class="text-container">
+							<div class="text">
+								<ul>
+								{% for number in data.info_numbers %}
+									<li>{{ number.item }}</li>
+								{% endfor %}
+								</ul>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<p class="main-title">{{ data.main_title }}</p>
+
+		{% set inc = 0 %}
+		{% for contentBlock in data.content_block %}
+			{% if contentBlock.type == 'Contenu'  %}
+
+			<div class="block {{ inc % 2 == 0 ? 'block-right' : 'block-left' }}">
+				<div class="block-content">
+					<span class="number">{% if loop.index < 10 %}0{% endif %}{{ loop.index }}</span>
+					<p class="title">{{ contentBlock.title }}</p>
+					<div class="text">{{ contentBlock.text|raw }}</div>
+				</div>
+				<img src="{{ contentBlock.picture.url }}" />
+			</div>
+
+			{% set inc = inc + 1 %}
+
+			{% else %}
+				{% include 'components/carousel.html.twig' with {
+					pictures: contentBlock.pictures
+				} %}
+			{% endif %}
+		{% endfor %}
+
+		{% include 'components/button-bottom.html.twig' with {
+			text: '<span>Projet suivant</span><strong>' ~ data.next_post.title ~ '</strong>',
+			src: data.next_post.picture,
+			link: data.next_post.permalink
+		} %}
 
 	</div>
-
 {% endblock %}

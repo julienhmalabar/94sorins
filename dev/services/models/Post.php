@@ -10,12 +10,23 @@ class Post {
 
 	}
 	
-	public function getPost($postType, $postSlug = '') {
+	public function getPost($postType, $postSlug = '', $terms = false) {
 
 		$output = (object) array();
 
 		$wordpressUtils = new WordpressUtils();
-		$output = $wordpressUtils->getPostByPostType($postType, $postSlug);
+		$output = $wordpressUtils->getPostByPostType($postType, $postSlug, $terms);
+
+		return $output;
+
+	}
+	
+	public function getPostById($id) {
+
+		$output = (object) array();
+
+		$wordpressUtils = new WordpressUtils();
+		$output = $wordpressUtils->getPostById($id);
 
 		return $output;
 

@@ -5,6 +5,7 @@
 	background: $black-color;
 	position: relative;
 	padding-right: 6px;
+	transform: translate3d(0, 0, 1px);
 
 	svg {
 		display: block;
@@ -23,11 +24,16 @@
 	&.arrow-left {
 		padding-right: 0;
 		padding-left: 6px;
-		svg {
-			right: auto;
-			left: 0;
-			transform: scale(-1, 1);
-		}
+		transform: rotate(180deg);
+	}
+
+	&.arrow-top {
+		width: 50px;
+		height: 1px;
+		padding-right: 0;
+		padding-left: 6px;
+		transform: rotate(-90deg) translateY(10px);
+		transform-origin: 0 50%;
 	}
 }
 
@@ -68,33 +74,33 @@
 @keyframes arrow-move-left {
 
 	0% {
-		transform: translateX(0px);
+		transform: rotate(180deg) translateX(0px);
 		animation-timing-function: $ease-in-circ;
 	}
 
 	49% {
-		transform: translateX(-32px);
+		transform: rotate(180deg) translateX(32px);
 		opacity: 1;
 	}
 	
 	50% {
-		transform: translateX(-32px);
+		transform: rotate(180deg) translateX(32px);
 		opacity: 0;
 	}
 	
 	51% {
-		transform: translateX(--32px);
+		transform: rotate(180deg) translateX(-32px);
 		opacity: 0;
 	}
 	
 	52% {
-		transform: translateX(32px);
+		transform: rotate(180deg) translateX(-32px);
 		opacity: 1;
 		animation-timing-function: $ease-out-expo;
 	}
 	
 	100% {
-		transform: translateX(0px);
+		transform: rotate(180deg) translateX(0px);
 	}
 
 }

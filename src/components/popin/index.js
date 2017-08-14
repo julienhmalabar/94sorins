@@ -2,8 +2,12 @@ import $ from 'jquery';
 
 import Component from 'core/Component';
 import { MouseEvent } from 'core/Events';
+import MainHeader from 'components/MainHeader';
 
 class Popin extends Component {
+
+	static OPENED = 'popin:opened';
+	static CLOSED = 'popin:closed';
 
 	// --------------------------------------------------------------o Private
 	
@@ -17,6 +21,7 @@ class Popin extends Component {
 
 		this.$popinButtons = $('.popin-button-' + this._name);
 		this.$closeButton = this.$container.find('.popin-close-button');
+		this.$overlay = this.$container.find('.overlay');
 
 	}
 
@@ -29,6 +34,11 @@ class Popin extends Component {
 
 		this.$closeButton
 			.on(MouseEvent.CLICK, ::this._onCloseButtonClick);
+
+		if (this.$overlay.length) {
+			this.$overlay
+				.on(MouseEvent.CLICK, ::this._onOverlayClick);
+		}
 
 	}
 
@@ -46,10 +56,29 @@ class Popin extends Component {
 		this.$container[0].offsetHeight;
 		this.$container.addClass('opened').removeClass('pre-opened');
 
+		this.emit(Popin.OPENED);
+
+		MainHeader.hide();
+
 	}
 
 	_onCloseButtonClick() {
 
+		this.close();
+
+	}
+
+	_onOverlayClick() {
+
+		this.close();
+
+	}
+
+
+	// --------------------------------------------------------------o Public
+
+	close() {
+		
 		if (this._isOpened === false) {
 			return;
 		}
@@ -58,10 +87,11 @@ class Popin extends Component {
 
 		this.$container.removeClass('opened');
 
+		this.emit(Popin.CLOSED);
+
+		MainHeader.show();
+
 	}
-
-
-	// --------------------------------------------------------------o Public
 
 }
 

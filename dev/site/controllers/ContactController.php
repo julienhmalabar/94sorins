@@ -11,7 +11,7 @@ class ContactController {
 	public function index($data) {
 
 		$meta = array(
-			'title' => 'Homepage',
+			'title' => 'Contact',
 			'description' => 'Homepage description',
 			'sharePicture' => 'sharepicture.jpg'
 		);

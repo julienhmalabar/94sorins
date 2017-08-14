@@ -4,6 +4,12 @@ class Perspectives extends MalabarPage {
 
 	// --------------------------------------------------------------o Private
 
+	_render() {
+		super._render();
+
+		console.log(this.$container);
+	}
+
 
 	// --------------------------------------------------------------o Listeners
 

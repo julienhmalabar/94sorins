@@ -8,7 +8,7 @@ require '../config.php';
 require './utils/TwigExtensions.php';
 require './utils/TextUtils.php';
 
-$configContent = file_get_contents('./config.json');
+$configContent = file_get_contents('../config.json');
 $config = json_decode($configContent, true);
 
 // ------------------------------------------------o Create App
@@ -35,22 +35,16 @@ $app->get('(/)(/:params+)', function($params = array()) use ($app, $config) {
 	// ---o Get Controller
 	$slug = count($params) > 0 ? $params[0] : '';
 
-	$pageName = isset($config['_routes']['/' . $slug])
-				? $config['_routes']['/' . $slug]['slug'] : NULL;
-
-	if (!isset($pageName)) {
-		$pageName = isset($config['_routes']['/' . $slug . '/*'])
-				? $config['_routes']['/' . $slug . '/*']['slug'] : NULL;
+	$route = NULL;
+	if (isset($config['_routes']['/' . $slug . '/*'])) {
+		$route = $config['_routes']['/' . $slug . '/*'];
+	}
+	else if (isset($config['_routes']['/' . $slug])) {
+		$route = $config['_routes']['/' . $slug];
 	}
 	
-	$params[0] = $pageName;
-
-	$controllerName = ucfirst(call_user_func_array(array('TextUtils', 'camelCase'), array($pageName))) . 'Controller';
-	$controllerPath = './controllers/' . $controllerName .'.php';
-
-	if (!file_exists($controllerPath)) {
-
-		$app->render('index.html.twig', array(
+	if (!$route) {
+		$app->render('/pages/404.html.twig', array(
 			'data' => array('type' => 404),
 			'meta' => array(),
 			'ROOT_WEB' => ROOT_WEB,
@@ -60,16 +54,23 @@ $app->get('(/)(/:params+)', function($params = array()) use ($app, $config) {
 		));
 
 		return;
-
 	}
+
+	$controllerName = isset($route['view']) ? $route['view'] : $route['slug'];
+	$controllerName = ucfirst(call_user_func_array(array('TextUtils', 'camelCase'), array($controllerName))) . 'Controller';
+	$controllerPath = './controllers/' . $controllerName .'.php';
 
 	require_once $controllerPath;
 	$controller = new $controllerName($app);
 
+	if ($route) {
+		$params[0] = isset($route['postType']) ? $route['postType'] : $route['slug'];
+	}
+
 	// ---o Get data
 	$url = SERVICES . join($params, '/');
 	$data = getDataFromUrl($url);
-
+	
 	// ---o Get Global data
 	$url = SERVICES . 'global';
 	$globalData = getDataFromUrl($url);
@@ -79,7 +80,9 @@ $app->get('(/)(/:params+)', function($params = array()) use ($app, $config) {
 		'data' => $data
 	));
 
-	$viewPath = '/pages/' . $pageName . '.html.twig';
+	$view = isset($route['view']) ? $route['view'] : $route['slug'];
+
+	$viewPath = '/pages/' . $view . '.html.twig';
 
 	if (!file_exists($app->config('templates.path') . $viewPath)) {
 		echo 'no view';
@@ -90,12 +93,13 @@ $app->get('(/)(/:params+)', function($params = array()) use ($app, $config) {
 		'data' => $data,
 		'meta' => $meta,
 		'global' => $globalData,
-		'view' => $pageName,
-		'viewName' => call_user_func_array(array('TextUtils', 'camelCase'), array($pageName)),
+		'view' => $view,
+		'viewName' => call_user_func_array(array('TextUtils', 'camelCase'), array($view)),
 		'ROOT_WEB' => ROOT_WEB,
 		'ROOT_PATH' => ROOT_PATH,
 		'ASSETS' => ASSETS,
-		'SERVICES' => SERVICES
+		'SERVICES' => SERVICES,
+		'ANALYTICS_ID' => isset($config['analyticsId']) ? $config['analyticsId'] : NULL
 	));
 
 });

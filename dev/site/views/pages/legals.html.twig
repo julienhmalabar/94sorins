@@ -1,0 +1,19 @@
+{% extends ajax ? "default/empty.html.twig" : "default/layout.html.twig" %}
+
+{% block content %}
+	
+	<div class="page-inner page-content">
+
+		<div class="center">
+			<header>
+				<h1 class="page-title">{{ data.title }}</h1>
+			</header>
+
+			<div class="text-container">
+				<img src="{{ data.picture.url }}" class="main-picture" />
+				{{ data.content|raw }}
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

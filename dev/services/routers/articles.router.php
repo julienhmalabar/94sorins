@@ -29,9 +29,12 @@ $app->get('/articles/:articleSlug', function ($articleSlug = '') use ($app) {
 	$post = new Post();
 	$data = $post->getPost('articles', $articleSlug);
 
+	// ---o Get home description
+	//$homeData = $post->getPost('articles', )
+
 	// ---o Get 3 more articles
 	$posts = new Posts();
-	$morePosts = $posts->getMorePosts('articles');
+	$morePosts = $posts->getMorePosts('articles', 3, 'rand', $data->id);
 
 	foreach ($morePosts as $key=>$morePost) {
 		$morePosts[$key] = (object) array(
@@ -39,6 +42,10 @@ $app->get('/articles/:articleSlug', function ($articleSlug = '') use ($app) {
 			'permalink' => $morePost->permalink,
 			'picture' => $morePost->picture['sizes']['medium']
 		);
+
+		if (isset($morePost->tags)) {
+			$morePosts[$key]->tag = $morePost->tags[0];
+		}
 	}
 	
 

@@ -13,12 +13,13 @@ body {
 	background : $background-color;
 	font: 400 16px/24px $font-family;
 	color: $text-color;
-	padding-bottom: $footer-height;
-}
-
-.ajaxContainer {
-	overflow: hidden;
 	position: relative;
+	overflow-x: hidden;
+	padding-bottom: $footer-height;
+
+	&.menu-opened {
+		padding-bottom: 0;
+	}
 }
 
 // ---o Browser sync
@@ -66,20 +67,134 @@ a {
 }
 
 .center {
-	width: 1080px;
+	max-width: 1200px;
 	margin: 0 auto;
+	padding: 0 20px;
+	box-sizing: border-box;
 }
 
 .page-container {
 	position: relative;
 	z-index: $page-container-z-index;
+
+	&.fixed {
+		position: fixed;
+		width: 100%;
+
+		&:after {
+			display: block;
+			content: '';
+			height: $footer-height;
+			width: 100%;
+			pointer-events: none;
+		}
+	}
+
+	& > div {
+		transition: opacity 1000ms $ease-out-expo 0ms;
+		opacity: 0;
+
+		&.removed {
+			opacity: 0;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			z-index: $page-container-z-index + 1;
+		}
+
+		&.displayed {
+			opacity: 1;
+		}
+	}
+
+	&.in-transition ~ .main-footer {
+		visibility: hidden;
+	}
 }
 
-.page-content {
+.page-inner {
 	position: relative;
 	z-index: $page-content-z-index;
 	background: #F0F0F0;
 	min-height: 100vh;
-	padding-bottom: 150px;
+	//padding-bottom: 150px;
 }
 
+.page-content {
+	padding: 100px 0;
+
+	& > .center {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	header {
+		width: 100%;
+		margin-bottom: 60px;
+	}
+
+	.page-title {
+		font: 700 72px/88px $font-family;
+		text-align: center;
+	}
+
+	.text-container {
+		font: 400 16px/24px $font-family;
+		color: #666666;
+
+		p {
+			margin-bottom: 24px;
+
+			& + h2,
+			& + h3 {
+				margin-top: 0;
+			}
+		}
+
+		h2,
+		h3 {
+			font-weight: 500;
+			margin: 24px 0;
+			color: $black-color;
+		}
+
+		a {
+			text-decoration: underline;
+		}
+
+		ul {
+			list-style-type: disc;
+			padding-left: 15px;
+
+			ul {
+				list-style-type: circle;
+			}
+		}
+	}
+
+	.sidebar {
+		width: 270px;
+	}
+}
+
+@media all and (max-width: $tablet-portrait-size) {
+
+.page-content {
+	.sidebar {
+		width: 100%;
+		margin-top: 30px;
+	}
+}
+}
+
+@media all and (max-width: $mobile-size) {
+
+.page-content {
+	.page-title {
+		font-size: 42px;
+		line-height: 58px;
+	}
+}
+
+}

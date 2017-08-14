@@ -34,7 +34,7 @@ gulp.task('data', () => {
 	let json = YAML.parse(content);
 	let jsonContent = JSON.stringify(json);
 
-	generateViewFiles(json._routes);
+	//generateViewFiles(json._routes);
 
 	for (let i = 0; i < config.data.dest.length; i++) {
 		fs.writeFileSync(config.data.dest[i], jsonContent, 'utf8');

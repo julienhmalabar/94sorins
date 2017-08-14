@@ -25,12 +25,15 @@ class Router extends EventEmitter {
 		this.currentRoute = undefined;
 
 		let routes = data._routes;
+		var is404 = true;
 
 		for (let path in routes) {
 
 			let route = routes[path];
 
 			page(ROOT_PATH + path, (ctx) => {
+
+				is404 = false;
 
 				if (typeof(route) !== 'string') {
 					if (route.redirect) {
@@ -65,6 +68,28 @@ class Router extends EventEmitter {
 
 		};
 
+		// 404 pages
+		page('*', (ctx) => {
+			this.currentRoute = {
+				routePath: ctx.path,
+				path: ctx.path,
+				params: ctx.params,
+				class: {
+					class: 'p404',
+					slug: 'p404'
+				}
+			}
+			this.emit(this.REQUEST_START, this.currentRoute);
+
+			if (this.firstRequest === true) {
+				this.request(ctx.path);
+				return;
+			}
+
+			this.firstRequest = true;
+			this.emit(this.REQUEST_END);
+		});
+
 		page();
 
 	}
@@ -81,7 +106,6 @@ class Router extends EventEmitter {
 			.end( (err, response) => {
 
 				if (err !== null) {
-
 					return;
 				}
 

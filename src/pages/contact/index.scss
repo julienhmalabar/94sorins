@@ -1,15 +1,31 @@
-.page-contact {
-	
+.page-contact {	
 	header {
 		text-align: center;
 		font: 300 36px/48px $font-family;
+		padding: 120px 50px;
 	}
 
 	.contact-links-container {
 		position: relative;
+		padding-bottom: 200px;
+		max-width: 1200px;
+		width: calc(100% - 40px);
+		margin: 0 auto;
+
+		figure {
+			position: relative;
+			height: 550px;
+			width: calc(100% - 750px);
+		}
 
 		img {
 			display: block;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate3d(-50%, -50%, 0);
+			min-width: 100%;
+			min-height: 100%;
 		}
 	}
 
@@ -20,8 +36,36 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font: 400 14px/36px $font-family;
-		letter-spacing: 0.025em;	
+		font: 400 14px/24px $font-family;
+		letter-spacing: 0.025em;
+
+		a {
+			display: block;
+
+			span {
+				display: inline-block;
+				position: relative;
+
+				&:after {
+					content: '';
+					display: block;
+					height: 1px;
+					width: 100%;
+					background:$black-color;
+					position: absolute;
+					top: 100%;
+					left: 0;
+					transition: transform 500ms $ease-out-expo 0ms;
+					transform: scale(0);
+				}
+			}
+
+			&:hover {
+				span:after {
+					transform: scale(1);
+				}
+			}
+		}	
 	}
 
 	.specific-contact,
@@ -37,18 +81,100 @@
 	}
 
 	.specific-contact {
-		background: $grey-dark;
+		background: $grey-dark-color;
 		color: $white-color;
 
 		p:not(:last-child) {
 			margin-bottom: 36px;
 		}
+
+		a span:after {
+			background: $white-color;
+		}
 	}
 
 	.general-contact {
 		a {
-			display: block;
+
+			&:last-child {
+				margin-top: 24px;
+			}
+		}
+
+		svg {
+			fill: $black-color;
+			height: 12px;
+			width: 8px;
+			margin-right: 5px;
+			position: relative;
 		}
 	}
 
+	.social-links {
+		font: 400 16px/24px $font-family;
+		position: absolute;
+		top: 50%;
+		right: 0;
+		margin-top: -12px;
+		transform: translateX(50%) rotate(-90deg) translateY(-35px);
+
+		li {
+			display: inline-block;
+			margin: 0 25px;
+
+			a {
+				position: relative;
+
+				&:after {
+					content: '';
+					display: block;
+					height: 1px;
+					width: 100%;
+					background: $black-color;
+					position: absolute;
+					bottom: -2px;
+					left: 0;
+				}
+			}
+		}
+	}
+
+}
+
+
+
+// -----------------------------------------------------------------------o Responsive
+
+@media all and (max-width: $mobile-size) {
+	.page-contact {
+		header {
+			font: 300 30px/36px $font-family;
+			padding: 80px 50px;
+		}
+
+		.contact-links-container {
+			padding-bottom: 0;
+			width: 100%;
+
+			figure {
+				display: none;
+			}
+		}
+
+		.contact-links {
+			position: relative;
+			display: block;
+			top: auto;
+			margin: 0 20px;
+		}
+
+		.specific-contact,
+		.general-contact {
+			padding: 70px 40px;
+		}
+
+		.social-links {
+			display: none;
+		}
+	}
 }

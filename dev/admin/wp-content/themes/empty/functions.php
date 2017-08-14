@@ -1,9 +1,12 @@
 <?php
 
-$configPath = $_SERVER['DOCUMENT_ROOT'] . '/../config.php';
+/*$configPath = $_SERVER['DOCUMENT_ROOT'] . '/../config.php';
 require $configPath;
 
-function my_project_updated_send_email( $post_id ) {
+define('CONFIG_JSON_CONTENT', file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/../config.json'));
+
+// ---o Update the cache when post is saved.
+function update_cache( $post_id ) {
 
 	if (count($_POST) === 0) {
 		return;
@@ -17,8 +20,7 @@ function my_project_updated_send_email( $post_id ) {
 
 }
 
-add_action( 'save_post', 'my_project_updated_send_email' );
-
+add_action( 'save_post', 'update_cache' );
 
 function getDataFromURL($url) {
 
@@ -31,7 +33,8 @@ function getDataFromURL($url) {
     return $output;
 }
 
-// Replace the permalink with the good URL since the admin and the website are not on the same subdomain
+
+// ---o Replace the permalink with the good URL since the admin and the website are not on the same subdomain
 add_action( 'save_post', 'update_permalink', 10, 3 );
 
 function update_permalink($post_id, $post){
@@ -39,7 +42,6 @@ function update_permalink($post_id, $post){
 
    //if the post is an auto-draft we don't want to do anything either
    if($post->post_status != 'auto-draft' ){
-
 
        // unhook this function so it doesn't loop infinitely
        remove_action('save_post', 'update_permalink', 10, 3 );
@@ -63,7 +65,7 @@ function update_permalink($post_id, $post){
 }
 
 
-add_action('admin_head', function()
+add_action('admin_head', function($configJsonContent)
 {
 	?>
 
@@ -77,17 +79,18 @@ add_action('admin_head', function()
 			}
 		</style>
 
-
 		<script>
 
 			var ADMIN = '<?php echo ADMIN; ?>';
 			var ROOT_WEB = '<?php echo ROOT_WEB; ?>';
+			var jsonConfig = <?php echo CONFIG_JSON_CONTENT; ?>;
+			var routes = jsonConfig['_routes'];
 
 			// An interval because the permalink is inserted with Javascript
 			var interval = setInterval(function(){
 				var editSlugBox = document.getElementById('edit-slug-box');
 
-				if (editSlugBox.length !== 0) {
+				if (editSlugBox && editSlugBox.length !== 0) {
 					clearInterval(interval);
 
 					var editSlugLink = editSlugBox.getElementsByTagName('a')[0];
@@ -95,18 +98,33 @@ add_action('admin_head', function()
 
 					href = href.replace(ADMIN, ROOT_WEB + '/');
 
-					if (href[href.length - 1] === '/') {
+					if (href && href[href.length - 1] === '/') {
 						href = href.substring(0, href.length - 1)
 					}
 
-					editSlugLink.setAttribute('href', href);
-					editSlugLink.setAttribute('target', '_blank');
-					editSlugLink.innerText = href;
+					let modifiedPath = undefined;
+					for (let path in routes) {
+						let route = routes[path];
+						if (href.indexOf('/' + route.postType + '/') > -1) {
+							modifiedPath = path.split('/')[1];
+							href = href.replace(route.postType, modifiedPath);
+						}
+					}
+					if (modifiedPath !== undefined) {
+						editSlugLink.setAttribute('href', href);
+						editSlugLink.setAttribute('target', '_blank');
+						editSlugLink.innerText = href;
 
-					editSlugBox.style.opacity = 1;
+						editSlugBox.style.opacity = 1;
+					}
+					else {
+						editSlugBox.style.display = 'none';
+					}
+
+					
 
 				}
 			}, 100);
 		</script>
 	<?php
-});
+});*/

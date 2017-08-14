@@ -5,12 +5,14 @@
 	{% include 'components/hero-picture.html.twig' with {
 		subhead: data.header_subhead,
 		title: data.header_title,
-		picture: data.header_background.url
+		picture: data.header_background.url,
+		video: data.header_background_video.url
 	} %}
 
-	<div class="page-content">
+	<div class="page-inner">
 	
 		<div class="block block-about">
+			<div class="shapes-container"></div>
 			<header>
 				<p class="block-title">{{ data.description_title }}</p>
 			</header>
@@ -23,15 +25,21 @@
 				<p class="block-title">Nos dernières études de cas</p>
 			</header>
 			{% include 'components/slider.html.twig' with {
-				slides: data.case_studies
+				slides: data.case_studies,
+				noDescription: true
 			} %}
 		</div>
 
 		<div class="block block-social">
 			<header>
 				<p class="block-title">Perspectives</p>
-				<a href="">Voir tout</a>
+				<a href="{{  ROOT_WEB ~ '/blog-creation-digitale' }}">Voir tout</a>
 			</header>
+
+			{% include 'components/social-grid.html.twig' with {
+				items: global.social_feed,
+				length: 8
+			} %}
 		</div>
 
 	</div>

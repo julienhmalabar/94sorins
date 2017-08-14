@@ -1,0 +1,45 @@
+{% extends ajax ? "default/empty.html.twig" : "default/layout.html.twig" %}
+
+{% block content %}
+	
+	<div class="page-inner page-content">
+		<div class="center">
+			<header>
+				<h1 class="page-title">Communiqués de presse</h1>
+			</header>
+
+			<div class="list">
+				{% for item in data %}
+					{% if item.year %}
+						<div class="item item-year">
+							<p>{{ item.year }}</p>
+						</div>
+					{% endif %}
+					<div class="item">
+						<figure>
+							<img src="{{ item.picture.url }}" />
+						</figure>
+						<div class="content">
+							<p class="date">{{ item.post_date }}</p>
+							<p class="title">{{ item.title }}</p>
+							<div class="text">{{ item.description|raw }}</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+
+		{% include 'components/button-bottom.html.twig' with {
+			text: '<strong>' ~ data.global.contact_title ~ '</strong>
+					<p>
+						' ~ data.global.contact_name ~ '<br/>
+						<a href="mailto:' ~ data.global.contact_email ~ '" target="_blank">' ~ data.global.contact_email ~ '<br/>
+						<a href="tel:' ~ data.global.contact_phone ~ '" target="_blank">' ~ data.global.contact_phone ~ '<br/>
+					</p>
+					<a href="' ~ data.global.contact_booklet_file.url ~ '" target="_blank">' ~ data.global.contact_booklet_text ~ '</a>',
+			src: data.global.contact_background.url,
+			fix: true
+		} %}
+	</div>
+
+{% endblock %}

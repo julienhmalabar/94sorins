@@ -1,7 +1,5 @@
 <?php
 
-//use models\Artist as Artist;
-
 use Utils\CacheManager as CacheManager;
 
 // GET index route

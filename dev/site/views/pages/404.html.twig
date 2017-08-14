@@ -1,0 +1,16 @@
+{% extends ajax ? "default/empty.html.twig" : "default/layout.html.twig" %}
+
+{% block content %}
+
+	<div class="page-inner">
+		<img src="{{ ROOT_WEB ~ '/assets/img/404-picture.jpg' }}" />
+		<div class="content">
+			<p>
+				<strong>404</strong>
+				Désolé, cette page n'existe pas ou n'existe plus !
+			</p>
+		</div>
+		<a href="{{ ROOT_WEB }}">{% include 'components/arrow.html.twig' with {direction: 'left'} %}Revenir à la page d'accueil</a>
+	</div>
+
+{% endblock %}
